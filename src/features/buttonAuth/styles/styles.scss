@@ -1,0 +1,23 @@
+.buttonAuth {
+  border: 1px solid #01996d;
+  border-radius: 12px;
+  padding: 20px 50px;
+  margin-top: 4%;
+  color: #fff;
+  font-size: 23px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+  background-image: linear-gradient(180deg, #3daa33 12%, #01996d 90%);
+  transition: all .8s ease-in-out;
+  font-weight: 400;
+
+
+  &:hover {
+    background-image: linear-gradient(180deg, #01996d 0%, #3daa33 100%);
+  }
+}
+
+@media screen and (max-width: 470px) {
+  .buttonAuth {
+    flex-grow: 1;
+  }
+}

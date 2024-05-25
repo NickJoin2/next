@@ -1,0 +1,29 @@
+.diplomP {
+
+  &__title {
+    text-align: start;
+    //font-family: var(--font-family);
+    font-weight: 700;
+    font-size: clamp(1.25rem, 0.795rem + 2.27vw, 2.5rem);
+    color: #1e1e1e;
+  }
+
+  &__list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 40px;
+
+    padding-top: 45px;
+    transition: all .3s ease-in-out;
+
+    @media screen and (max-width: 700px) {
+      & {
+        gap: 20px;
+      }
+    }
+  }
+
+}
+
