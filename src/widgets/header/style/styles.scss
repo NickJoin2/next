@@ -29,6 +29,18 @@
     }
   }
 
+  .nav__list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 25px;
+
+    & li a {
+      color: #1e1e1e;
+    }
+  }
+
+
   &__entry {
     display: flex;
     align-items: center;

@@ -1,3 +1,4 @@
+
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 
 
@@ -20,6 +21,8 @@ export const fetchRegister = createAsyncThunk<string, { email: string; password:
             }
 
             const data: Root = await response.json();
+            console.log(data)
+            document.cookie = `token=${data.token}`
             localStorage.setItem('token', data.token)
             return data.token
         } catch (error) {
@@ -35,9 +38,14 @@ export const registerSlice = createSlice({
         token: '',
         status: '',
         error: null,
+        redirect: false,
     } as State,
     reducers: {
-
+        logout: (state) => {
+            document.cookie = `token=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+            localStorage.removeItem('token');
+            state.redirect = true;
+        }
     },
     extraReducers: (builder) => {
         builder.addCase(fetchRegister.fulfilled, (state, action) => {
@@ -54,12 +62,14 @@ export const registerSlice = createSlice({
 });
 
 export default registerSlice.reducer;
+export const { logout } = registerSlice.actions;
 
 export interface State {
     token: string;
     status: string;
-    error: any
+    error: any;
     message: string;
+    redirect: boolean;
 }
 
 export interface RootInterface {

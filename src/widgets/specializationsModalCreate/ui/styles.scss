@@ -1,0 +1,135 @@
+.specialization__modal {
+
+  &__overlay {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &__content {
+    max-width: 586px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+  }
+
+  &__form {
+    position: relative;
+    width: 100%;
+    max-width: 484px;
+    margin: 0 auto;
+    padding: 7% 0;
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: clamp(1.563rem, 0.491rem + 5.36vw, 2.5rem);
+    line-height: 150%;
+    color: #1e1e1e;
+  }
+
+  &__close {
+    float: right;
+    margin-right: 25px;
+  }
+
+  &-block {
+    position: relative;
+    padding: 0 20px;
+    display: grid;
+    gap: 8px;
+    text-align: left;
+  }
+
+  &__label {
+    color: #000;
+    margin-left: 22px;
+    margin-bottom: -1px;
+  }
+
+
+  &__input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 8px;
+    border: 2px solid #456B92;
+
+    &::placeholder {
+      font-size: 16px;
+      line-height: 150%;
+      color: #c3c3c3;
+    }
+  }
+
+  &-block-button {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__form__content {
+    padding-top: 4%;
+    display: grid;
+    gap: 20px;
+  }
+
+  &__form-button {
+    width: 122px;
+    padding: 12px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fdfdfd;
+    background: linear-gradient(180deg, #3daa33 0%, #01996d 100%);
+  }
+
+  &__selected {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    &-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 5px;
+      cursor: pointer;
+
+      & img {
+        padding-top: 2px;
+      }
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+
+    &__input {
+      width: 100%;
+      padding: 12px 10px;
+    }
+  }
+}
+
+
+select {
+  max-width: 444px;
+  padding: 14px 22px 14px 14px;
+  border-radius: 8px;
+  border: 2px solid #456B92;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+option {
+  max-width: 444px;
+}

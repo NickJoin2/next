@@ -1,0 +1,47 @@
+.assent__modal {
+
+  &__overlay {
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+
+  &__content {
+    max-width: 486px;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+  }
+
+  &__form {
+    position: relative;
+    width: 100%;
+    max-width: 484px;
+    margin: 0 auto;
+    padding: 7% 0;
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: clamp(1.563rem, 0.491rem + 5.36vw, 2.5rem);
+    line-height: 150%;
+    color: #1e1e1e;
+  }
+
+  &-blocks {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding-top: 40px;
+  }
+}

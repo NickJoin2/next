@@ -1,10 +1,11 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
+import {CreateStudentDTO, GroupDTO} from "@/features/types";
 
-export const groupCreate = createAsyncThunk<string, {name: string, specializationId: number }, { rejectValue:  any  }>(
+export const groupCreate = createAsyncThunk<string, { name: string, specializationId: number }, { rejectValue: any }>(
     'group/create',
     async ({name, specializationId}, thunkAPI) => {
         try {
-            const response = await fetch(`https://99255933-2698-4faa-883f-c72f28e181ac.mock.pstmn.io/api/Groups`, {
+            const response = await fetch(`http://exam.uaviak.ru/api/Groups/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -15,30 +16,50 @@ export const groupCreate = createAsyncThunk<string, {name: string, specializatio
                 })
             });
 
-            if(response.status === 201) {
-                const data: any = await response.json();
-                return data
-            } else if(response.status === 400) {
-                const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error as any);
-            }  else if(response.status === 403) {
-                const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error as any);
+            if (response.status === 201) {
+                return 'Группа успешно создана'
+            } else {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error);
             }
 
         } catch (error) {
-            return thunkAPI.rejectWithValue(error as any);
+            return thunkAPI.rejectWithValue(error);
         }
 
     }
 );
 
-
-export const groupUpdate = createAsyncThunk<string, { groupId:number, name:string, specializationId:number }, { rejectValue:  any  }>(
-    'group/update',
-    async ({ groupId, name, specializationId}, thunkAPI) => {
+export const groupRead = createAsyncThunk<GroupDTO, { rejectValue: any }>(
+    'group/read',
+    async (_, thunkAPI) => {
         try {
-            const response = await fetch(`https://99255933-2698-4faa-883f-c72f28e181ac.mock.pstmn.io/api/groups/${groupId}`, {
+            const response = await fetch(`http://exam.uaviak.ru/api/Groups/`, {
+                method: 'GET',
+            });
+
+            if (response.status === 200) {
+                const data: GroupDTO = await response.json();
+                return data
+            } else {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error);
+            }
+
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+
+    }
+);
+
+export const groupUpdate = createAsyncThunk<string, { groupId: GroupDTO, name: GroupDTO, specializationId: GroupDTO }, {
+    rejectValue: any
+}>(
+    'group/update',
+    async ({groupId, name, specializationId}, thunkAPI) => {
+        try {
+            const response = await fetch(`http://exam.uaviak.ru/api/Groups/${groupId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -49,12 +70,11 @@ export const groupUpdate = createAsyncThunk<string, { groupId:number, name:strin
                 })
             });
 
-            if(response.status === 204) {
-                const data: any = await response.json();
-                return data
-            } else if(response.status === 403) {
+            if (response.status === 204) {
+                return 'Группы успешно обновленна'
+            } else {
                 const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error as any);
+                return thunkAPI.rejectWithValue(error);
             }
 
         } catch (error) {
@@ -64,74 +84,96 @@ export const groupUpdate = createAsyncThunk<string, { groupId:number, name:strin
     }
 );
 
-
-export const groupCreateStudent = createAsyncThunk<string, { fullName:number, groupId:number  }, { rejectValue:  any  }>(
-    'group/createStudent',
-    async ({ fullName, groupId}, thunkAPI) => {
+export const groupFindRead = createAsyncThunk<GroupDTO, { groupId: string }, { rejectValue: any }>(
+    'group/findRead',
+    async ({groupId}, thunkAPI) => {
         try {
-            const response = await fetch(`https://99255933-2698-4faa-883f-c72f28e181ac.mock.pstmn.io/api/groups/${groupId}/students/`, {
+            const response = await fetch(`http://exam.uaviak.ru/api/Groups${groupId}/`, {
+                method: 'GET',
+            });
+
+            if (response.status === 200) {
+                const data: GroupDTO = await response.json();
+                return data
+            } else {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error);
+            }
+
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error as any);
+        }
+
+    }
+);
+
+export const groupDelete = createAsyncThunk<string, { groupId: number }, { rejectValue: any }>(
+    'group/delete',
+    async ({groupId}, thunkAPI) => {
+        try {
+            const response = await fetch(`http://exam.uaviak.ru/api/Groups/${groupId}/`, {
+                method: 'DELETE',
+            });
+
+            if (response.status === 204) {
+                return 'Группа была удалена'
+            } else {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error);
+            }
+
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+
+    }
+);
+
+export const groupCreateStudent = createAsyncThunk<string, { firstname:CreateStudentDTO; middlename: CreateStudentDTO; lastname: CreateStudentDTO; groupId: string; }, { rejectValue: any }>(
+    'group/createStudent',
+    async ({firstname, middlename,lastname, groupId}, thunkAPI) => {
+        try {
+            const response = await fetch(`http://exam.uaviak.ru/api/Groups${groupId}/students/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    fullName:fullName,
+                    firstname: firstname,
+                    middlename: middlename,
+                    lastname: lastname,
                 })
             });
 
-            if(response.status === 201) {
-                const data: any = await response.json();
-                return data
-            } else if(response.status === 403) {
-                const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error as any);
+            if (response.status === 201) {
+                // const data: any = await response.json();
+                return 'Группа успешно создана'
+            } else  {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error);
             }
-
         } catch (error) {
-            return thunkAPI.rejectWithValue(error as any);
+            return thunkAPI.rejectWithValue(error);
         }
 
     }
 );
 
-
-export const groupRead = createAsyncThunk<any, { rejectValue:  any  }>(
-    'group/read',
-    async (_, thunkAPI) => {
-        try {
-            const response = await fetch(`https://99255933-2698-4faa-883f-c72f28e181ac.mock.pstmn.io/api/groups/`, {
-                method: 'GET',
-            });
-
-            if(response.status === 200) {
-                const data: any = await response.json();
-                return data
-            }
-
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error as any);
-        }
-
-    }
-);
-
-
-export const groupFindRead = createAsyncThunk<string, {groupId: number}, { rejectValue:  any  }>(
-    'group/findRead',
+export const groupReadStudent = createAsyncThunk<GroupDTO, { groupId: string }, { rejectValue: any }>(
+    'group/readStudent',
     async ({groupId}, thunkAPI) => {
         try {
-            const response = await fetch(`https://99255933-2698-4faa-883f-c72f28e181ac.mock.pstmn.io/api/Groups/${groupId}`, {
+            const response = await fetch(`http://exam.uaviak.ru/api/Groups/${groupId}/students/`, {
                 method: 'GET',
             });
 
-            if(response.status === 200) {
-                const data: any = await response.json();
+            if (response.status === 200) {
+                const data: GroupDTO = await response.json();
                 return data
-            } else if(response.status === 404) {
+            } else {
                 const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error as any);
+                return thunkAPI.rejectWithValue(error);
             }
-
         } catch (error) {
             return thunkAPI.rejectWithValue(error as any);
         }
@@ -139,52 +181,6 @@ export const groupFindRead = createAsyncThunk<string, {groupId: number}, { rejec
     }
 );
 
-export const groupDelete = createAsyncThunk<string, { groupId: number }, { rejectValue:  any  }>(
-    'group/delete',
-    async ({ groupId }, thunkAPI) => {
-        try {
-            const response = await fetch(`https://99255933-2698-4faa-883f-c72f28e181ac.mock.pstmn.io/api/Groups/${groupId}`, {
-                method: 'DELETE',
-            });
-
-            if(response.status === 204) {
-                const data: any = await response.json();
-                return data
-            } else if(response.status === 403) {
-                const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error as any);
-            }  else if(response.status === 404) {
-                const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error as any);
-            }
-
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error as any);
-        }
-
-    }
-);
-
-
-export const groupReadStudent = createAsyncThunk<string, { groupId: number }, { rejectValue:  any  }>(
-    'group/readStudent',
-    async ({ groupId }, thunkAPI) => {
-        try {
-            const response = await fetch(`https://99255933-2698-4faa-883f-c72f28e181ac.mock.pstmn.io/api/Groups/${groupId}/students `, {
-                method: 'DELETE',
-            });
-
-            if(response.status === 200) {
-                const data: any = await response.json();
-                return data
-            }
-
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error as any);
-        }
-
-    }
-);
 
 export default {
     groupCreate,

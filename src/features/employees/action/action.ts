@@ -1,113 +1,180 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
+import {CreateEmployeeCommand, EmployeeDTO} from "@/features/types";
+import {Posts} from "@/app/types";
 
-export const employeesCreate = createAsyncThunk<string, {fullName: string, posts: any}, { rejectValue:  any  }>(
+
+export const employeesCreate = createAsyncThunk<
+    string,
+    {
+        firstName: string;
+        middleName: string;
+        lastName: string;
+        roles: number[];
+    },
+    { rejectValue: string } // Ошибка - строка
+>(
     'employees/create',
-    async ({fullName, posts}, thunkAPI) => {
+    async ({ firstName, middleName, lastName, roles }, thunkAPI) => {
         try {
-            const response = await fetch(`https://99255933-2698-4faa-883f-c72f28e181ac.mock.pstmn.io/api/employees`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Employees/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    fullName: fullName,
-                    posts: posts,
+                    firstName:firstName,
+                    lastName:lastName,
+                    middleName:middleName,
+                    blocked: false,
+                    roles:roles,
                 }),
             });
 
-            if(response.status === 201) {
-                const data: any = await response.json();
-                return data
-            } else if(response.status === 403) {
-                const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error as any);
+            if (response.status === 201) {
+                return 'Пользователь создан';
+            } else if (response.status === 400) {
+                const validError = await response.json();
+                return thunkAPI.rejectWithValue(validError || 'Запрос не прошел валидацию');
+            } else if (response.status === 403) {
+                return thunkAPI.rejectWithValue('Пользователь не имеет доступа на добавление сотрудников');
+            }else {
+                const error = await response.json();
+                return thunkAPI.rejectWithValue(error.message || 'Неизвестная ошибка');
             }
 
         } catch (error) {
-            return thunkAPI.rejectWithValue(error as any);
+            return thunkAPI.rejectWithValue((error as Error).message || 'Что-то пошло не так');
         }
-
     }
 );
 
 
-export const employeesRead = createAsyncThunk<any, { rejectValue:  any  }>(
+export const employeesRead = createAsyncThunk<EmployeeDTO>(
     'employees/read',
     async (_, thunkAPI) => {
         try {
-            const response = await fetch(`https://99255933-2698-4faa-883f-c72f28e181ac.mock.pstmn.io/api/employees`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Employees`, {
+            // const response = await fetch(`http://localhost:3000/employees/`, {
                 method: 'GET',
             });
 
-            if(response.status === 200) {
-                const data: any = await response.json();
+            if (response.status === 200) {
+                const data =  await response.json()
+                console.log(data)
                 return data
-            } else if(response.status === 403) {
-                const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error as any);
+            } else if (response.status === 403) {
+                return thunkAPI.rejectWithValue("Пользователь не имеет доступ на получение списка сотрудников");
             }
-
         } catch (error) {
-            return thunkAPI.rejectWithValue(error as any);
+            return thunkAPI.rejectWithValue(error || "Что то пошло не так");
         }
-
     }
 );
 
-
-export const employeesFind = createAsyncThunk<string, {employeeId: number}, { rejectValue:  any  }>(
-    'employees/find',
-    async ({employeeId}, thunkAPI) => {
-        try {
-            const response = await fetch(`https://99255933-2698-4faa-883f-c72f28e181ac.mock.pstmn.io/api/employees/${employeeId}`, {
-                method: 'GET',
-            });
-
-            if(response.status === 200) {
-                const data: any = await response.json();
-                return data
-            } else if(response.status === 403) {
-                const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error as any);
-            }
-
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error as any);
-        }
-
-    }
-);
-
-
-export const employeesReplace = createAsyncThunk<string, {employeeId: number, fullName: string, posts: any, blocked: boolean}, { rejectValue:  any  }>(
+export const employeesReplace = createAsyncThunk<string, {
+    id: string,
+    firstName: string;
+    lastName: string;
+    middleName: string,
+}, { rejectValue: any }>(
     'employees/replace',
-    async ({employeeId, fullName, posts, blocked}, thunkAPI) => {
+    async ({id, firstName, middleName, lastName}, thunkAPI) => {
         try {
-            const response = await fetch(`https://99255933-2698-4faa-883f-c72f28e181ac.mock.pstmn.io/api/employees/${employeeId}`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Employees/${id}`, {
                 method: 'PATCH',
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    fullName: fullName,
-                    posts: posts,
-                    blocked: blocked
+                    firstName: firstName,
+                    middleName: middleName,
+                    lastName: lastName,
                 }),
             });
 
-            if(response.status === 204) {
-                const data: any = await response.json();
-                return data
-            } else if(response.status === 403) {
-                const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error as any);
+            if (response.status === 204) {
+                return "Пользователь успешно обновлен"
+            } else if (response.status === 400) {
+                const errorValid = response.json()
+                return thunkAPI.rejectWithValue(errorValid || 'Запрос не прошел валидацию')
+            } else if (response.status === 403) {
+                const errorValid = response.json()
+                return thunkAPI.rejectWithValue(errorValid || 'Пользователь не имеет доступ на изменение сотрудника')
+            }  else if (response.status === 404) {
+                const errorValid = response.json()
+                return thunkAPI.rejectWithValue(errorValid || 'Пользователь не найден')
+            } else {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error || 'Неизвестная ошибка');
             }
 
         } catch (error) {
-            return thunkAPI.rejectWithValue(error as any);
+            return thunkAPI.rejectWithValue(error);
         }
 
     }
 );
 
-export default  {employeesCreate,employeesRead,employeesFind,employeesReplace}
+export const employeesFind = createAsyncThunk<EmployeeDTO, {employeeId: number}, { rejectValue:  any  }>(
+    'employees/find',
+    async ({employeeId}, thunkAPI) => {
+        try {
+            const response = await fetch(`http://exam.uaviak.ru/api/Employees/${employeeId}/`, {
+                method: 'GET',
+            });
+
+            if(response.status === 200) {
+                const data: EmployeeDTO = await response.json();
+                return data
+            } else if(response.status === 403) {
+                const validError:Error = await response.json();
+                return thunkAPI.rejectWithValue(validError || 'Пользователь не имеет доступ на получение сотрудника')
+            } else if(response.status === 404) {
+                const validError:Error = await response.json();
+                return thunkAPI.rejectWithValue(validError || 'Сотрудник не найден')
+            } else {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error);
+            }
+
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+
+    }
+);
+
+
+export const employeesDelete = createAsyncThunk<string, { id: string }, { rejectValue: any }>(
+    'employees/delete',
+    async ({id}, thunkAPI) => {
+        try {
+            const response = await fetch(`http://cms.uaviak.ru/api/Employees/${id}`, {
+            // const response = await fetch(`http://localhost:3000/employees/${id}`, {
+                method: 'DELETE',
+            });
+
+
+            if (response.status === 204) {
+                return 'Сотрудник удален'
+            } else if (response.status === 403) {
+                const errorValid = response.json()
+                return thunkAPI.rejectWithValue(errorValid || 'Пользователь не имеет на уделение сотрудника')
+            }  else if (response.status === 404) {
+                const errorValid = response.json()
+                return thunkAPI.rejectWithValue(errorValid || 'Сотрудник не найден')
+            } else {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error);
+            }
+
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+
+    }
+);
+
+
+
+export default {employeesCreate, employeesRead, employeesReplace, employeesDelete}

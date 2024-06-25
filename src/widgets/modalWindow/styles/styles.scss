@@ -1,10 +1,11 @@
 .modal {
+
   &__overlay {
-    overflow: hidden;
     position: absolute;
     top: 0;
-    min-height: 100%;
-    width: 100vw;
+    left: 0;
+    width: 100%;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.6);
   }
 
@@ -24,16 +25,12 @@
   &__form {
     position: relative;
     width: 100%;
-    max-width: 484px; /* Максимальная ширина содержимого формы */
+    max-width: 484px;
     margin: 0 auto;
     padding: 7% 0;
   }
 
   &__close {
-    //position: absolute;
-    //top: 22px;
-    //right: -22px;
-    //cursor: pointer;
     display: flex;
     justify-content: end;
     margin-right: -15px;
@@ -42,7 +39,6 @@
   }
 
   &__title {
-    //font-family: "Montserrat", sans-serif;
     font-weight: 700;
     font-size: clamp(1.563rem, 0.491rem + 5.36vw, 2.5rem);
     line-height: 150%;
@@ -59,7 +55,8 @@
 
   &__label {
     color: #000;
-    margin-left: 8px;
+    margin-left: 22px;
+    margin-bottom: -1px;
   }
 
   &__input {
@@ -69,7 +66,6 @@
     border: 1px solid grey;
 
     &::placeholder {
-      //font-family: var(--font-family);
       //font-weight: 700;
       font-size: 16px;
       line-height: 150%;
@@ -94,9 +90,9 @@
   }
 
   &-block-button {
+    margin-top: 60px;
     display: flex;
-    justify-content: flex-end;
-    padding: 20px 20px 0 0;
+    justify-content: center;
   }
 
   &__form__content {

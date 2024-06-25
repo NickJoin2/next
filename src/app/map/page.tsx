@@ -1,26 +1,43 @@
 'use client'
-import React from 'react';
+import Title from "@/shared/ui/Title";
+import React, {useState} from "react";
+import './style/style.scss'
 import {MainBlock} from "@/widgets/mainBlock";
-import './styles/styles.scss'
-import one from '@/shared/image/mainBlock/1.png'
-import two from '@/shared/image/mainBlock/2.png'
-import four from '@/shared/image/mainBlock/4.png'
+import img1 from '@/shared/image/map/1.jpg'
+import img2 from '@/shared/image/map/2.jpg'
+import img3 from "@/shared/image/map/3.jpg";
+import styled from "styled-components";
+import ModalCursachDiplom from "@/widgets/modalCursachDiplom/ui/ModalCursachDiplom";
 
-const Page = () => {
+export default function map() {
+
+    const [open, setOpen] = useState<boolean>(false);
+
+
+    const Record = styled.div`
+        margin-top: 40px;
+        margin-bottom: 50px;`
+
     return (
-        <div className="map">
+        <section className="control">
             <div className="container">
-                <h2 className='map__title'>Карта сайта</h2>
+                <Record>
+                    <Title title={'Карта сайта'}/>
+                </Record>
 
-                <ul className="map__list">
-                    <MainBlock title={'Выпускники'} img={one}/>
-                    <MainBlock title={'Управление'} img={two}/>
-                    <MainBlock title={'Курсовые и дипломные работы'} img={four}/>
-                </ul>
-
+                <div className="map__list">
+                    <MainBlock img={img1} gridColumn={'1 / 2'} gridRow={'1 / 12'} text={'Выпускники'}
+                               mapLink={'/diplom'}/>
+                    <MainBlock img={img2} gridColumn={'2 / 2'} gridRow={'1 / 12'} text={'Управление'}
+                               mapLink={'control'}/>
+                    <MainBlock img={img3} gridColumn={'1 / 3'} gridRow={'14 / 27'} text={'Студенческие работы'}
+                               mapLink={''} setOpen={setOpen}/>
+                </div>
             </div>
-        </div>
-    );
-};
 
-export default Page;
+            {
+                open && <ModalCursachDiplom setOpen={setOpen}/>
+            }
+        </section>
+    )
+}

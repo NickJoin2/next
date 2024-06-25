@@ -5,36 +5,61 @@ import {
     specializationsRead,
     specializationsUpdate
 } from "@/features/specializations/action/action";
+import {SpecializationDTO} from "@/features/types";
+
+export interface State {
+    status: 'init' | 'loading' | 'success' | 'error'
+    error: any;
+    data: SpecializationDTO[] | null;
+    tableCardSpecializations: SpecializationDTO[];
+    message: string;
+}
 
 
-export const specializations = createSlice({
+export const specializationsSlice = createSlice({
     name: "specializations",
     initialState: {
-        state: false,
-        status: '',
+        status: 'init',
         error: null,
         data: null,
+        tableCardSpecializations: [],
+        message: ''
     } as State,
-    reducers: {},
+    reducers: {
+        setCardSpecializations: (state, action) => {
+            state.tableCardSpecializations = action.payload;
+        },
+        setCardCreateSpecializations: (state, action) => {
+            state.tableCardSpecializations.push(action.payload);
+        },
+        updateTableDataSpecialization: (state, action) => {
+            state.tableCardSpecializations = state.tableCardSpecializations.map(item => {
+                if (item.id === action.payload.id) {
+                    return {
+                        ...item,
+                        name: action.payload.name
+                    };
+                }
+                return item;
+            });
+        }
+    },
     extraReducers: (builder) => {
         // specializationGet -------------------------------------------------------------------------
         builder.addCase(specializationsRead.fulfilled, (state, action) => {
             state.status = 'success';
             state.error = null;
-            state.state = true;
             state.data = action.payload
         });
 
         builder.addCase(specializationsRead.pending, (state) => {
             state.error = null;
-            state.state = false;
             state.status = 'loading';
         });
 
         builder.addCase(specializationsRead.rejected, (state, action) => {
             state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
+            state.status = 'error';
         });
         // specializationGet -------------------------------------------------------------------------
 
@@ -42,20 +67,17 @@ export const specializations = createSlice({
         builder.addCase(specializationsCreate.fulfilled, (state, action) => {
             state.status = 'success';
             state.error = null;
-            state.state = true;
-            state.data = action.payload
+            state.message = action.payload
         });
 
         builder.addCase(specializationsCreate.pending, (state) => {
             state.error = null;
-            state.state = false;
             state.status = 'loading';
         });
 
         builder.addCase(specializationsCreate.rejected, (state, action) => {
             state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
+            state.status = 'error';
         });
         // specializationCreate -------------------------------------------------------------------------
 
@@ -63,20 +85,17 @@ export const specializations = createSlice({
         builder.addCase(specializationsUpdate.fulfilled, (state, action) => {
             state.status = 'success';
             state.error = null;
-            state.state = true;
-            state.data = action.payload
+            state.message = action.payload
         });
 
         builder.addCase(specializationsUpdate.pending, (state) => {
             state.error = null;
-            state.state = false;
             state.status = 'loading';
         });
 
         builder.addCase(specializationsUpdate.rejected, (state, action) => {
             state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
+            state.status = 'error';
         });
         // specializationUpdate -------------------------------------------------------------------------
 
@@ -84,31 +103,23 @@ export const specializations = createSlice({
         builder.addCase(specializationsDelete.fulfilled, (state, action) => {
             state.status = 'success';
             state.error = null;
-            state.state = true;
-            state.data = action.payload
+            state.message = action.payload
         });
 
         builder.addCase(specializationsDelete.pending, (state) => {
             state.error = null;
-            state.state = false;
             state.status = 'loading';
         });
 
         builder.addCase(specializationsDelete.rejected, (state, action) => {
             state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
+            state.status = 'error';
         });
         // specializationDelete -------------------------------------------------------------------------
 
     }
 });
 
-export default specializations.reducer
+export default specializationsSlice.reducer
+export const {setCardSpecializations,updateTableDataSpecialization,setCardCreateSpecializations} = specializationsSlice.actions
 
-export interface State {
-    state: boolean;
-    status: string;
-    error: any;
-    data: any;
-}

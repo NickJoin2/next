@@ -1,9 +1,14 @@
 'use client';
 import React, {useEffect, useRef, useState} from 'react';
+import Image from 'next/image'
 import userIcon from "@/shared/image/user/user-icon.svg";
 import '../styles/styles.scss'
 import {useClickOutside} from "@/app/hooks/useClickOutside";
 import Link from "next/link";
+import {useDispatch} from "react-redux";
+import {logout} from "@/features/userAuthorization/slice/registerSlice";
+import {useRouter} from "next/navigation";
+import {RootState, useAppSelector} from "@/app/store/appStore";
 
 const DropMenuUser = () => {
 
@@ -14,23 +19,38 @@ const DropMenuUser = () => {
     });
 
     useEffect(() => {
-        console.log(isOpen)
+        // console.log(isOpen)
     }, [isOpen]);
 
+    const dispatch = useDispatch();
+    const router = useRouter()
+
+    const redirect = useAppSelector((state:RootState) => state.register.redirect)
+
+    const handleLogout = async() => {
+       dispatch(logout())
+    }
+
+    if(redirect) {
+        const redirectUrl = () => {
+            router.push('/')
+        }
+      redirectUrl()
+    }
 
     return (
         <div className="user">
             <button onClick={() => setIsOpen(!isOpen)}>
                 <p>Оксана Черниюк</p>
-                <img className="user__image" src={userIcon} alt="user"/>
-                <div className='user__online'></div>
+                <Image className="user__image" src={userIcon} alt="user"/>
+                {/*<div className='user__online'></div>*/}
             </button>
 
 
             <div className={`user__content ${isOpen ? 'active' : ''}`}>
                 <ul className="user__list" ref={menuRef}>
                     <li className="user__item">
-                        <Link href={'/wholesale'} >Личные кабинет</Link>
+                        <Link href={'/office'} >Личные кабинет</Link>
                     </li>
                     <li className="user__item user-menu">
                         <Link href={'/wholesale'} style={{fontSize: '20px'}}>Курсовые работы</Link>
@@ -39,10 +59,10 @@ const DropMenuUser = () => {
                         <Link href={'/wholesale'}>Дипломные работы</Link>
                     </li>
                     <li className="user__item">
-                        <Link href={''} style={{fontSize: '10px'}}>Сменить пароль</Link>
+                        <Link href={''} style={{fontSize: '15px'}}>Сменить пароль</Link>
                     </li>
                     <li className="user__item">
-                        <Link href={''}>Выйти</Link>
+                        <Link href={''} onClick={handleLogout}>Выйти</Link>
                     </li>
                 </ul>
             </div>

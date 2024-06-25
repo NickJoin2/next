@@ -1,0 +1,208 @@
+{
+  "students": [
+    {
+      "id": "2",
+      "firstName": "Юлиана",
+      "middleName": "Грачева",
+      "lastName": "Алескеевна",
+      "blocked": false
+    },
+    {
+      "id": "3",
+      "firstName": "Даша",
+      "middleName": "Богомазова",
+      "lastName": "Дмитриевна",
+      "blocked": true
+    }
+  ],
+  "employees": [
+    {
+      "id": "1719155756812",
+      "firstName": "df",
+      "lastName": "v",
+      "middleName": "vzx",
+      "blocked": false,
+      "posts": [
+        {
+          "id": 1,
+          "name": "Преподаватель"
+        }
+      ]
+    },
+    {
+      "id": "1719158156148",
+      "firstName": "adsf",
+      "lastName": "adsf",
+      "middleName": "adf",
+      "blocked": false,
+      "posts": [
+        {
+          "id": 1,
+          "name": "Преподаватель"
+        },
+        {
+          "id": 4,
+          "name": "Представитель компании"
+        }
+      ]
+    },
+    {
+      "id": "1719177269924",
+      "firstName": "да",
+      "lastName": "да",
+      "middleName": "да",
+      "blocked": false,
+      "posts": [
+        {
+          "id": 0,
+          "name": "Студент"
+        }
+      ]
+    },
+    {
+      "id": "171917726924",
+      "firstName": "да",
+      "lastName": "да",
+      "middleName": "да",
+      "blocked": false,
+      "posts": [
+        {
+          "id": 0,
+          "name": "Студент"
+        }
+      ]
+    },
+    {
+      "id": "1719176924",
+      "firstName": "да",
+      "lastName": "да",
+      "middleName": "да",
+      "blocked": false,
+      "posts": [
+        {
+          "id": 0,
+          "name": "Студент"
+        }
+      ]
+    }
+  ],
+  "studentCursach": [
+    {
+      "title": "Основа жизни разнообразие",
+      "fio": "Чуркин Николай васильевич",
+      "prepodFio": "Кирилина ОВЗ",
+      "link": "https://www.pornhub.com",
+      "level": "2",
+      "id": "1"
+    },
+    {
+      "id": "1719079257431",
+      "title": "adsf",
+      "fio": "adsf",
+      "prepodFio": "adfs",
+      "level": "3",
+      "link": "adsf"
+    },
+    {
+      "title": "Никита",
+      "fio": "Умный коледж",
+      "prepodFio": "Мардамшина А.А.",
+      "link": "https://ya.ru/",
+      "level": "2",
+      "id": "1719216182755"
+    }
+  ],
+  "studentDiplom": [
+    {
+      "title": "дарья",
+      "fio": "дмитриевна",
+      "prepodFio": "волошкина",
+      "link": "youtube.com",
+      "level": "2",
+      "id": "1718670457419"
+    },
+    {
+      "id": "1",
+      "title": "Основы правильного делегирования для туристов",
+      "fio": "Зендельмар",
+      "prepodFio": "Морозова А.А.",
+      "link": "https://www.google.ru/",
+      "level": "2"
+    },
+    {
+      "id": "1719220189258",
+      "title": "c",
+      "fio": "cxv",
+      "prepodFio": "cxzv",
+      "level": "2",
+      "link": "zxvc"
+    }
+  ],
+  "specialization": [
+    {
+      "name": "Компьютерные науки",
+      "id": "1"
+    },
+    {
+      "name": "Экономикa1",
+      "id": "2"
+    },
+    {
+      "id": "5",
+      "name": "Юриспруденция"
+    },
+    {
+      "id": "1718717954890",
+      "name": "Информационные технологии"
+    }
+  ],
+  "disciplines": [
+    {
+      "id": "1",
+      "name": "Алгоритмы и структуры данных"
+    },
+    {
+      "id": "2",
+      "name": "Операционные системы"
+    },
+    {
+      "id": "5",
+      "name": "Машинное обучение"
+    },
+    {
+      "id": "1718717954890",
+      "name": "Сетевые технологии"
+    },
+    {
+      "id": "ce0d",
+      "name": "конец"
+    }
+  ],
+  "groups": [
+    {
+      "name": "21ис-1",
+      "studentsCol": "20",
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "name": "19ис-1",
+      "studentsCol": "19"
+    },
+    {
+      "id": "5",
+      "name": "18ис-1",
+      "studentsCol": "21"
+    },
+    {
+      "name": "20ом-1",
+      "studentsCol": "10",
+      "id": "3e83"
+    },
+    {
+      "id": "22a1",
+      "name": "19оат-2",
+      "studentsCol": "17"
+    }
+  ]
+}

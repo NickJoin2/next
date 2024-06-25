@@ -1,110 +1,143 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {employeesCreate, employeesFind, employeesRead, employeesReplace} from "@/features/employees/action/action";
+import {
+    employeesCreate,
+    employeesDelete, employeesFind,
+    employeesRead,
+    employeesReplace
+} from "@/features/employees/action/action";
+import {CreateEmployeeCommand, EmployeeDTO} from "@/features/types";
 
 
 
 export const employees = createSlice({
     name: "employees",
     initialState: {
-        state: false,
-        status: '',
+        status: "init",
         error: null,
         data: null,
+        worker: null,
+        tableData: [],
     } as State,
-    reducers: {},
-    extraReducers: (builder) => {
-        // employeesCreate -------------------------------------------------------------------------
-        builder.addCase(employeesCreate.fulfilled, (state, action) => {
-            state.status = 'success';
-            state.error = null;
-            state.state = true;
-            state.data = action.payload
-        });
+    reducers: {
+        setTableData(state, action) {
+            state.tableData = action.payload;
+        },
+        setTableDataCreate(state, action) {
+            state.tableData.push(action.payload);
+        },
+        updateTableData: (state, action) => {
+            state.tableData = state.tableData.map(item => {
+                if (item.id === action.payload.id) {
+                    return {
+                        ...item,
+                        firstName: action.payload.firstName,
+                        lastName: action.payload.lastName,
+                        middleName: action.payload.middleName,
+                        posts: action.payload.posts,
+                    };
+                }
+                return item;
+            });
+        },
+    },
+         extraReducers: (builder) => {
 
-        builder.addCase(employeesCreate.pending, (state) => {
-            state.error = null;
-            state.state = false;
-            state.status = 'loading';
-        });
+            // employeesCreate -------------------------------------------------------------------------
+             builder.addCase(employeesCreate.fulfilled, (state, action) => {
+                 state.status = 'success';
+                 state.error = null;
+             });
 
-        builder.addCase(employeesCreate.rejected, (state, action) => {
-            state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
-        });
-        // employeesCreate -------------------------------------------------------------------------
+             builder.addCase(employeesCreate.pending, (state) => {
+                 state.error = null;
+                 state.status = 'loading';
+             });
 
-        // employeesRead -------------------------------------------------------------------------
-        builder.addCase(employeesRead.fulfilled, (state, action) => {
-            state.status = 'success';
-            state.error = null;
-            state.state = true;
-            state.data = action.payload
-        });
+             builder.addCase(employeesCreate.rejected, (state, action) => {
+                 state.error = action.payload;
+                 state.status = 'error';
+             });
+             // employeesCreate -------------------------------------------------------------------------
 
-        builder.addCase(employeesRead.pending, (state) => {
-            state.error = null;
-            state.state = false;
-            state.status = 'loading';
-        });
+             // employeesRead -------------------------------------------------------------------------
+             builder.addCase(employeesRead.fulfilled, (state, action) => {
+                 state.status = 'success';
+                 state.error = null;
+                 state.data = action.payload
+             });
 
-        builder.addCase(employeesRead.rejected, (state, action) => {
-            state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
-        });
-        // employeesRead -------------------------------------------------------------------------
+             builder.addCase(employeesRead.pending, (state) => {
+                 state.error = null;
+                 state.status = 'loading';
+             });
 
-        // employeesFind -------------------------------------------------------------------------
-        builder.addCase(employeesFind.fulfilled, (state, action) => {
-            state.status = 'success';
-            state.error = null;
-            state.state = true;
-            state.data = action.payload
-        });
+             builder.addCase(employeesRead.rejected, (state, action) => {
+                 state.error = action.payload;
+                 state.status = 'error';
+             });
+             // employeesRead -------------------------------------------------------------------------
 
-        builder.addCase(employeesFind.pending, (state) => {
-            state.error = null;
-            state.state = false;
-            state.status = 'loading';
-        });
+             // employeesFind -------------------------------------------------------------------------
+             builder.addCase(employeesFind.fulfilled, (state, action) => {
+                 state.status = 'success';
+                 state.error = null;
+                 state.data = action.payload
+             });
 
-        builder.addCase(employeesFind.rejected, (state, action) => {
-            state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
-        });
-        // employeesFind -------------------------------------------------------------------------
+             builder.addCase(employeesFind.pending, (state) => {
+                 state.error = null;
+                 state.status = 'loading';
+             });
 
-        // employeesReplace -------------------------------------------------------------------------
-        builder.addCase(employeesReplace.fulfilled, (state, action) => {
-            state.status = 'success';
-            state.error = null;
-            state.state = true;
-            state.data = action.payload
-        });
+             builder.addCase(employeesFind.rejected, (state, action) => {
+                 state.error = action.payload;
+                 state.status = 'error';
+             });
+             // employeesFind -------------------------------------------------------------------------
 
-        builder.addCase(employeesReplace.pending, (state) => {
-            state.error = null;
-            state.state = false;
-            state.status = 'loading';
-        });
+             // employeesReplace -------------------------------------------------------------------------
+             builder.addCase(employeesReplace.fulfilled, (state, action) => {
+                 state.status = 'success';
+                 state.error = null;
+             });
 
-        builder.addCase(employeesReplace.rejected, (state, action) => {
-            state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
-        });
-        // employeesReplace -------------------------------------------------------------------------
+             builder.addCase(employeesReplace.pending, (state) => {
+                 state.error = null;
+                 state.status = 'loading';
+             });
 
+             builder.addCase(employeesReplace.rejected, (state, action) => {
+                 state.error = action.payload;
+                 state.status = 'error';
+             });
+             // employeesReplace -------------------------------------------------------------------------
+
+
+             // employeesDelete -------------------------------------------------------------------------
+             builder.addCase(employeesDelete.fulfilled, (state, action) => {
+                 state.status = 'success';
+                 state.error = null;
+             });
+
+             builder.addCase(employeesDelete.pending, (state) => {
+                 state.error = null;
+                 state.status = 'loading';
+             });
+
+             builder.addCase(employeesDelete.rejected, (state, action) => {
+                 state.error = action.payload;
+                 state.status = 'error';
+             });
+             // employeesDelete -------------------------------------------------------------------------
     }
 });
 
 export default employees.reducer
+export const {setTableData,setTableDataCreate,updateTableData} = employees.actions
 
 export interface State {
-    state: boolean;
-    status: string;
+    status: "init" | "loading" | "error" | "success"
     error: any;
     data: any;
+    tableData: EmployeeDTO[]
 }

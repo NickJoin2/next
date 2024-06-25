@@ -1,88 +1,51 @@
 'use client';
-import React, { useState } from 'react';
+import React, {Dispatch} from 'react';
 
 import '../styles/styles.scss'
 import Link from "next/link";
-import Image, {StaticImageData} from "next/image";
+import styled, {css} from "styled-components";
 
-const MainBlock = ({ img, title, icon }: { img?: StaticImageData, title: string, icon?: string }) => {
-    const [isOpen, setIsOpen] = useState(false);
+interface ImageObject {
+    src?: string;
+}
 
-    const handleMouseOver = () => {
-      if(img)  setIsOpen(true);
+interface MainBlockProps {
+    img?: ImageObject;
+    gridColumn?: string;
+    gridRow?: string;
+    text?: string;
+    mapLink: string;
+    setOpen?: Dispatch<React.SetStateAction<boolean>>
+}
+
+const MainBlock = ({img, gridColumn, gridRow, text, mapLink, setOpen}: MainBlockProps) => {
+
+    const MapItem = styled.div`
+        cursor: pointer;
+        border-radius: 10px;
+        background: linear-gradient(133deg, #456b92 0%, #9bc7e0 51.6%, #456b92 100%);
+        grid-column: ${gridColumn};
+        grid-row: ${gridRow};
+        transition: .6s ease;
+        
+        
+        ${img? css`
+            &:hover {
+                background-image: url(${img.src});
+                background-repeat: no-repeat;
+                background-size: cover;
+                background-position: center;
+            }` : ''}`;
+
+    const openModal = () => {
+        if(setOpen) {
+            setOpen(true)
+        }
     }
-
-    const handleMouseOut = () => {
-       if(img) setIsOpen(false);
-    }
-
-    const conditionalStyles = {
-        backgroundImage: img ? `url(${img.src})` : '',
-        backgroundRepeat: "no-repeat",
-        backgroundSize: "cover",
-        transition: 'background-image 0.7s ease' // Пример анимации изменения фонового изображения
-    };
 
     return (
-        <Link href={'/'} className='mainBlock'
-              onMouseOver={handleMouseOver}
-              onMouseOut={handleMouseOut}
-              style={isOpen ? conditionalStyles : {}}>
-            <div className="mainBlock__row">
-                <div className="mainBlock__block">
-                    <h5>{title}</h5>
-                    {icon && <Image src={icon} alt="icon"/>}
-                </div>
-            </div>
-        </Link>
-    // <Link to={'/'} className='mainBlock'
-    //       onMouseOver={handleMouseOver}
-    //       onMouseOut={handleMouseOut}
-    //       style={isOpen ? conditionalStyles : {}}>
-    //     <div className="mainBlock__row">
-    //         <div className="mainBlock__block">
-    //             <h5>{title}</h5>
-    //             {icon && <img src={icon} alt="icon"/>}
-    //         </div>
-    //     </div>
-    // </Link>
+        <MapItem className="map-item item5" onClick={openModal}><Link href={mapLink}><p className="map__title">{text}</p></Link></MapItem>
     );
 };
 
 export default MainBlock;
-
-// 'use client'
-// import React, { useState } from 'react';
-// import Link from 'next/link';
-// import Image, {StaticImageData} from 'next/image';
-//
-// const MainBlock = ({ img, title, icon }: { img?: StaticImageData, title: string, icon?: string }) => {
-//     const [isOpen, setIsOpen] = useState(false);
-//
-//     const handleMouseOver = () => {
-//         if(img) setIsOpen(true);
-//     }
-//
-//     const handleMouseOut = () => {
-//         if(img) setIsOpen(false);
-//     }
-//
-//     const conditionalStyles = {
-//         background: `url(${img.src}) no-repeat center/cover`,
-//     };
-//
-//     return (
-//         <Link href={'/'}>
-//             <div className="mainBlock" onMouseOver={handleMouseOver} onMouseOut={handleMouseOut} style={isOpen ? conditionalStyles : {}}>
-//                 <div className="mainBlock__row">
-//                     <div className="mainBlock__block">
-//                         <h5>{title}</h5>
-//                         {icon && <Image src={icon} alt="icon" width={50} height={50} />}
-//                     </div>
-//                 </div>
-//             </div>
-//         </Link>
-//     );
-// };
-//
-// export default MainBlock;
