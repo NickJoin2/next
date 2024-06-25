@@ -50,16 +50,16 @@ const DropMenuUser = () => {
             <div className={`user__content ${isOpen ? 'active' : ''}`}>
                 <ul className="user__list" ref={menuRef}>
                     <li className="user__item">
-                        <Link href={'/office'} >Личные кабинет</Link>
-                    </li>
-                    <li className="user__item user-menu">
-                        <Link href={'/wholesale'} style={{fontSize: '20px'}}>Курсовые работы</Link>
-                    </li>
-                    <li className="user__item user-menu">
-                        <Link href={'/wholesale'}>Дипломные работы</Link>
+                        <Link href={'/office'}>Личные кабинет</Link>
                     </li>
                     <li className="user__item">
-                        <Link href={''} style={{fontSize: '15px'}}>Сменить пароль</Link>
+                        <Link href={'/'} style={{fontSize: '20px'}}>Выпускники</Link>
+                    </li>
+                    <li className="user__item">
+                        <Link href={'/control'}>Управление</Link>
+                    </li>
+                    <li className="user__item">
+                        <Link href={''} style={{fontSize: '15px'}}>Студенческие работы</Link>
                     </li>
                     <li className="user__item">
                         <Link href={''} onClick={handleLogout}>Выйти</Link>

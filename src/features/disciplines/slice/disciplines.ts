@@ -1,20 +1,22 @@
-import {createSlice} from "@reduxjs/toolkit";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {
     disciplinesAssign,
     disciplinesCreate, disciplinesDelete,
     disciplinesRead, disciplinesUnassign,
     disciplinesUpdate
 } from "@/features/disciplines/action/action";
-import {DisciplineDTO} from "@/features/types";
+import {DisciplineDTO, EmployeeDTO} from "@/features/types";
 
 
 
 export interface State {
     status: 'init' | 'loading' | 'success' | 'error'
     error: any;
-    data: DisciplineDTO[] | null;
+    data: DisciplineDTO[];
     message: string;
     cardDisciplines: DisciplineDTO[];
+    teacherCard: EmployeeDTO[];
+    dataEmployees: EmployeeDTO[];
 }
 
 
@@ -23,10 +25,12 @@ export const disciplinesSlice = createSlice({
     name: "disciplines",
     initialState: {
         status: 'init',
+        dataEmployees: [],
         error: null,
-        data: null,
+        data: [],
         message: '',
         cardDisciplines: [],
+        teacherCard: []
     } as State,
     reducers: {
         setCardDisciplines: (state, action) => {
@@ -34,6 +38,20 @@ export const disciplinesSlice = createSlice({
         },
         setCreateCardDisciplines: (state, action) => {
             state.cardDisciplines.push(action.payload)
+        },
+        updateTableDataDisciplines: (state, action) => {
+            state.cardDisciplines = state.cardDisciplines.map(item => {
+                if (item.id === action.payload.id) {
+                    return {
+                        ...item,
+                        name: action.payload.name
+                    };
+                }
+                return item;
+            });
+        },
+        tableDisciplinesDataEmployees: (state, action) => {
+          state.dataEmployees = action.payload;
         },
         
     },
@@ -155,5 +173,5 @@ export const disciplinesSlice = createSlice({
 });
 
 export default disciplinesSlice.reducer
-export const {} =  disciplinesSlice.actions
+export const {setCardDisciplines,setCreateCardDisciplines,tableDisciplinesDataEmployees,updateTableDataDisciplines} =  disciplinesSlice.actions
 

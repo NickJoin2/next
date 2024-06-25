@@ -60,7 +60,6 @@ export const employeesRead = createAsyncThunk<EmployeeDTO>(
 
             if (response.status === 200) {
                 const data =  await response.json()
-                console.log(data)
                 return data
             } else if (response.status === 403) {
                 return thunkAPI.rejectWithValue("Пользователь не имеет доступ на получение списка сотрудников");

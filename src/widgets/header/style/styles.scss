@@ -26,6 +26,14 @@
       .nav-block:first-child {
         display: none;
       }
+
+    }
+
+    @media screen and (max-width: 810px) {
+      .nav__list {
+        display: none;
+      }
+
     }
   }
 

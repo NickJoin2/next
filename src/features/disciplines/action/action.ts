@@ -41,18 +41,18 @@ export const disciplinesCreate = createAsyncThunk<string, { name: string }, { re
     }
 );
 
-export const disciplinesRead = createAsyncThunk<DisciplineDTO[], { rejectValue: any }>(
+export const disciplinesRead = createAsyncThunk<DisciplineDTO[]>(
     'disciplines/read',
     async (_, thunkAPI) => {
         try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Disciplines/`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Disciplines`, {
                 method: 'GET',
                 headers: {
                     "Content-Type": "application/json"
                 },
             });
 
-            if (response.status === 204) {
+            if (response.status === 200) {
                 const data:DisciplineDTO[] = await response.json();
                 return data
             } else {
@@ -69,7 +69,7 @@ export const disciplinesUpdate = createAsyncThunk<string, { disciplinesId: strin
     'disciplines/update',
     async ({ disciplinesId, name }, thunkAPI) => {
         try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Disciplines/${disciplinesId}/`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Disciplines/${disciplinesId}/`, {
                 method: 'PUT',
                 headers: {
                     "Content-Type": "application/json"
@@ -99,12 +99,12 @@ export const disciplinesUpdate = createAsyncThunk<string, { disciplinesId: strin
     }
 );
 
-export const disciplinesDelete = createAsyncThunk<string, {disciplinesId: Parametr}, { rejectValue:  any  }>(
+export const disciplinesDelete = createAsyncThunk<string, {disciplinesId: string}, { rejectValue:  any  }>(
     'disciplines/delete',
     async ({disciplinesId}, thunkAPI) => {
 
         try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Disciplines/${disciplinesId}/`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Disciplines/${disciplinesId}/`, {
                 method: 'DELETE',
             });
 
@@ -132,7 +132,7 @@ export const disciplinesAssign = createAsyncThunk<string, {disciplinesId: Discip
     'disciplines/assign',
     async ({disciplinesId, employeeId}, thunkAPI) => {
         try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Disciplines/unassign/`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Disciplines/assign`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"
@@ -169,7 +169,7 @@ export const disciplinesUnassign = createAsyncThunk<string, {disciplinesId: Disc
     'disciplines/unassign',
     async ({disciplinesId, employeeId}, thunkAPI) => {
         try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Disciplines/unassign/`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Disciplines/unassign/`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"

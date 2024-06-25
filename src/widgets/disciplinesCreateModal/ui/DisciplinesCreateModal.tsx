@@ -1,19 +1,15 @@
 import React, {Dispatch, useEffect, useState} from 'react';
 
-import './styles.scss'
+import '@/widgets/specializationsModalCreate/ui/styles.scss'
 import 'react-toastify/dist/ReactToastify.css';
 import close from "@/shared/image/modal/close.svg";
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
-import {CreateSpecializationCommand, SpecializationDTO} from "@/features/types";
+import {DisciplineDTO} from "@/features/types";
 
-import {specializationsCreate, specializationsUpdate} from "@/features/specializations/action/action";
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
-import {
-    setCardCreateSpecializations,
-    setCardSpecializations,
-    updateTableDataSpecialization
-} from "@/features/specializations/slice/specialization";
 import Image from "next/image";
+import {setCreateCardDisciplines, updateTableDataDisciplines} from "@/features/disciplines/slice/disciplines";
+import {disciplinesCreate, disciplinesUpdate} from "@/features/disciplines/action/action";
 
 
 interface WorkerCreateModalProps {
@@ -28,15 +24,13 @@ const DisciplinesModalCreate: React.FC<WorkerCreateModalProps> =
      }) => {
         const [name, setName] = useState<string>(selectedItem && selectedItem.name || '');
 
-        const tableData = useAppSelector((state: RootState) => state.specialization.tableCardSpecializations)
+        const tableData = useAppSelector((state: RootState) => state.disciplines.cardDisciplines)
 
         useEffect(() => {
             console.log(selectedItem);
         }, [selectedItem]);
 
         const dispatch = useAppDispatch();
-
-
         const submitCreate = (e: React.FormEvent) => {
             e.preventDefault();
 
@@ -49,13 +43,13 @@ const DisciplinesModalCreate: React.FC<WorkerCreateModalProps> =
                 name: name
             }
 
-
             console.log(newEntry)
 
-            dispatch(setCardCreateSpecializations(newEntry));
-            dispatch(specializationsCreate(Entry))
+            dispatch(setCreateCardDisciplines(newEntry));
+            dispatch(disciplinesCreate(Entry))
             setOpen(false);
         }
+
 
         const submitEdit = (e: React.FormEvent) => {
             e.preventDefault();
@@ -64,17 +58,15 @@ const DisciplinesModalCreate: React.FC<WorkerCreateModalProps> =
                 return;
             }
 
-            tableData.map((item:SpecializationDTO) => {
-
+            tableData.map((item:DisciplineDTO) => {
                 if (item.id === selectedItem.id) {
-                    dispatch(updateTableDataSpecialization({
+                    dispatch(updateTableDataDisciplines({
                         id: item.id,
                         name: name
                     }));
 
-                    const specializationId = item.id
-
-                    dispatch(specializationsUpdate({specializationId, name}))
+                    const disciplinesId = item.id
+                    dispatch(disciplinesUpdate({disciplinesId, name}))
                 }
 
                 return item;
@@ -82,10 +74,10 @@ const DisciplinesModalCreate: React.FC<WorkerCreateModalProps> =
 
             setOpen(false);
         };
-
         const handleClose = () => {
             setOpen(false)
         }
+
 
         return (
             <>
@@ -99,7 +91,7 @@ const DisciplinesModalCreate: React.FC<WorkerCreateModalProps> =
                                 </button>
                             </div>
 
-                            <h2 className="specialization__modal__title">{selectedItem ? 'Редактировать специализацию' : 'Добавить специализацию'}</h2>
+                            <h2 className="specialization__modal__title">{selectedItem ? 'Редактировать дисциплину' : 'Добавить дисциплину'}</h2>
 
                             <div className="specialization__modal__form__content">
                                 <div className="specialization__modal-block">
@@ -109,11 +101,9 @@ const DisciplinesModalCreate: React.FC<WorkerCreateModalProps> =
                                         onChange={e => setName(e.target.value)}
                                         className="specialization__modal__input"
                                         type="text"
-                                        placeholder="Введите название специализации"
+                                        placeholder="Введите название дисциплины"
                                     />
                                 </div>
-
-
                             </div>
 
                             <div className="specialization__modal-block-button">

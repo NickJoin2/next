@@ -19,11 +19,11 @@ const Control = () => {
 
                 <ul className="control__list">
                     <MainBlock img={img1} gridColumn={'1 / 2'} gridRow={'1 / 12'} text={'Управление дисциплинами'}
-                               mapLink={'/'}/>
+                               mapLink={'control/disciplines'}/>
                     <MainBlock img={img2} gridColumn={'2 / 2'} gridRow={'1 / 8'} text={'Студенты группы'}
                                mapLink={'control/students'}/>
-                    <MainBlock img={img3} gridColumn={'1 / 2'} gridRow={'14 / 34'} text={'Управление специальностью'}
-                               mapLink={'/'}/>
+                    <MainBlock img={img3} gridColumn={'1 / 2'} gridRow={'14 / 34'} text={'Управление специализацией'}
+                               mapLink={'control/specializations'}/>
                     <MainBlock img={img4} gridColumn={'2 / 2'} gridRow={'10 / 24'} text={'Управление сотрудниками'}
                                mapLink={'control/worker'}/>
                     <MainBlock img={img5} gridColumn={'2 / 2'} gridRow={'26 / 34'} text={'Управление группами'}

@@ -12,6 +12,10 @@ import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
 import {specializationsRead} from "@/features/specializations/action/action";
 import {setCardSpecializations} from "@/features/specializations/slice/specialization";
 import SpecializationsModalCreate from "@/widgets/specializationsModalCreate/ui/SpecializationsModalCreate";
+import DisciplinesModalCreate from "@/widgets/disciplinesCreateModal/ui/DisciplinesCreateModal";
+import DisciplinesCard from "@/widgets/disciplinesCard/ui/DisciplinesCard";
+import {setCardDisciplines} from "@/features/disciplines/slice/disciplines";
+import {disciplinesRead} from "@/features/disciplines/action/action";
 
 
 const ControlSpecializations = () => {
@@ -20,21 +24,18 @@ const ControlSpecializations = () => {
 
     const dispatch = useAppDispatch();
 
-    const data = useAppSelector((state:RootState) => state.specialization.data)
-    const tableData = useAppSelector((state:RootState) => state.specialization.tableCardSpecializations)
+    const data = useAppSelector((state:RootState) => state.disciplines.data)
+    // const tableData = useAppSelector((state:RootState) => state.disciplines.cardDisciplines)
 
 
     useEffect(() => {
-        dispatch(specializationsRead())
+        dispatch(disciplinesRead())
     }, [dispatch]);
 
     useEffect(() => {
-        dispatch(setCardSpecializations(data));
+        dispatch(setCardDisciplines(data));
     }, [data, dispatch]);
 
-    useEffect(() => {
-        console.log(tableData)
-    }, [tableData]);
 
 
 
@@ -60,11 +61,10 @@ const ControlSpecializations = () => {
 
                 </Record>
 
-                <SpecializationCard/>
-                {/*<TableDiplomStudents theadObj={theadObj} teacher={false}/>*/}
+                <DisciplinesCard/>
 
                 {
-                    createModalOpen && <SpecializationsModalCreate setOpen={setCreateModalOpen} />
+                    createModalOpen && <DisciplinesModalCreate setOpen={setCreateModalOpen} />
                 }
 
             </div>
