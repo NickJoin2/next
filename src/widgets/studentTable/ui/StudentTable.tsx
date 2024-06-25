@@ -15,13 +15,17 @@ import {studentDelete} from "@/features/student/actions/students";
 import {setTableStudentDelete} from "@/features/students/slice/students";
 
 interface TableWorker {
-    theadObj: string[]
+    theadObj: string[];
+    selectedItem: any
 }
 
 const StudentTable: React.FC<TableWorker> = (
     {
         theadObj,
+        selectedItem,
     }) => {
+
+    console.log(selectedItem)
 
     const [open, setOpen] = useState<boolean>(false);
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
@@ -41,13 +45,11 @@ const StudentTable: React.FC<TableWorker> = (
         }
     }, [tableData]);
 
-
     const TD = styled.td`
         min-width: ${keys ? `calc(1135px / ${keys})` : 'auto'};
         max-width: ${keys ? `calc(1135px / ${keys})` : 'auto'};
         width: ${keys ? `calc(1135px / ${keys})` : 'auto'};
     `;
-
 
     const dispatch = useAppDispatch();
 

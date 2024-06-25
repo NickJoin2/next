@@ -5,23 +5,25 @@ import 'react-toastify/dist/ReactToastify.css';
 import close from "@/shared/image/modal/close.svg";
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
-import {EmployeeDTO} from "@/features/types";
+import {StudentDTO} from "@/features/types";
 import {studentReplace} from "@/features/student/actions/students";
-import {updateTableStudent} from "@/features/students/slice/students";
+import {updateTableStudentGroup} from "@/features/students/slice/students";
 
 interface WorkerCreateModalProps {
     setOpen: Dispatch<React.SetStateAction<boolean>>;
     selectedItem?: any;
+    groupId: string;
 }
 
 const StudentCreateModal: React.FC<WorkerCreateModalProps> =
     ({
          setOpen,
          selectedItem,
+        groupId
      }) => {
-        const [firstName, setFirstName] = useState<string>(selectedItem && selectedItem.firstName || '');
-        const [lastName, setLastName] = useState<string>(selectedItem && selectedItem.middleName || '')
-        const [middleName, setMiddleName] = useState<string>(selectedItem && selectedItem.middleName || '')
+        const [firstname, setFirstName] = useState<string>(selectedItem && selectedItem.firstName || '');
+        const [lastname, setLastName] = useState<string>(selectedItem && selectedItem.middleName || '')
+        const [middlename, setMiddleName] = useState<string>(selectedItem && selectedItem.middleName || '')
         const [blockd, setBlockd] = useState<string>(selectedItem && selectedItem.blocked ? '1' : '0')
         const [blocked, setBlocked] = useState<boolean>(selectedItem && selectedItem.blocked)
 
@@ -37,20 +39,20 @@ const StudentCreateModal: React.FC<WorkerCreateModalProps> =
                 return;
             }
 
-            tableData.map((item:EmployeeDTO) => {
+            tableData.map((item:StudentDTO) => {
                 if (item.id === selectedItem.id) {
 
                     const newEntry = {
                         id: item.id,
-                        firstName: firstName,
-                        lastName: lastName,
-                        middleName: middleName,
+                        firstName: firstname,
+                        lastName: lastname,
+                        middleName: middlename,
                         blocked: blocked
                     }
 
-                    dispatch(updateTableStudent(newEntry));
+                    dispatch(updateTableStudentGroup(newEntry));
                     const studentId = item.id
-                    dispatch(studentReplace({studentId, firstName, lastName, middleName, blocked}))
+                    dispatch(studentReplace({groupId, studentId, firstname, lastname, middlename, blocked}))
                 }
 
                 return item;
@@ -94,7 +96,7 @@ const StudentCreateModal: React.FC<WorkerCreateModalProps> =
                                 <div className="modal-block">
                                     <input
                                         required
-                                        value={firstName}
+                                        value={firstname}
                                         onChange={e => setFirstName(e.target.value)}
                                         className="modal__input"
                                         type="text"
@@ -105,7 +107,7 @@ const StudentCreateModal: React.FC<WorkerCreateModalProps> =
                                 <div className="modal-block">
                                     <input
                                         required
-                                        value={lastName}
+                                        value={lastname}
                                         onChange={e => setLastName(e.target.value)}
                                         className="modal__input"
                                         type="text"
@@ -116,7 +118,7 @@ const StudentCreateModal: React.FC<WorkerCreateModalProps> =
                                 <div className="modal-block">
                                     <input
                                         required
-                                        value={middleName}
+                                        value={middlename}
                                         onChange={e => setMiddleName(e.target.value)}
                                         className="modal__input"
                                         type="text"

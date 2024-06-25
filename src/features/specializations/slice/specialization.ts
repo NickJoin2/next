@@ -10,7 +10,7 @@ import {SpecializationDTO} from "@/features/types";
 export interface State {
     status: 'init' | 'loading' | 'success' | 'error'
     error: any;
-    data: SpecializationDTO[] | null;
+    data: SpecializationDTO[];
     tableCardSpecializations: SpecializationDTO[];
     message: string;
 }
@@ -21,7 +21,7 @@ export const specializationsSlice = createSlice({
     initialState: {
         status: 'init',
         error: null,
-        data: null,
+        data: [],
         tableCardSpecializations: [],
         message: ''
     } as State,

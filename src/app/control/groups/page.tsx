@@ -7,9 +7,12 @@ import React, {useEffect, useState} from "react";
 import Title from "@/shared/ui/Title";
 
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
+import {specializationsRead} from "@/features/specializations/action/action";
+import {setCardSpecializations} from "@/features/specializations/slice/specialization";
+import GroupCreateModal from "@/widgets/groupModalCreate/ui/GroupModalCreate";
+import GroupCard from "@/widgets/groupCard/ui/GroupCard";
 import {setGroup} from "@/features/group/slice/group";
 import {groupRead} from "@/features/group/action/action";
-import GroupStudents from "@/page/groupStudents/ui/GroupStudents";
 
 
 const ControlGroup = () => {
@@ -18,7 +21,7 @@ const ControlGroup = () => {
 
     const dispatch = useAppDispatch();
 
-    const data = useAppSelector((state:RootState) => state.group.data)
+    const data = useAppSelector((state: RootState) => state.group.data)
 
     useEffect(() => {
         dispatch(groupRead())
@@ -43,13 +46,21 @@ const ControlGroup = () => {
             <div className="container">
 
                 <Record>
-                    <Title title={'Группы - Студенты'} position={'start'}/>
-                    <ButtonAuth title={'Управление группами'} anim={true} width={255} height={65} setOpen={setCreateModalOpen}
+                    <Title title={'Группы'} position={'start'}/>
+
+                    <ButtonAuth title={'Создать группу'} anim={true} width={255} height={65}
+                                setOpen={setCreateModalOpen}
                                 margin={'0 0 0 0'}/>
                 </Record>
 
-                <GroupStudents/>
+                <GroupCard/>
+
+                {
+                    createModalOpen && <GroupCreateModal setOpen={setCreateModalOpen}/>
+                }
+
             </div>
+
         </section>
     )
 

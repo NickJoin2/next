@@ -1,14 +1,15 @@
 import {EmployeeDTO, Person, StudentDTO} from "@/features/types";
-import {studentDelete, studentFind, studentReplace} from "@/features/student/actions/students";
+import {groupReadStudent, studentDelete, studentFind, studentReplace} from "@/features/student/actions/students";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 export interface State {
     status: "init" | "loading" | "error" | "success"
     error: any;
-    data: EmployeeDTO[];
-    tableDataStudent: EmployeeDTO[];
+    data: StudentDTO[];
+    tableDataStudent: StudentDTO[];
     message: string;
     find: EmployeeDTO[];
+    findData: StudentDTO[];
 }
 
 const initialState: State = {
@@ -18,27 +19,45 @@ const initialState: State = {
     message: '',
     tableDataStudent: [],
     find: [],
+    findData: []
 };
 
 export const studentSlice = createSlice({
     name: "student",
     initialState,
     reducers: {
-        studentTable(state, action: PayloadAction<EmployeeDTO[]>) {
-            const students = (action.payload || []).filter(item =>
-                item.posts.some(post => post.id === 0)
-            );
-
-            students.forEach(newStudent => {
-                const exists = state.data.some(student => student.id === newStudent.id);
-                if (!exists) {
-                    state.data.push(newStudent);
-                    state.tableDataStudent.push(newStudent);
-                }
-            });
-        },
-        setTableStudentDelete(state, action: PayloadAction<EmployeeDTO[]>) {
+        // studentTable(state, action: PayloadAction<EmployeeDTO[]>) {
+        //     const students = (action.payload || []).filter(item =>
+        //         item.posts.some(post => post.id === 0)
+        //     );
+        //
+        //     students.forEach(newStudent => {
+        //         const exists = state.data.some(student => student.id === newStudent.id);
+        //         if (!exists) {
+        //             state.data.push(newStudent);
+        //             state.tableDataStudent.push(newStudent);
+        //         }
+        //     });
+        // },
+        setTableStudentDelete(state, action: PayloadAction<StudentDTO[]>) {
             state.tableDataStudent = action.payload;
+        },
+        setTableDataGroupStudentDelete(state, action:PayloadAction<StudentDTO[]>) {
+            state.findData = action.payload;
+        },
+        updateTableStudentGroup: (state, action) => {
+            state.findData = state.findData.map(item => {
+                if (item.id === action.payload.id) {
+                    return {
+                        ...item,
+                        firstName: action.payload.firstName,
+                        lastName: action.payload.lastName,
+                        middleName: action.payload.middleName,
+                        blocked: action.payload.blocked,
+                    };
+                }
+                return item;
+            });
         },
         updateTableStudent: (state, action) => {
             state.tableDataStudent = state.tableDataStudent.map(item => {
@@ -110,10 +129,29 @@ export const studentSlice = createSlice({
             state.status = 'error';
         });
         // studentDelete --------------------------------------------------------------------------------------------------
+
+
+        // groupReadStudent ------------------------------------------------------------------------------------------
+        builder.addCase(groupReadStudent.fulfilled, (state, action) => {
+            state.status = 'success';
+            state.error = null;
+            state.findData = action.payload
+        });
+
+        builder.addCase(groupReadStudent.pending, (state) => {
+            state.error = null;
+            state.status = 'loading';
+        });
+
+        builder.addCase(groupReadStudent.rejected, (state, action) => {
+            state.error = action.payload;
+            state.status = 'error';
+        });
+        // groupReadStudent ------------------------------------------------------------------------------------------
     },
 });
 
 
 export default studentSlice.reducer
-export const {studentTable,updateTableStudent,setTableStudentDelete} = studentSlice.actions
+export const {updateTableStudent,setTableStudentDelete,setTableDataGroupStudentDelete,updateTableStudentGroup} = studentSlice.actions
 

@@ -4,39 +4,129 @@ import {
     groupCreateStudent,
     groupDelete,
     groupFindRead,
-    groupRead, groupReadStudent,
+    groupRead,
     groupUpdate
 } from "@/features/group/action/action";
+import {GroupDTO, StudentDTO} from "@/features/types";
 
 
-export const group = createSlice({
+
+export interface State {
+    status: 'init' | 'loading' | 'success' | 'error';
+    error: any;
+    data: GroupDTO[];
+    groupCard: GroupDTO[];
+    message: string;
+    studentTable:StudentDTO[];
+}
+
+
+
+export const groupSlice = createSlice({
     name: "group",
     initialState: {
-        state: false,
-        status: '',
+        status: 'init',
         error: null,
-        data: null,
+        data: [],
+        groupCard: [],
+        message: '',
+        studentTable: []
     } as State,
-    reducers: {},
+    reducers: {
+        setGroup: (state, action) => {
+            state.groupCard = action.payload;
+        },
+        setGroupCreate: (state, action) => {
+            state.groupCard.push(action.payload);
+        },
+        setGroupUpdate: (state, action) => {
+            state.groupCard = state.groupCard.map(item => {
+                if (item.id === action.payload.groupId) {
+                    return {
+                        ...item,
+                        name: action.payload.name,
+                        specializationId: action.payload.specializationId,
+                    };
+                }
+                return item;
+            });
+        },
+    },
     extraReducers: (builder) => {
+
+        // groupRead ------------------------------------------------------------------------------------------
+        builder.addCase(groupRead.fulfilled, (state, action) => {
+            state.status = 'success';
+            state.error = null;
+            state.data = action.payload
+        });
+
+        builder.addCase(groupRead.pending, (state) => {
+            state.error = null;
+            state.status = 'loading';
+        });
+
+        builder.addCase(groupRead.rejected, (state, action) => {
+            state.error = action.payload;
+            state.status = 'error';
+        });
+        // groupRead ------------------------------------------------------------------------------------------
+
+
+        // groupCreate ------------------------------------------------------------------------------------------
+        builder.addCase(groupCreate.fulfilled, (state, action) => {
+            state.status = 'success';
+            state.error = null;
+            state.message = action.payload
+        });
+
+        builder.addCase(groupCreate.pending, (state) => {
+            state.error = null;
+            state.status = 'loading';
+        });
+
+        builder.addCase(groupCreate.rejected, (state, action) => {
+            state.error = action.payload;
+            state.status = 'error';
+        });
+        // groupCreate ------------------------------------------------------------------------------------------
+
+
+
+        // groupDelete ------------------------------------------------------------------------------------------
+        builder.addCase(groupDelete.fulfilled, (state, action) => {
+            state.status = 'success';
+            state.error = null;
+            state.message = action.payload
+        });
+
+        builder.addCase(groupDelete.pending, (state) => {
+            state.error = null;
+            state.status = 'loading';
+        });
+
+        builder.addCase(groupDelete.rejected, (state, action) => {
+            state.error = action.payload;
+            state.status = 'error';
+        });
+        // groupDelete ------------------------------------------------------------------------------------------
+
+
         // groupUpdate ------------------------------------------------------------------------------------------
         builder.addCase(groupUpdate.fulfilled, (state, action) => {
             state.status = 'success';
             state.error = null;
-            state.state = true;
-            state.data = action.payload
+            state.message = action.payload
         });
 
         builder.addCase(groupUpdate.pending, (state) => {
             state.error = null;
-            state.state = false;
             state.status = 'loading';
         });
 
         builder.addCase(groupUpdate.rejected, (state, action) => {
             state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
+            state.status = 'error';
         });
         // groupUpdate ------------------------------------------------------------------------------------------
 
@@ -44,141 +134,43 @@ export const group = createSlice({
         builder.addCase(groupCreateStudent.fulfilled, (state, action) => {
             state.status = 'success';
             state.error = null;
-            state.state = true;
-            state.data = action.payload
+            state.message = action.payload
         });
 
         builder.addCase(groupCreateStudent.pending, (state) => {
             state.error = null;
-            state.state = false;
             state.status = 'loading';
         });
 
         builder.addCase(groupCreateStudent.rejected, (state, action) => {
             state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
+            state.status = 'error';
         });
         // groupCreateStudent ------------------------------------------------------------------------------------------
 
 
-        // groupRead ------------------------------------------------------------------------------------------
-        builder.addCase(groupRead.fulfilled, (state, action) => {
-            state.status = 'success';
-            state.error = null;
-            state.state = true;
-            state.data = action.payload
-        });
-
-        builder.addCase(groupRead.pending, (state) => {
-            state.error = null;
-            state.state = false;
-            state.status = 'loading';
-        });
-
-        builder.addCase(groupRead.rejected, (state, action) => {
-            state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
-        });
-        // groupRead ------------------------------------------------------------------------------------------
-
 
         // groupFindRead ------------------------------------------------------------------------------------------
-        builder.addCase(groupFindRead.fulfilled, (state, action) => {
-            state.status = 'success';
-            state.error = null;
-            state.state = true;
-            state.data = action.payload
-        });
-
-        builder.addCase(groupFindRead.pending, (state) => {
-            state.error = null;
-            state.state = false;
-            state.status = 'loading';
-        });
-
-        builder.addCase(groupFindRead.rejected, (state, action) => {
-            state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
-        });
+        // builder.addCase(groupFindRead.fulfilled, (state, action) => {
+        //     state.status = 'success';
+        //     state.error = null;
+        //     state.data = action.payload
+        // });
+        //
+        // builder.addCase(groupFindRead.pending, (state) => {
+        //     state.error = null;
+        //     state.status = 'loading';
+        // });
+        //
+        // builder.addCase(groupFindRead.rejected, (state, action) => {
+        //     state.error = action.payload
+        //     state.status = 'error';
+        // });
         // groupFindRead ------------------------------------------------------------------------------------------
 
 
-
-        // groupCreate ------------------------------------------------------------------------------------------
-        builder.addCase(groupCreate.fulfilled, (state, action) => {
-            state.status = 'success';
-            state.error = null;
-            state.state = true;
-            state.data = action.payload
-        });
-
-        builder.addCase(groupCreate.pending, (state) => {
-            state.error = null;
-            state.state = false;
-            state.status = 'loading';
-        });
-
-        builder.addCase(groupCreate.rejected, (state, action) => {
-            state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
-        });
-        // groupCreate ------------------------------------------------------------------------------------------
-
-
-        // groupDelete ------------------------------------------------------------------------------------------
-        builder.addCase(groupDelete.fulfilled, (state, action) => {
-            state.status = 'success';
-            state.error = null;
-            state.state = true;
-            state.data = action.payload
-        });
-
-        builder.addCase(groupDelete.pending, (state) => {
-            state.error = null;
-            state.state = false;
-            state.status = 'loading';
-        });
-
-        builder.addCase(groupDelete.rejected, (state, action) => {
-            state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
-        });
-        // groupDelete ------------------------------------------------------------------------------------------
-
-
-        // groupReadStudent ------------------------------------------------------------------------------------------
-        builder.addCase(groupReadStudent.fulfilled, (state, action) => {
-            state.status = 'success';
-            state.error = null;
-            state.state = true;
-            state.data = action.payload
-        });
-
-        builder.addCase(groupReadStudent.pending, (state) => {
-            state.error = null;
-            state.state = false;
-            state.status = 'loading';
-        });
-
-        builder.addCase(groupReadStudent.rejected, (state, action) => {
-            state.error = action.payload;
-            state.state = true;
-            state.status = 'fails';
-        });
-        // groupReadStudent ------------------------------------------------------------------------------------------
     }
 });
 
-export default group.reducer
-
-export interface State {
-    state: boolean;
-    status: string;
-    error: any;
-    data: any;
-}
+export default groupSlice.reducer
+export const {setGroup,setGroupCreate,setGroupUpdate} = groupSlice.actions

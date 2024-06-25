@@ -27,7 +27,7 @@ const Control = () => {
                     <MainBlock img={img4} gridColumn={'2 / 2'} gridRow={'10 / 24'} text={'Управление сотрудниками'}
                                mapLink={'control/worker'}/>
                     <MainBlock img={img5} gridColumn={'2 / 2'} gridRow={'26 / 34'} text={'Управление группами'}
-                               mapLink={'/'}/>
+                               mapLink={'control/groups'}/>
                 </ul>
 
             </div>

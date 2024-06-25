@@ -1,11 +1,11 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {CreateStudentDTO, GroupDTO} from "@/features/types";
+import {GroupDTO} from "@/features/types";
 
-export const groupCreate = createAsyncThunk<string, { name: string, specializationId: number }, { rejectValue: any }>(
+export const groupCreate = createAsyncThunk<string, { name: string, specializationId: string }, { rejectValue: any }>(
     'group/create',
     async ({name, specializationId}, thunkAPI) => {
         try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Groups/`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Groups`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -18,9 +18,15 @@ export const groupCreate = createAsyncThunk<string, { name: string, specializati
 
             if (response.status === 201) {
                 return 'Группа успешно создана'
+            } else if(response.status === 400) {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error || 'Запрос не прошел валидацию');
+            } else if(response.status === 403) {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступ на добавление группы');
             } else {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error);
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступ на добавление группы');
             }
 
         } catch (error) {
@@ -30,20 +36,23 @@ export const groupCreate = createAsyncThunk<string, { name: string, specializati
     }
 );
 
-export const groupRead = createAsyncThunk<GroupDTO, { rejectValue: any }>(
+export const groupRead = createAsyncThunk<GroupDTO[]>(
     'group/read',
     async (_, thunkAPI) => {
         try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Groups/`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Groups`, {
                 method: 'GET',
             });
 
             if (response.status === 200) {
-                const data: GroupDTO = await response.json();
+                const data: GroupDTO[] = await response.json();
                 return data
+            } else if (response.status === 403) {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет прав на получение списка групп');
             } else {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error);
+                return thunkAPI.rejectWithValue(error || 'Неизвестная ошибка');
             }
 
         } catch (error) {
@@ -53,13 +62,41 @@ export const groupRead = createAsyncThunk<GroupDTO, { rejectValue: any }>(
     }
 );
 
-export const groupUpdate = createAsyncThunk<string, { groupId: GroupDTO, name: GroupDTO, specializationId: GroupDTO }, {
+
+export const groupDelete = createAsyncThunk<string, { groupId: string }, { rejectValue: any }>(
+    'group/delete',
+    async ({groupId}, thunkAPI) => {
+        try {
+            const response = await fetch(`http://cms.uaviak.ru/api/Groups/${groupId}/`, {
+                method: 'DELETE',
+            });
+
+            if (response.status === 204) {
+                return 'Группа была удалена'
+            } else if(response.status === 403) {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имееет доступ на удаление студенческой группы');
+            } else if(response.status === 404) {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error || 'Группа не найдена');
+            } else {
+                return thunkAPI.rejectWithValue('Неизвестная ошибка');
+            }
+
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error);
+        }
+
+    }
+);
+
+export const groupUpdate = createAsyncThunk<string, { groupId: string, name: string, specializationId: string }, {
     rejectValue: any
 }>(
     'group/update',
     async ({groupId, name, specializationId}, thunkAPI) => {
         try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Groups/${groupId}`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Groups/${groupId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
@@ -72,9 +109,17 @@ export const groupUpdate = createAsyncThunk<string, { groupId: GroupDTO, name: G
 
             if (response.status === 204) {
                 return 'Группы успешно обновленна'
-            } else {
+            } else if(response.status === 400) {
                 const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error);
+                return thunkAPI.rejectWithValue(error || 'Запрос не прошел валидацию');
+            } else if(response.status === 403) {
+                const error: any = await response.json();
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступ на изменение группы');
+            } else if(response.status === 404) {
+                const error: any = await response.json();
+                return thunkAPI.rejectWithValue(error || 'Группа не найдена');
+            }  else {
+                return thunkAPI.rejectWithValue('Неизвестная ошибка');
             }
 
         } catch (error) {
@@ -88,16 +133,21 @@ export const groupFindRead = createAsyncThunk<GroupDTO, { groupId: string }, { r
     'group/findRead',
     async ({groupId}, thunkAPI) => {
         try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Groups${groupId}/`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Groups/${groupId}/`, {
                 method: 'GET',
             });
 
             if (response.status === 200) {
                 const data: GroupDTO = await response.json();
                 return data
-            } else {
+            } else if(response.status === 403) {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error);
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступ на получение группы');
+            } else if(response.status === 404) {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error || 'Группа не найдена');
+            } else {
+                return thunkAPI.rejectWithValue('Неизвестная ошибка');
             }
 
         } catch (error) {
@@ -107,33 +157,12 @@ export const groupFindRead = createAsyncThunk<GroupDTO, { groupId: string }, { r
     }
 );
 
-export const groupDelete = createAsyncThunk<string, { groupId: number }, { rejectValue: any }>(
-    'group/delete',
-    async ({groupId}, thunkAPI) => {
-        try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Groups/${groupId}/`, {
-                method: 'DELETE',
-            });
 
-            if (response.status === 204) {
-                return 'Группа была удалена'
-            } else {
-                const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error);
-            }
-
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error);
-        }
-
-    }
-);
-
-export const groupCreateStudent = createAsyncThunk<string, { firstname:CreateStudentDTO; middlename: CreateStudentDTO; lastname: CreateStudentDTO; groupId: string; }, { rejectValue: any }>(
+export const groupCreateStudent = createAsyncThunk<string, { firstname:string; middlename: string; lastname: string; groupId: string; }, { rejectValue: any }>(
     'group/createStudent',
     async ({firstname, middlename,lastname, groupId}, thunkAPI) => {
         try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Groups${groupId}/students/`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Groups/${groupId}/Students/`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -146,36 +175,19 @@ export const groupCreateStudent = createAsyncThunk<string, { firstname:CreateStu
             });
 
             if (response.status === 201) {
-                // const data: any = await response.json();
-                return 'Группа успешно создана'
-            } else  {
+                return 'Студент создан'
+            } else if(response.status === 400)  {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error);
+                return thunkAPI.rejectWithValue(error || 'Запрос не прошел валидацию');
+            }  else if(response.status === 400)  {
+                const error: Error = await response.json();
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступ на добавление студента');
+            }  else {
+                return thunkAPI.rejectWithValue('Не известная ошибка');
             }
+
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
-        }
-
-    }
-);
-
-export const groupReadStudent = createAsyncThunk<GroupDTO, { groupId: string }, { rejectValue: any }>(
-    'group/readStudent',
-    async ({groupId}, thunkAPI) => {
-        try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Groups/${groupId}/students/`, {
-                method: 'GET',
-            });
-
-            if (response.status === 200) {
-                const data: GroupDTO = await response.json();
-                return data
-            } else {
-                const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error);
-            }
-        } catch (error) {
-            return thunkAPI.rejectWithValue(error as any);
         }
 
     }
@@ -189,5 +201,4 @@ export default {
     groupRead,
     groupFindRead,
     groupDelete,
-    groupReadStudent
 };

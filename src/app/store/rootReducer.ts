@@ -6,7 +6,7 @@ import {stages} from "@/features/stages/slice/stages";
 import {stagesAnswer} from "@/features/stagesAnswer/slice/stagesAnswer";
 import {projectsStagesGrades} from "@/features/projectStagesGrade/slice/projectStagesGrades";
 import {studentSlice} from "@/features/students/slice/students";
-import {group} from "@/features/group/slice/group";
+import {groupSlice} from "@/features/group/slice/group";
 import {combineReducers} from "@reduxjs/toolkit";
 import {otherSlice} from "@/features/other/slice/other";
 import {studentCursachSlice} from "@/features/student/slice/slice";
@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
     other: otherSlice.reducer,
     specialization: specializationsSlice.reducer, // сделано ------------------
     disciplines: disciplinesSlice.reducer, // сделано ------------------
-
+    group: groupSlice.reducer, // сделано ------------------
 
 
 
@@ -33,7 +33,7 @@ const rootReducer = combineReducers({
 
     register: registerSlice.reducer,
 
-    group: group.reducer, // сделано ------------------
+
 
     stages: stages.reducer,
     stagesAnswer: stagesAnswer.reducer,

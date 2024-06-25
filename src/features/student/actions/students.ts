@@ -32,23 +32,25 @@ export const studentFind = createAsyncThunk<EmployeeDTO, { studentId: string }, 
 
 export const studentReplace = createAsyncThunk<EmployeeDTO, {
     studentId: string,
-    firstName: string,
-    middleName: string,
-    lastName: string,
+    firstname: string,
+    middlename: string,
+    lastname: string,
     blocked: boolean,
+    groupId: string
 }, { rejectValue: any }>(
     'student/replace',
-    async ({studentId, blocked, firstName, lastName, middleName}, thunkAPI) => {
+    async ({studentId,groupId, blocked, firstname, lastname, middlename}, thunkAPI) => {
         try {
-            const response = await fetch(`http://localhost:3000/employees/${studentId}`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Students/${studentId}`, {
                 method: 'PATCH',
                 headers: {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    firstName: firstName,
-                    lastName: lastName,
-                    middleName: middleName,
+                    groupId: groupId,
+                    firstname: firstname,
+                    lastname: lastname,
+                    middlename: middlename,
                     blocked: blocked,
                 })
             });
@@ -82,7 +84,6 @@ export const studentDelete = createAsyncThunk<string, { id: string }, { rejectVa
                 method: 'DELETE',
             });
 
-
             if (response.status === 204) {
                 return 'Студент удален'
             } else if (response.status === 403) {
@@ -102,6 +103,33 @@ export const studentDelete = createAsyncThunk<string, { id: string }, { rejectVa
 
     }
 );
+
+
+
+export const groupReadStudent = createAsyncThunk<StudentDTO[], { groupId: string }, { rejectValue: any }>(
+    'student/readStudent',
+    async ({ groupId }, thunkAPI) => {
+        try {
+            const response = await fetch(`http://cms.uaviak.ru/api/Groups/${groupId}/Students/`, {
+                method: 'GET',
+            });
+
+            if (response.status === 200) {
+                const data: StudentDTO[] = await response.json();
+                return data;
+            } else if (response.status === 403) {
+                const error: any = await response.json();
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступа на получения студентов группы');
+            } else {
+                return thunkAPI.rejectWithValue('Неизвестная ошибка');
+            }
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error as any);
+        }
+    }
+);
+
+
 
 
 export const studentGraduate = createAsyncThunk<string, { studentId: string }>(
