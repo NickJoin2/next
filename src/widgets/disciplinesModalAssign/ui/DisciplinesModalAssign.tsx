@@ -1,38 +1,37 @@
-import React, {Dispatch, useEffect, useState} from 'react';
+import React, {useEffect, useState} from 'react';
+import Image from "next/image";
+import 'react-toastify/dist/ReactToastify.css';
 
 import '@/widgets/specializationsModalCreate/ui/styles.scss'
-import 'react-toastify/dist/ReactToastify.css';
-import close from "@/shared/image/modal/close.svg";
+
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
 
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
-import Image from "next/image";
+import {EmployeeDTO, StudentDTO} from "@/features/types";
 import {employeesRead} from "@/features/employees/action/action";
-import {EmployeeDTO} from "@/features/types";
 import {disciplinesAssign} from "@/features/disciplines/action/action";
+import {disciplinesModalAssign} from "@/features/disciplines/slice/disciplines";
 
+import close from "@/shared/image/modal/close.svg";
 
 
 interface WorkerCreateModalProps {
-    setOpen: Dispatch<React.SetStateAction<boolean>>;
     selectedItem?: any;
 }
 
 const DisciplinesModalAssign: React.FC<WorkerCreateModalProps> =
     ({
-         setOpen,
          selectedItem,
      }) => {
-        const data = useAppSelector((state: RootState) => state.employees.data)
-
         const [array, setArray] = useState<EmployeeDTO[]>([]);
         const [arr, setArr] = useState<EmployeeDTO[]>([]);
         const [name, setName] = useState<string>(selectedItem && selectedItem.name || '');
         const [selectedValue, setSelectedValue] = useState<string>('')
 
-
+        const data = useAppSelector((state: RootState) => state.employees.data)
 
         const dispatch = useAppDispatch();
+
 
         useEffect(() => {
             dispatch(employeesRead())
@@ -70,22 +69,14 @@ const DisciplinesModalAssign: React.FC<WorkerCreateModalProps> =
                 employeeId: selectedValue
             };
 
-
-
-            // const Entry = {
-            //     name: name
-            // }
-            //
-            // console.log(newEntry)
-            //
             dispatch(disciplinesAssign(newEntry));
-            setOpen(false);
+            dispatch(disciplinesModalAssign(false));
         }
 
 
 
         const handleClose = () => {
-            setOpen(false)
+            dispatch(disciplinesModalAssign(false));
         }
 
 

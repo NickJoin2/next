@@ -25,7 +25,6 @@ export const employeesCreate = createAsyncThunk<
                     firstName:firstName,
                     lastName:lastName,
                     middleName:middleName,
-                    blocked: false,
                     roles:roles,
                 }),
             });

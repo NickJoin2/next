@@ -1,20 +1,20 @@
-import React, {Dispatch, useEffect, useState} from 'react';
+import React, {Dispatch, useState} from 'react';
+import Image from "next/image";
+import 'react-toastify/dist/ReactToastify.css';
 
 import './styles.scss'
-import 'react-toastify/dist/ReactToastify.css';
-import close from "@/shared/image/modal/close.svg";
-import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
-import {CreateSpecializationCommand, SpecializationDTO} from "@/features/types";
 
-import {specializationsCreate, specializationsUpdate} from "@/features/specializations/action/action";
+import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
+
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
+import {DisciplineDTO} from "@/features/types";
+import {specializationsCreate, specializationsUpdate} from "@/features/specializations/action/action";
 import {
     setCardCreateSpecializations,
-    setCardSpecializations,
     updateTableDataSpecialization
 } from "@/features/specializations/slice/specialization";
-import Image from "next/image";
 
+import close from "@/shared/image/modal/close.svg";
 
 interface WorkerCreateModalProps {
     setOpen: Dispatch<React.SetStateAction<boolean>>;
@@ -30,55 +30,27 @@ const SpecializationsModalCreate: React.FC<WorkerCreateModalProps> =
 
         const tableData = useAppSelector((state: RootState) => state.specialization.tableCardSpecializations)
 
-        useEffect(() => {
-            console.log(selectedItem);
-        }, [selectedItem]);
-
         const dispatch = useAppDispatch();
-
 
         const submitCreate = (e: React.FormEvent) => {
             e.preventDefault();
 
-            const newEntry: any = {
-                id: String(new Date().getTime()),
-                name: name
-            };
-
-            const Entry = {
-                name: name
-            }
-
-
-            console.log(newEntry)
-
-            dispatch(setCardCreateSpecializations(newEntry));
-            dispatch(specializationsCreate(Entry))
+            dispatch(setCardCreateSpecializations({id: String(new Date().getTime()), name: name}));
+            dispatch(specializationsCreate({name}))
             setOpen(false);
         }
 
         const submitEdit = (e: React.FormEvent) => {
             e.preventDefault();
 
-            if (!tableData || !selectedItem) {
-                return;
+            if (!tableData || !selectedItem) return
+
+            const itemUpdate = tableData.find((item: DisciplineDTO) => item.id === selectedItem.id);
+
+            if (itemUpdate) {
+                dispatch(updateTableDataSpecialization({id: itemUpdate.id, name: name}))
+                dispatch(specializationsUpdate({specializationId: itemUpdate.id, name: name}))
             }
-
-            tableData.map((item:SpecializationDTO) => {
-
-                if (item.id === selectedItem.id) {
-                    dispatch(updateTableDataSpecialization({
-                        id: item.id,
-                        name: name
-                    }));
-
-                    const specializationId = item.id
-
-                    dispatch(specializationsUpdate({specializationId, name}))
-                }
-
-                return item;
-            });
 
             setOpen(false);
         };
@@ -92,7 +64,8 @@ const SpecializationsModalCreate: React.FC<WorkerCreateModalProps> =
                 <div className="specialization__modal__overlay">
                     <div className="specialization__modal__content">
 
-                        <form className="specialization__modal__form" onSubmit={selectedItem ? submitEdit : submitCreate}>
+                        <form className="specialization__modal__form"
+                              onSubmit={selectedItem ? submitEdit : submitCreate}>
                             <div className="specialization__modal__close">
                                 <button type="button" onClick={handleClose}>
                                     <Image src={close} alt="close"/>
@@ -112,13 +85,12 @@ const SpecializationsModalCreate: React.FC<WorkerCreateModalProps> =
                                         placeholder="Введите название специализации"
                                     />
                                 </div>
-
-
                             </div>
 
                             <div className="specialization__modal-block-button">
                                 <ButtonAuth title="Сохранить" width={128} height={52} hover={true}/>
                             </div>
+
                         </form>
                     </div>
                 </div>

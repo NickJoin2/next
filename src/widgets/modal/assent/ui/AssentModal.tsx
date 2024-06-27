@@ -1,10 +1,14 @@
-import React, {Dispatch} from 'react';
-import close from "@/shared/image/modal/close.svg";
-import '../styles/styles.scss'
+import React from 'react';
 import Image from "next/image";
+
+import '../styles/styles.scss'
+
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
+
 import {useAppDispatch} from "@/app/store/appStore";
 import {setAssentModal} from "@/features/other/slice/other";
+
+import close from "@/shared/image/modal/close.svg";
 
 
 const AssentModal = ({

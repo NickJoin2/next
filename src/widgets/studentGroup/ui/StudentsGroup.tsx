@@ -1,23 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
-import '@/widgets/tableWorker/ui/styles.scss';
-import NoRecords from '@/shared/ui/NoRecords';
+import React, {useEffect, useState } from 'react';
 import Image from 'next/image';
-import deleteImg from '@/shared/image/table-button/deleteControl.svg';
-import editImg from '@/shared/image/table-button/edit.svg';
-import { RootState, useAppDispatch, useAppSelector } from '@/app/store/appStore';
-import { setAssentModal } from '@/features/other/slice/other';
-import AssentModal from '@/widgets/assentModal/ui/AssentModal';
-import styled from 'styled-components';
-import StudentCreateModal from '@/widgets/studentCreateModal/ui/StudentCreateModal';
+import styled from "styled-components";
+
+import '@/widgets/tableWorker/ui/styles.scss';
+
+import NoRecords from '@/shared/ui/NoRecords';
+import {StudentCreateModal} from "@/widgets/studentCreateModal";
+import {AssentModal} from "@/widgets/assentModal";
+
+import {StudentDTO} from "@/features/types";
+import {RootState, useAppDispatch, useAppSelector } from '@/app/store/appStore';
+import {setAssentModal } from '@/features/other/slice/other';
 import {groupReadStudent, studentDelete} from '@/features/student/actions/students';
 import {setTableDataGroupStudentDelete, setTableStudentDelete} from '@/features/students/slice/students';
 
+import deleteImg from '@/shared/image/table-button/deleteControl.svg';
+import editImg from '@/shared/image/table-button/edit.svg';
 
-export const  StudentGroupTable = ({groupId}: {groupId: string}) => {
+
+
+const  StudentGroupTable = ({groupId}: {groupId: string}) => {
     const [open, setOpen] = useState<boolean>(false);
-    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-    const [confirm, setConfirm] = useState<string>('');
+    const [selectedItemId, setSelectedItemId] = useState<StudentDTO | null>(null);
+    const [id, setId] = useState<string>('');
 
     const assentModal = useAppSelector((state: RootState) => state.other.assentModal);
     const tableData = useAppSelector((state: RootState) => state.student.findData);
@@ -40,11 +45,8 @@ export const  StudentGroupTable = ({groupId}: {groupId: string}) => {
     useEffect(() => {
         if (tableData && tableData.length > 0) {
             setKeys(Object.keys(tableData[0]).length)
-        } else {
-            console.log('tableData is undefined, null, or empty');
         }
     }, [tableData]);
-
 
     const TD = styled.td`
         min-width: ${keys ? `calc(1135px / ${keys})` : 'auto'};
@@ -53,21 +55,17 @@ export const  StudentGroupTable = ({groupId}: {groupId: string}) => {
     `;
 
     const handleEdit = (id: string) => {
+        setSelectedItemId(tableData.find(item => item.id === id) || null);
         setOpen(true);
-        console.log(id);
-
-        const item: any = tableData.find(item => item.id === id);
-        setSelectedItemId(item);
     };
 
     const handleDelete = (id: string) => {
         dispatch(setAssentModal(true));
-        setConfirm(id);
+        setId(id);
     };
 
     const submitGreen = async (e: React.FormEvent) => {
         e.preventDefault();
-        const id = confirm;
 
         dispatch(studentDelete({ id }));
         dispatch(setTableDataGroupStudentDelete(tableData.filter((item) => item.id !== id)));
@@ -79,7 +77,7 @@ export const  StudentGroupTable = ({groupId}: {groupId: string}) => {
         dispatch(setAssentModal(false));
     };
 
-    const blockedConfirm = (blocked: boolean): string => {
+    const blockedConfirms = (blocked: boolean): string => {
         switch (blocked) {
             case false:
                 return 'Заблокирован';
@@ -101,10 +99,6 @@ export const  StudentGroupTable = ({groupId}: {groupId: string}) => {
         }
     };
 
-    tableData.forEach(item => {
-        console.log(item.graduated);
-    })
-
     return (
         <>
                 {tableData && tableData.length !== 0 ? (
@@ -125,7 +119,7 @@ export const  StudentGroupTable = ({groupId}: {groupId: string}) => {
                                         <TD title={item.lastName}>{item.lastName}</TD>
                                         <TD title={item.middleName}>{item.middleName}</TD>
                                         <TD title={graduateConfirm(item.graduated)}>{graduateConfirm(item.graduated)}</TD>
-                                        <TD title={blockedConfirm(item.blocked)}>{blockedConfirm(item.blocked)}</TD>
+                                        <TD title={blockedConfirms(item.blocked)}>{blockedConfirms(item.blocked)}</TD>
                                         <TD className="tableW-button">
                                             <div className="tableW__tr-btn">
                                                 <button>

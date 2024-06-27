@@ -1,4 +1,5 @@
-import Office from "@/widgets/office/ui/Office";
+'use client'
+import {Office} from "@/page/office";
 
 export default function Page() {
     return (

@@ -11,7 +11,7 @@ export const disciplinesCreate = createAsyncThunk<string, { name: string }, { re
     'disciplines/create',
     async ({ name }, thunkAPI) => {
         try {
-            const response = await fetch(`http://exam.uaviak.ru/api/Disciplines/`, {
+            const response = await fetch(`http://cms.uaviak.ru/api/Disciplines`, {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json"

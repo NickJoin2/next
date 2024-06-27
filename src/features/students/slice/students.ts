@@ -19,7 +19,7 @@ const initialState: State = {
     message: '',
     tableDataStudent: [],
     find: [],
-    findData: []
+    findData: [],
 };
 
 export const studentSlice = createSlice({

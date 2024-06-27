@@ -1,64 +1,50 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
+import Image from "next/image";
+
 import '@/widgets/specializationCard/ui/styles.scss'
 
 import NoRecords from "@/shared/ui/NoRecords";
+import {AssentModal} from "@/widgets/assentModal";
+import {DisciplinesModalCreate} from "@/widgets/disciplinesCreateModal";
+import {DisciplinesModalAssign} from "@/widgets/disciplinesModalAssign";
+
+import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
+import {DisciplineDTO} from "@/features/types";
+import {setAssentModal} from "@/features/other/slice/other";
+import {disciplinesDelete} from "@/features/disciplines/action/action";
+import {disciplinesModalAssign, setCardDisciplines} from "@/features/disciplines/slice/disciplines";
+
 import editImg from "@/shared/image/table-button/edit.svg";
 import deleteImg from "@/shared/image/table-button/delete.svg";
 import assignImg from "@/shared/image/table-button/assign.svg";
 
-import AssentModal from "@/widgets/modal/assent/ui/AssentModal";
-import {specializationsDelete} from "@/features/specializations/action/action";
-import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
-import {setAssentModal} from "@/features/other/slice/other";
-import {setCardSpecializations} from "@/features/specializations/slice/specialization";
-import Image from "next/image";
-import SpecializationsModalCreate from "@/widgets/specializationsModalCreate/ui/SpecializationsModalCreate";
-import {SpecializationDTO} from "@/features/types";
-import {disciplinesDelete} from "@/features/disciplines/action/action";
-import {setCardDisciplines} from "@/features/disciplines/slice/disciplines";
-import DisciplinesModalCreate from "@/widgets/disciplinesCreateModal/ui/DisciplinesCreateModal";
-import {green} from "next/dist/lib/picocolors";
-import DisciplinesModalAssign from "@/widgets/disciplinesModalAssign/ui/DisciplinesModalAssign";
-
-
 
 const DisciplinesCard = () => {
-
     const [open, setOpen] = useState<boolean>(false);
-    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-    const assentModal = useAppSelector((state: RootState) => state.other.assentModal);
-    const [confirm, setConfirm] = useState<string>('')
-    const [dataTable, setDataTable] = useState<SpecializationDTO[]>([]);
-    const [assignOpen, setAssignOpen] = useState<boolean>(false);
+    const [selectedItemId, setSelectedItemId] = useState<DisciplineDTO | null>(null);
+    const [disciplinesId, setDisciplinesId] = useState<string>('')
 
+    const dataDisciplines = useAppSelector((state: RootState) => state.disciplines.cardDisciplines)
+    const assentModal = useAppSelector((state: RootState) => state.other.assentModal);
+    const assignOpen = useAppSelector((state: RootState) => state.disciplines.disciplinesModalAssign)
 
     const dispatch = useAppDispatch();
-    const data = useAppSelector((state:RootState) => state.disciplines.cardDisciplines)
 
-    useEffect(() => {
-        setDataTable(data)
-    }, [data]);
 
     const handleEdit = (id: string) => {
         setOpen(true);
-
-        const item:any = data.find(item => item.id === id);
-        setSelectedItemId(item);
+        setSelectedItemId(dataDisciplines.find(item => item.id === id) || null);
     }
 
-    const handleDelete = (e: React.FormEvent, id: string) => {
-        e.preventDefault()
+    const handleDelete = (id: string) => {
         dispatch(setAssentModal(true))
-        setConfirm(id)
+        setDisciplinesId(id)
     };
 
-    const submitGreen = async(e: React.FormEvent) => {
+    const submitGreen = async (e: React.FormEvent) => {
         e.preventDefault();
-
-        const disciplinesId = confirm
         dispatch(disciplinesDelete({disciplinesId}))
-        dispatch(setCardDisciplines(data.filter((item) => item.id !== confirm)))
-
+        dispatch(setCardDisciplines(dataDisciplines.filter((item) => item.id !== disciplinesId)))
         dispatch(setAssentModal(false))
     };
 
@@ -68,29 +54,31 @@ const DisciplinesCard = () => {
     }
 
     const handleAssign = (id: string) => {
-        setAssignOpen(true);
-        const item:any = data.find(item => item.id === id);
-        setSelectedItemId(item);
+        dispatch(disciplinesModalAssign(true));
+        setSelectedItemId(dataDisciplines.find(item => item.id === id) || null);
     }
-
-
 
     return (
         <>
             <div className="container">
                 <ul className="specializations__list">
-                    {Array.isArray(dataTable) && dataTable.length !== 0 ? (
-                        dataTable.map(item => (
+                    {dataDisciplines && dataDisciplines.length !== 0 ? (
+                        dataDisciplines.map((item:DisciplineDTO) => (
                             <li className="specializations__item" key={item.id}>
                                 <p className="specializations__title">{item.name}</p>
                                 <div className="specializations__button">
-                                    <Image onClick={(e) => handleDelete(e, item.id)} src={deleteImg}
-                                           alt='delete'/>
-                                    <Image onClick={() => handleEdit(item.id)} src={editImg}
-                                           alt="edit"/>
-                                    <Image onClick={() => handleAssign(item.id)} width={19} src={assignImg}
-                                           alt="assign"/>
+                                    <button onClick={() => handleDelete(item.id)}>
+                                        <Image src={deleteImg} alt='delete'/>
+                                    </button>
 
+                                    <button onClick={() => handleEdit(item.id)}>
+                                        <Image src={editImg} alt="edit"/>
+                                    </button>
+
+                                    <button onClick={() => handleAssign(item.id)}>
+                                        <Image width={19} src={assignImg}
+                                               alt="assign"/>
+                                    </button>
                                 </div>
                             </li>
                         ))
@@ -99,7 +87,7 @@ const DisciplinesCard = () => {
                     )}
 
                     {
-                        open && <DisciplinesModalCreate setOpen={setOpen} selectedItem={selectedItemId} />
+                        open && <DisciplinesModalCreate setOpen={setOpen} selectedItem={selectedItemId}/>
                     }
 
                     {
@@ -108,7 +96,7 @@ const DisciplinesCard = () => {
                     }
 
                     {
-                        assignOpen && <DisciplinesModalAssign setOpen={setAssignOpen} selectedItem={selectedItemId} />
+                        assignOpen && <DisciplinesModalAssign selectedItem={selectedItemId}/>
                     }
 
                 </ul>

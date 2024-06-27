@@ -105,6 +105,14 @@ main {
   flex: 1;
 }
 
+.record {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding-top: 45px;
+}
 
 
 @font-face {

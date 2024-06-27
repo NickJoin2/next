@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import '../styles/styles.scss'
 
-import WorkerCreateModal from "@/widgets/control/modal/workerCreate/ui/WorkerCreateModal";
+import WorkerCreateModal from "@/widgets/workerCreate/ui/WorkerCreateModal";
 import NoRecords from "@/shared/ui/NoRecords";
 import AssentModal from "@/widgets/modal/assent/ui/AssentModal";
 

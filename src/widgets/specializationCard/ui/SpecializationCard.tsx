@@ -1,61 +1,49 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
+import Image from "next/image";
+
 import './styles.scss'
 
 import NoRecords from "@/shared/ui/NoRecords";
+import {SpecializationsModalCreate} from "@/widgets/specializationsModalCreate";
+import {AssentModal} from "@/widgets/assentModal";
+
+import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
+import {SpecializationDTO} from "@/features/types";
+import {setCardSpecializations} from "@/features/specializations/slice/specialization";
+import {setAssentModal} from "@/features/other/slice/other";
+import {specializationsDelete} from "@/features/specializations/action/action";
+
 import editImg from "@/shared/image/table-button/edit.svg";
 import deleteImg from "@/shared/image/table-button/delete.svg";
 
-import AssentModal from "@/widgets/modal/assent/ui/AssentModal";
-import {specializationsDelete} from "@/features/specializations/action/action";
-import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
-import {setAssentModal} from "@/features/other/slice/other";
-import {setCardSpecializations} from "@/features/specializations/slice/specialization";
-import Image from "next/image";
-import SpecializationsModalCreate from "@/widgets/specializationsModalCreate/ui/SpecializationsModalCreate";
-import {SpecializationDTO} from "@/features/types";
-
-
-
 
 const SpecializationCard = () => {
-
     const [open, setOpen] = useState<boolean>(false);
-    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-    const assentModal = useAppSelector((state: RootState) => state.other.assentModal);
-    const [confirm, setConfirm] = useState<string | null>(null)
-    const [dataTable, setDataTable] = useState<SpecializationDTO[]>([]);
+    const [selectedItemId, setSelectedItemId] = useState<SpecializationDTO | null>(null);
+    const [specializationId, setSpecializationId] = useState<string>('')
 
+    const dataSpecializations = useAppSelector((state:RootState) => state.specialization.tableCardSpecializations)
+    const assentModal = useAppSelector((state: RootState) => state.other.assentModal);
 
     const dispatch = useAppDispatch();
-    const data = useAppSelector((state:RootState) => state.specialization.tableCardSpecializations)
 
-    useEffect(() => {
-        setDataTable(data)
-    }, [data]);
 
     const handleEdit = (id: string) => {
+        setSelectedItemId(dataSpecializations.find(item => item.id === id) || null);
         setOpen(true);
-
-        const item:any = data.find(item => item.id === id);
-        setSelectedItemId(item);
     }
-
 
     const handleDelete = (e: React.FormEvent, id: string) => {
         e.preventDefault()
         dispatch(setAssentModal(true))
-        setConfirm(id)
+        setSpecializationId(id)
     };
 
     const submitGreen = async(e: React.FormEvent) => {
         e.preventDefault();
 
-        const specializationId: any = confirm
-
-
         dispatch(specializationsDelete({specializationId}))
-        dispatch(setCardSpecializations(data.filter((item) => item.id !== confirm)))
-
+        dispatch(setCardSpecializations(dataSpecializations.filter((item) => item.id !== specializationId)))
         dispatch(setAssentModal(false))
     };
 
@@ -65,14 +53,13 @@ const SpecializationCard = () => {
     }
 
 
-
     return (
         <>
             <div className="container">
                 <ul className="specializations__list">
 
-                    {Array.isArray(dataTable) && dataTable.length !== 0 ? (
-                        dataTable.map(item => (
+                    {dataSpecializations && dataSpecializations.length !== 0 ? (
+                        dataSpecializations.map(item => (
                             <li className="specializations__item" key={item.id}>
                                 <p className="specializations__title">{item.name}</p>
                                 <div className="specializations__button">

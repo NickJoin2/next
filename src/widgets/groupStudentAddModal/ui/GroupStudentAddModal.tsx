@@ -1,14 +1,13 @@
-import React, {Dispatch, useEffect, useState} from 'react';
+import React, {Dispatch,useState} from 'react';
 import Image from "next/image";
-import '@/widgets/control/modal/workerCreate/ui/WorkerCreateModal'
-import 'react-toastify/dist/ReactToastify.css';
-import close from "@/shared/image/modal/close.svg";
-import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
-import {useAppDispatch} from "@/app/store/appStore";
 
-import {specializationsRead} from "@/features/specializations/action/action";
-import {setCreateCardDisciplines} from "@/features/disciplines/slice/disciplines";
+import '@/widgets/workerCreate/ui/WorkerCreateModal'
+import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
+
+import {useAppDispatch} from "@/app/store/appStore";
 import {groupCreateStudent} from "@/features/group/action/action";
+
+import close from "@/shared/image/modal/close.svg";
 
 interface WorkerCreateModalProps {
     setOpen: Dispatch<React.SetStateAction<boolean>>;
@@ -20,41 +19,20 @@ const GroupStudentAddModal: React.FC<WorkerCreateModalProps> =
          setOpen,
          selectedItem,
      }) => {
-
-    const [id, setId] = useState<string>(selectedItem);
+        const [id, setId] = useState<string>(selectedItem);
         const [firstName, setFirstName] = useState<string>('');
         const [middleName, setMiddleName] = useState<string>('');
         const [lastName, setLastName] = useState<string>('');
 
-        useEffect(() => {
-            console.log(selectedItem);
-        }, [selectedItem]);
-
-
         const dispatch = useAppDispatch();
-
-        useEffect(() => {
-            dispatch(specializationsRead())
-        }, [dispatch]);
 
         const submitCreate = (e: React.FormEvent) => {
             e.preventDefault();
 
-
-            const newEntry = {
-                groupId: id,
-                firstname: firstName,
-                middlename: middleName,
-                lastname: lastName,
-            }
-
-            console.log(newEntry)
-
-            dispatch(groupCreateStudent(newEntry));
+            dispatch(groupCreateStudent({groupId: id, firstname: firstName, middlename: middleName, lastname: lastName}))
 
             setOpen(false);
         }
-
 
         const handleClose = () => {
             setOpen(false)
@@ -112,6 +90,7 @@ const GroupStudentAddModal: React.FC<WorkerCreateModalProps> =
                             <div className="modal-block-button">
                                 <ButtonAuth title="Сохранить" width={128} height={52} hover={true}/>
                             </div>
+
                         </form>
                     </div>
                 </div>

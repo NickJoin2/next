@@ -96,7 +96,7 @@ export const specializationsUpdate = createAsyncThunk<string, { specializationId
 );
 
 
-export const specializationsDelete = createAsyncThunk<string, {specializationId: number}, { rejectValue:  any  }>(
+export const specializationsDelete = createAsyncThunk<string, {specializationId: string}, { rejectValue:  any  }>(
     'specializations/delete',
     async ({specializationId}, thunkAPI) => {
         try {

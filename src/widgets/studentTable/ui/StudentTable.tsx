@@ -1,47 +1,45 @@
 import React, {useEffect, useState} from 'react';
+import Image from "next/image";
+import styled from "styled-components";
+
 import '@/widgets/tableWorker/ui/styles.scss'
 
 import NoRecords from "@/shared/ui/NoRecords";
+import {StudentCreateModal} from "@/widgets/studentCreateModal";
+import {AssentModal} from "@/widgets/assentModal";
 
-import Image from "next/image";
-import deleteImg from "@/shared/image/table-button/deleteControl.svg";
-import editImg from "@/shared/image/table-button/edit.svg";
+
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
 import {setAssentModal} from "@/features/other/slice/other";
-import AssentModal from "@/widgets/assentModal/ui/AssentModal";
-import styled from "styled-components";
-import StudentCreateModal from "@/widgets/studentCreateModal/ui/StudentCreateModal";
 import {studentDelete} from "@/features/student/actions/students";
 import {setTableStudentDelete} from "@/features/students/slice/students";
 
+import deleteImg from "@/shared/image/table-button/deleteControl.svg";
+import editImg from "@/shared/image/table-button/edit.svg";
+import {StudentDTO} from "@/features/types";
+
+
 interface TableWorker {
     theadObj: string[];
-    selectedItem: any
 }
 
 const StudentTable: React.FC<TableWorker> = (
     {
         theadObj,
-        selectedItem,
     }) => {
-
-    console.log(selectedItem)
-
     const [open, setOpen] = useState<boolean>(false);
-    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-    const [confirm, setConfirm] = useState<string>('')
-
+    const [selectedItemId, setSelectedItemId] = useState<StudentDTO | null>(null);
+    const [id, setId] = useState<string>('')
     const [keys, setKeys] = useState<number>();
 
     const assentModal = useAppSelector((state: RootState) => state.other.assentModal);
     const tableData = useAppSelector((state: RootState) => state.student.tableDataStudent)
 
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         if (tableData && tableData.length > 0) {
             setKeys(Object.keys(tableData[0]).length - 1)
-        } else {
-            console.log('tableData is undefined, null, or empty');
         }
     }, [tableData]);
 
@@ -51,28 +49,18 @@ const StudentTable: React.FC<TableWorker> = (
         width: ${keys ? `calc(1135px / ${keys})` : 'auto'};
     `;
 
-    const dispatch = useAppDispatch();
-
     const handleEdit = (id: string) => {
+        setSelectedItemId(tableData.find(item => item.id === id) || null);
         setOpen(true);
-        console.log(id)
-        // setSelectedItemId(id)
-
-        const item: any = tableData.find(item => item.id === id);
-        setSelectedItemId(item);
-
-
     }
 
     const handleDelete = (id: string) => {
         dispatch(setAssentModal(true))
-        setConfirm(id)
+        setId(id)
     };
 
     const submitGreen = async (e: React.FormEvent) => {
         e.preventDefault();
-        const id = confirm
-        console.log(id)
         dispatch(studentDelete({id}))
         dispatch(setTableStudentDelete(tableData.filter((item) => item.id !== id)))
         dispatch(setAssentModal(false))
@@ -108,7 +96,7 @@ const StudentTable: React.FC<TableWorker> = (
                             </tr>
                             </thead>
                             <tbody className="tableW__tbody">
-                            {tableData.map((item) => (
+                            {tableData.map((item:StudentDTO) => (
                                 <tr className="tableW__tr tableW__tr-body" key={item.id}>
                                     <TD title={item.firstName}>{item.firstName}</TD>
                                     <TD title={item.lastName}>{item.lastName}</TD>
@@ -116,11 +104,11 @@ const StudentTable: React.FC<TableWorker> = (
                                     <TD title={blockedConfirm(item.blocked)}>{blockedConfirm(item.blocked)}</TD>
                                     <TD className="tableW-button">
                                         <div className="tableW__tr-btn">
-                                            <button>
+                                            <button title='Редактировать'>
                                                 <Image onClick={() => handleEdit(item.id)} src={editImg} width={29}
                                                        alt="check"/>
                                             </button>
-                                            <button>
+                                            <button title='Удалить'>
                                                 <Image onClick={() => handleDelete(item.id)} src={deleteImg}
                                                            alt='delete'/>
                                             </button>
@@ -144,6 +132,7 @@ const StudentTable: React.FC<TableWorker> = (
                 assentModal && <AssentModal title={'Вы уверены что хотите удалить студента?'}
                                             submitGreen={submitGreen} submitRed={submitRed}/>
             }
+
         </>
     );
 };

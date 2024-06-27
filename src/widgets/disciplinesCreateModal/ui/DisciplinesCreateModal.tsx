@@ -1,15 +1,17 @@
-import React, {Dispatch, useEffect, useState} from 'react';
+import React, {Dispatch, useState} from 'react';
+import Image from "next/image";
+import 'react-toastify/dist/ReactToastify.css';
 
 import '@/widgets/specializationsModalCreate/ui/styles.scss'
-import 'react-toastify/dist/ReactToastify.css';
-import close from "@/shared/image/modal/close.svg";
+
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
-import {DisciplineDTO} from "@/features/types";
 
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
-import Image from "next/image";
+import {DisciplineDTO} from "@/features/types";
 import {setCreateCardDisciplines, updateTableDataDisciplines} from "@/features/disciplines/slice/disciplines";
 import {disciplinesCreate, disciplinesUpdate} from "@/features/disciplines/action/action";
+
+import close from "@/shared/image/modal/close.svg";
 
 
 interface WorkerCreateModalProps {
@@ -26,65 +28,47 @@ const DisciplinesModalCreate: React.FC<WorkerCreateModalProps> =
 
         const tableData = useAppSelector((state: RootState) => state.disciplines.cardDisciplines)
 
-        useEffect(() => {
-            console.log(selectedItem);
-        }, [selectedItem]);
-
         const dispatch = useAppDispatch();
+
+
         const submitCreate = (e: React.FormEvent) => {
             e.preventDefault();
 
-            const newEntry: any = {
-                id: String(new Date().getTime()),
-                name: name
-            };
-
-            const Entry = {
-                name: name
-            }
-
-            console.log(newEntry)
-
-            dispatch(setCreateCardDisciplines(newEntry));
-            dispatch(disciplinesCreate(Entry))
+            dispatch(setCreateCardDisciplines({id: String(new Date().getTime()), name: name}));
+            dispatch(disciplinesCreate({name}))
             setOpen(false);
         }
-
 
         const submitEdit = (e: React.FormEvent) => {
             e.preventDefault();
 
-            if (!tableData || !selectedItem) {
-                return;
+            if (!tableData || !selectedItem) return;
+
+            const itemToUpdate = tableData.find((item: DisciplineDTO) => item.id === selectedItem.id);
+
+            if (itemToUpdate) {
+                dispatch(updateTableDataDisciplines({
+                    id: itemToUpdate.id,
+                    name: name
+                }));
+
+                dispatch(disciplinesUpdate({ disciplinesId: itemToUpdate.id, name }));
             }
-
-            tableData.map((item:DisciplineDTO) => {
-                if (item.id === selectedItem.id) {
-                    dispatch(updateTableDataDisciplines({
-                        id: item.id,
-                        name: name
-                    }));
-
-                    const disciplinesId = item.id
-                    dispatch(disciplinesUpdate({disciplinesId, name}))
-                }
-
-                return item;
-            });
 
             setOpen(false);
         };
+
         const handleClose = () => {
             setOpen(false)
         }
-
 
         return (
             <>
                 <div className="specialization__modal__overlay">
                     <div className="specialization__modal__content">
 
-                        <form className="specialization__modal__form" onSubmit={selectedItem ? submitEdit : submitCreate}>
+                        <form className="specialization__modal__form"
+                              onSubmit={selectedItem ? submitEdit : submitCreate}>
                             <div className="specialization__modal__close">
                                 <button type="button" onClick={handleClose}>
                                     <Image src={close} alt="close"/>

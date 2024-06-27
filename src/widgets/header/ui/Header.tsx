@@ -1,6 +1,6 @@
 'use client';
-import React, { useEffect, useState} from 'react';
-import '../style/styles.scss'
+import React, {useState} from 'react';
+import './styles.scss'
 import logo from '@/shared/image/logo/logo.svg';
 // import userNotAuth from '@/shared/image/user/user-notAuth.svg';
 // import {Navigate, useLocation, useNavigate} from "react-router-dom";
@@ -8,10 +8,8 @@ import logo from '@/shared/image/logo/logo.svg';
 // import {NavDrop} from "@/features/navDrop";
 import {Modal} from "@/widgets/modalWindow";
 // import {DropMenuUser} from "@/widgets/drop-user";
-import {AuthButton} from "@/features/ButtonAuthorization";
 import Link from "next/link";
 import Image from "next/image";
-import {usePathname, useRouter} from 'next/navigation';
 import {DropMenuUser} from "@/widgets/drop-user";
 // import {ContextAuth} from "@/app/hoc/Context";
 // import {DropMenuUser} from "@/widgets/drop-user";
@@ -52,7 +50,7 @@ const Header = () => {
                 <div className="container">
                     <div className="header__row">
 
-                        <Link href={'/map'} className="header__logo">
+                        <Link href={'/'} className="header__logo">
                             <Image src={logo} alt="logo"/>
                         </Link>
 

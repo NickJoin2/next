@@ -17,6 +17,8 @@ export interface State {
     cardDisciplines: DisciplineDTO[];
     teacherCard: EmployeeDTO[];
     dataEmployees: EmployeeDTO[];
+
+    disciplinesModalAssign: boolean
 }
 
 
@@ -30,7 +32,8 @@ export const disciplinesSlice = createSlice({
         data: [],
         message: '',
         cardDisciplines: [],
-        teacherCard: []
+        teacherCard: [],
+        disciplinesModalAssign: false,
     } as State,
     reducers: {
         setCardDisciplines: (state, action) => {
@@ -53,7 +56,9 @@ export const disciplinesSlice = createSlice({
         tableDisciplinesDataEmployees: (state, action) => {
           state.dataEmployees = action.payload;
         },
-        
+        disciplinesModalAssign:(state, action:PayloadAction<boolean>) => {
+            state.disciplinesModalAssign = action.payload;
+        }
     },
     extraReducers: (builder) => {
         // disciplinesCreate -------------------------------------------------------------------------
@@ -173,5 +178,5 @@ export const disciplinesSlice = createSlice({
 });
 
 export default disciplinesSlice.reducer
-export const {setCardDisciplines,setCreateCardDisciplines,tableDisciplinesDataEmployees,updateTableDataDisciplines} =  disciplinesSlice.actions
+export const {setCardDisciplines,setCreateCardDisciplines,disciplinesModalAssign,tableDisciplinesDataEmployees,updateTableDataDisciplines} =  disciplinesSlice.actions
 

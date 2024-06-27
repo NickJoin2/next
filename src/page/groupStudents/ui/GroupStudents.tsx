@@ -1,67 +1,53 @@
-import React, {useState} from 'react';
-import '@/widgets/specializationCard/ui/styles.scss'
+import React, {FormEvent, useEffect} from 'react';
 
-import NoRecords from "@/shared/ui/NoRecords";
-import editImg from "@/shared/image/table-button/edit.svg";
-import deleteImg from "@/shared/image/table-button/delete.svg";
-import addUser from "@/shared/image/table-button/userAdd.svg";
+import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
+import Title from "@/shared/ui/Title";
+import {GroupStudentsFind} from "@/page/groupStudentsFind";
 
-import AssentModal from "@/widgets/modal/assent/ui/AssentModal";
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
-import {setAssentModal} from "@/features/other/slice/other";
-import Image from "next/image";
-import GroupModalCreate from "@/widgets/groupModalCreate/ui/GroupModalCreate";
-import {groupDelete} from "@/features/group/action/action";
 import {setGroup} from "@/features/group/slice/group";
-import GroupStudentAddModal from "@/widgets/groupStudentAddModal/ui/GroupStudentAddModal";
-import StudentTable from "@/widgets/studentTable/ui/StudentTable";
+import {groupRead} from "@/features/group/action/action";
 import {useRouter} from "next/navigation";
 
 
-
-const GroupCard = () => {
-    const [open, setOpen] = useState<boolean>(false);
-    const [selectedItemId, setSelectedItemId] = useState<string>(null);
-    const assentModal = useAppSelector((state: RootState) => state.other.assentModal);
-    const [confirm, setConfirm] = useState<string>('')
-    const [studentModalAdd, setStudentModalAdd] = useState<boolean>(false);
-
-    const group = useAppSelector((state: RootState) => state.group.groupCard)
+const ControlGroup = () => {
+    const data = useAppSelector((state:RootState) => state.group.data)
 
     const dispatch = useAppDispatch();
     const router = useRouter();
 
-    const handleOpen = (groupId: string) => {
-        setOpen(true)
-        setSelectedItemId(groupId)
+    useEffect(() => {
+        dispatch(groupRead())
+    }, [dispatch]);
 
-        router.push(`/control/students/${groupId}`)
+    useEffect(() => {
+        dispatch(setGroup(data));
+    }, [data, dispatch]);
+
+    const handleRedirect = (e:FormEvent) => {
+        e.preventDefault()
+        router.push("/control/groups");
     }
 
-    const  theadObj = ['Имя', 'Фамилия', 'Отчество', 'Выпускник', 'Блокировка']
-
-
     return (
-        <>
-                <ul className="specializations__list">
+        <section>
+            <div className="container">
 
-                    {group && group.length !== 0 ? (
-                        group.map(item => (
-                            <li className="specializations__item" key={item.id} onClick={() => handleOpen(item.id)}>
-                                <p className="specializations__title">{item.name}</p>
-                            </li>
-                        ))
-                    ) : (
-                        <NoRecords title={'Нет групп'}/>
-                    )}
+                <div className='record'>
+                    <Title title={'Группы - Студенты'} position={'start'}/>
 
-                    {
-                      open  && <StudentTable theadObj={theadObj} selectedItem={selectedItemId}/>
-                    }
+                    <form onSubmit={handleRedirect}>
+                        <ButtonAuth title={'Управление группами'} hover={true} width={255} height={65}
+                                    margin={'0 0 0 0'}/>
+                    </form>
 
-                </ul>
-        </>
-    );
-};
+                </div>
 
-export default GroupCard;
+                <GroupStudentsFind/>
+            </div>
+        </section>
+    )
+
+}
+
+export default ControlGroup;

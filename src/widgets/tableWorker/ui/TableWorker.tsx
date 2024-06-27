@@ -1,47 +1,43 @@
 import React, {useEffect, useState} from 'react';
-import './styles.scss'
-
-import WorkerCreateModal from "@/widgets/control/modal/workerCreate/ui/WorkerCreateModal";
-import NoRecords from "@/shared/ui/NoRecords";
-
 import Image from "next/image";
-import deleteImg from "@/shared/image/table-button/deleteControl.svg";
-import editImg from "@/shared/image/table-button/editControl.svg";
-import {Posts} from "@/app/types";
-import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
-import { setTableData} from "@/features/employees/slice/employees";
-import {employeesDelete} from "@/features/employees/action/action";
-import {setAssentModal} from "@/features/other/slice/other";
-import AssentModal from "@/widgets/assentModal/ui/AssentModal";
 import styled from "styled-components";
 
-interface TableWorker {
-    theadObj: string[]
-}
+import './styles.scss'
 
-const TableWorker: React.FC<TableWorker> = (
-    {
-        theadObj,
-    }) => {
+import NoRecords from "@/shared/ui/NoRecords";
+import {WorkerCreateModal} from "@/widgets/workerCreate";
+import {AssentModal} from "@/widgets/assentModal";
+
+import {Posts} from "@/app/types";
+import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
+import {setTableData} from "@/features/employees/slice/employees";
+import {employeesDelete} from "@/features/employees/action/action";
+import {setAssentModal} from "@/features/other/slice/other";
+
+import deleteImg from "@/shared/image/table-button/deleteControl.svg";
+import editImg from "@/shared/image/table-button/editControl.svg";
+import {EmployeeDTO} from "@/features/types";
+
+
+const TableWorker = () => {
 
     const [open, setOpen] = useState<boolean>(false);
-    const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
-    const [confirm, setConfirm] = useState<string>('')
-
+    const [selectedItemId, setSelectedItemId] = useState<EmployeeDTO | null>(null);
+    const [id, setId] = useState<string>('')
     const [keys, setKeys] = useState<number>();
 
     const assentModal = useAppSelector((state: RootState) => state.other.assentModal);
     const tableData = useAppSelector((state: RootState) => state.employees.tableData)
 
+    const dispatch = useAppDispatch();
+
+    const theadObj = ['Имя','Фамилия','Отчество','Должность','Блокировка','Действие']
 
     useEffect(() => {
         if (tableData && tableData.length > 0) {
             setKeys(Object.keys(tableData[0]).length)
-        } else {
-            console.log('tableData is undefined, null, or empty');
         }
     }, [tableData]);
-
 
     const TD = styled.td`
         min-width: ${keys ? `calc(1135px / ${keys})` : 'auto'};
@@ -49,28 +45,19 @@ const TableWorker: React.FC<TableWorker> = (
         width: ${keys ? `calc(1135px / ${keys})` : 'auto'};
     `;
 
-
-    const dispatch = useAppDispatch();
-
     const handleEdit = (id: string) => {
         setOpen(true);
-        console.log(id)
-        // setSelectedItemId(id)
-
-        const item:any = tableData.find(item => item.id === id);
-        setSelectedItemId(item);
-
-
+        setSelectedItemId(tableData.find(item => item.id === id) || null);
     }
 
     const handleDelete = (id: string) => {
         dispatch(setAssentModal(true))
-        setConfirm(id)
+        setId(id)
     };
 
     const submitGreen = async(e: React.FormEvent) => {
         e.preventDefault();
-        const id = confirm
+
         dispatch(employeesDelete({id}))
         dispatch(setTableData(tableData.filter((item) => item.id !== id)))
         dispatch(setAssentModal(false))

@@ -1,10 +1,9 @@
-import React from 'react';
-import ControlPage from "@/page/control/ui/Control";
+'use client'
+import {Control} from "@/page/control";
+import React from "react";
 
-const Control = () => {
+export default function page() {
     return (
-        <ControlPage/>
-    );
-};
-
-export default Control;
+        <Control/>
+    )
+}

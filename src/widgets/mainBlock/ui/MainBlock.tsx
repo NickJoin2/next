@@ -1,8 +1,9 @@
 'use client';
 import React, {Dispatch} from 'react';
+import Link from "next/link";
 
 import '../styles/styles.scss'
-import Link from "next/link";
+
 import styled, {css} from "styled-components";
 
 interface ImageObject {

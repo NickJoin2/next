@@ -1,8 +1,10 @@
-'use client'
 import React from 'react';
-import Title from "@/shared/ui/Title";
+
 import './styles.scss'
+
+import Title from "@/shared/ui/Title";
 import {MainBlock} from "@/widgets/mainBlock";
+
 import img1 from "@/shared/image/map/1.jpg";
 import img2 from "@/shared/image/map/2.jpg";
 import img3 from "@/shared/image/map/3.jpg";

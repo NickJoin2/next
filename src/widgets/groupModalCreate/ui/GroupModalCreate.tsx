@@ -1,17 +1,16 @@
 import React, {Dispatch, useEffect, useState} from 'react';
 import Image from "next/image";
-import '@/widgets/control/modal/workerCreate/ui/WorkerCreateModal'
-import 'react-toastify/dist/ReactToastify.css';
-import close from "@/shared/image/modal/close.svg";
-import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
-import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
-import {specializationsRead} from "@/features/specializations/action/action";
-import {GroupDTO, SpecializationDTO} from "@/features/types";
 
+import '@/widgets/workerCreate/ui/WorkerCreateModal'
+import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
+
+import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
+import {SpecializationDTO} from "@/features/types";
+import {specializationsRead} from "@/features/specializations/action/action";
 import {setGroupCreate, setGroupUpdate} from "@/features/group/slice/group";
 import {groupCreate, groupUpdate} from "@/features/group/action/action";
 
-
+import close from "@/shared/image/modal/close.svg";
 
 interface WorkerCreateModalProps {
     setOpen: Dispatch<React.SetStateAction<boolean>>;
@@ -25,9 +24,9 @@ const GroupCreateModal: React.FC<WorkerCreateModalProps> =
      }) => {
         const [nameGroup, setNameGroup] = useState<string>(selectedItem && selectedItem.name || '');
         const [specializationId, setSpecializationId] = useState<string>(selectedItem && selectedItem.specializationId || '');
+
         const specializations: SpecializationDTO[] = useAppSelector((state: RootState) => state.specialization.data)
         const group = useAppSelector((state: RootState) => state.group.groupCard)
-
 
         const dispatch = useAppDispatch();
 
@@ -38,19 +37,8 @@ const GroupCreateModal: React.FC<WorkerCreateModalProps> =
         const submitCreate = (e: React.FormEvent) => {
             e.preventDefault();
 
-            const newEntry: GroupDTO = {
-                id: String(new Date().getTime()),
-                name: nameGroup,
-                specializationId: specializationId
-            };
-
-            const Entry = {
-                name: nameGroup,
-                specializationId: specializationId
-            }
-
-            dispatch(setGroupCreate(newEntry))
-            dispatch(groupCreate(Entry))
+            dispatch(setGroupCreate({id: String(new Date().getTime()),name: nameGroup,specializationId: specializationId}))
+            dispatch(groupCreate({name: nameGroup,specializationId: specializationId}))
             setOpen(false);
         }
 
@@ -58,25 +46,14 @@ const GroupCreateModal: React.FC<WorkerCreateModalProps> =
         const submitEdit = (e: React.FormEvent) => {
             e.preventDefault();
 
-            if (!group || !selectedItem) {
-                return;
+            if (!group || !selectedItem) return
+
+            const findGroups = group.find(item => item.id === selectedItem.id);
+
+            if(findGroups) {
+                dispatch(setGroupUpdate({groupId: findGroups.id, name: nameGroup, specializationId: specializationId}));
+                dispatch(groupUpdate({groupId: findGroups.id, name: nameGroup,specializationId: specializationId}))
             }
-
-            group.map((item:GroupDTO ) => {
-                if (item.id === selectedItem.id) {
-
-                    const newEntry = {
-                        groupId: item.id,
-                        name: nameGroup,
-                        specializationId: specializationId
-                    }
-
-                    dispatch(setGroupUpdate(newEntry));
-                    dispatch(groupUpdate(newEntry))
-                }
-
-                return item;
-            });
 
             setOpen(false);
         };
