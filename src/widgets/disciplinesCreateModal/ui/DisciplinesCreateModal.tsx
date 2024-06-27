@@ -19,7 +19,7 @@ interface WorkerCreateModalProps {
     selectedItem?: any;
 }
 
-const DisciplinesModalCreate: React.FC<WorkerCreateModalProps> =
+const DisciplinesCreateModal: React.FC<WorkerCreateModalProps> =
     ({
          setOpen,
          selectedItem,
@@ -100,4 +100,4 @@ const DisciplinesModalCreate: React.FC<WorkerCreateModalProps> =
         );
     };
 
-export default DisciplinesModalCreate;
+export default DisciplinesCreateModal;

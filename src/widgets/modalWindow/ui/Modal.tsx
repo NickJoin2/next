@@ -3,7 +3,7 @@
 'use client'
 import React, { Dispatch, SetStateAction, useState } from 'react';
 import close from '@/shared/image/modal/close.svg';
-import '../styles/styles.scss';
+import './styles.scss';
 import emailImg from '@/shared/image/modal/email.svg';
 import eye from '@/shared/image/modal/eye.password.svg';
 import Image from "next/image";

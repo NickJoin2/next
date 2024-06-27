@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import '../styles/styles.scss'
+import './styles.scss'
 import styled, {css} from "styled-components";
 import Image from "next/image";
 import {ButtonAuthProps} from "@/app/types";

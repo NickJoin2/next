@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
 import Title from "@/shared/ui/Title";
 import {DisciplinesCard} from "@/widgets/disciplinesCard";
-import {DisciplinesModalCreate} from "@/widgets/disciplinesCreateModal";
+import {DisciplinesCreateModal} from "@/widgets/disciplinesCreateModal";
 
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
 import {setCardDisciplines} from "@/features/disciplines/slice/disciplines";
@@ -40,7 +40,7 @@ const ControlSpecializations = () => {
                 <DisciplinesCard/>
 
                 {
-                    createModalOpen && <DisciplinesModalCreate setOpen={setCreateModalOpen} />
+                    createModalOpen && <DisciplinesCreateModal setOpen={setCreateModalOpen} />
                 }
 
             </div>

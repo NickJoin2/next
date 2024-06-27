@@ -5,7 +5,7 @@ import styled from "styled-components";
 import '@/widgets/tableWorker/ui/styles.scss'
 
 import NoRecords from "@/shared/ui/NoRecords";
-import {StudentCreateModal} from "@/widgets/studentCreateModal";
+import {StudentModalCreate} from "../../studentModalCreate";
 import {AssentModal} from "@/widgets/assentModal";
 
 
@@ -125,7 +125,7 @@ const StudentTable: React.FC<TableWorker> = (
             )}
 
             {
-                open && <StudentCreateModal setOpen={setOpen} selectedItem={selectedItemId}/>
+                open && <StudentModalCreate setOpen={setOpen} selectedItem={selectedItemId}/>
             }
 
             {

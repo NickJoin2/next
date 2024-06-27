@@ -2,7 +2,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import polygon from "@/shared/image/ui-element/polygon.svg";
 import activePolygon from "@/shared/image/ui-element/poligoneActive.svg"
-import "../styles/styles.scss";
+import "./styles.scss";
 import {useClickOutside} from "@/app/hooks/useClickOutside";
 import Link from "next/link";
 import Image from "next/image";

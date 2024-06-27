@@ -5,7 +5,7 @@ import '@/widgets/specializationCard/ui/styles.scss'
 
 import NoRecords from "@/shared/ui/NoRecords";
 import {AssentModal} from "@/widgets/assentModal";
-import {DisciplinesModalCreate} from "@/widgets/disciplinesCreateModal";
+import {DisciplinesCreateModal} from "@/widgets/disciplinesCreateModal";
 import {DisciplinesModalAssign} from "@/widgets/disciplinesModalAssign";
 
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
@@ -18,6 +18,13 @@ import editImg from "@/shared/image/table-button/edit.svg";
 import deleteImg from "@/shared/image/table-button/delete.svg";
 import assignImg from "@/shared/image/table-button/assign.svg";
 
+
+// function DisciplinesModalCreate(props: {
+//     setOpen: (value: (((prevState: boolean) => boolean) | boolean)) => void,
+//     selectedItem: DisciplineDTO | null
+// }) {
+//     return null;
+// }
 
 const DisciplinesCard = () => {
     const [open, setOpen] = useState<boolean>(false);
@@ -87,7 +94,7 @@ const DisciplinesCard = () => {
                     )}
 
                     {
-                        open && <DisciplinesModalCreate setOpen={setOpen} selectedItem={selectedItemId}/>
+                        open && <DisciplinesCreateModal setOpen={setOpen} selectedItem={selectedItemId}/>
                     }
 
                     {

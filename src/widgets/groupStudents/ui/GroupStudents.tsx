@@ -6,7 +6,7 @@ import editImg from "@/shared/image/table-button/edit.svg";
 import deleteImg from "@/shared/image/table-button/delete.svg";
 import addUser from "@/shared/image/table-button/userAdd.svg";
 
-import AssentModal from "@/widgets/modal/assent/ui/AssentModal";
+
 import {specializationsDelete} from "@/features/specializations/action/action";
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
 import {setAssentModal} from "@/features/other/slice/other";

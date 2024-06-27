@@ -1,6 +1,6 @@
 import React, {Dispatch} from 'react';
 import Image from "next/image";
-import '../styles/styles.scss'
+import './styles.scss'
 
 interface ImgProps {
     src: string;

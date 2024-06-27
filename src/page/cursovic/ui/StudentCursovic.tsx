@@ -6,12 +6,14 @@ import Title from "@/shared/ui/Title";
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
 
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
-import StudentCursovikTable from "@/widgets/studentCursovikTable/ui/StudentCursovikTable";
+
 
 import {studentCursachRead} from "@/features/students/action/action";
-import StudentCursovikCreateModal from "@/widgets/studentCursovikCreate/ui/StudentCursovikCreateModal";
+
 import {Person} from "@/features/types";
-import {setTableDataStudentC, setTableDataStudentCursach} from "@/features/student/slice/slice";
+import StudentCursovikCreateModal from "@/widgets/studentCursovikCreate/ui/StudentCursovikCreateModal";
+import StudentCursovikTable from "@/widgets/studentCursovikTable/ui/StudentCursovikTable";
+
 
 
 const StudentCursovik = () =>  {
@@ -31,7 +33,7 @@ const StudentCursovik = () =>  {
 
 
     useEffect(() => {
-        dispatch(setTableDataStudentCursach(data));
+        // dispatch(setTableDataStudentCursach(data));
     }, [data]);
 
 

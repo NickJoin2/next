@@ -1,6 +1,6 @@
 'use client';
 import React, {Dispatch} from 'react';
-import '../styles/styles.scss'
+import './styles.scss'
 
 const AuthButton = ({setOpen}: {  setOpen?: Dispatch<React.SetStateAction<boolean>> }) => {
 

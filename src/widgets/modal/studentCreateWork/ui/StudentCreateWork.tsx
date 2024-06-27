@@ -3,7 +3,8 @@ import Image from 'next/image';
 import close from '@/shared/image/modal/close.svg';
 import ButtonAuth from '@/features/buttonAuth/ui/ButtonAuth';
 import '../styles/styles.scss';
-import {Person} from "@/app/types";
+import {Person} from "@/features/types";
+
 
 const StudentWork = ({ setOpen, setTableData }: {
     tableData: Person[];

@@ -2,12 +2,13 @@ import React, {useEffect, useState} from "react";
 
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
 import Title from "@/shared/ui/Title";
-import {GroupCreateModal} from "@/widgets/groupModalCreate";
+import {GroupModalCreate} from "@/widgets/groupModalCreate";
 import {GroupCard} from "@/widgets/groupCard";
 
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
 import {setGroup} from "@/features/group/slice/group";
 import {groupRead} from "@/features/group/action/action";
+
 
 const ControlGroup = () => {
     const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
@@ -40,7 +41,7 @@ const ControlGroup = () => {
                 <GroupCard/>
 
                 {
-                    createModalOpen && <GroupCreateModal setOpen={setCreateModalOpen}/>
+                    createModalOpen && <GroupModalCreate setOpen={setCreateModalOpen}/>
                 }
 
             </div>

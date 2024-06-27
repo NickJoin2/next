@@ -1,19 +1,23 @@
 import React, {useEffect, useState} from 'react';
-import deleteImg from '@/shared/image/table-button/delete.svg'
-import editImg from '@/shared/image/table-button/edit.svg'
-import file from '@/shared/image/table-button/file.svg'
+import Image from "next/image";
+
 import './styles.scss'
 
 import NoRecords from "@/shared/ui/NoRecords";
-import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
+import {AssentModal} from "@/widgets/assentModal";
+import StudentCursovikCreateModal from "@/widgets/studentCursovikCreate/ui/StudentCursovikCreateModal";
 
-import AssentModal from "@/widgets/assentModal/ui/AssentModal";
+import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
 import {studentCursachDelete} from "@/features/students/action/action";
 import {setAssentModal} from "@/features/other/slice/other";
-import StudentCursovikCreateModal from "@/widgets/studentCursovikCreate/ui/StudentCursovikCreateModal";
+
 import {Person} from "@/features/types";
 import {setTableDataStudentCursach} from "@/features/student/slice/slice";
 
+
+import deleteImg from '@/shared/image/table-button/delete.svg'
+import editImg from '@/shared/image/table-button/edit.svg'
+import file from '@/shared/image/table-button/file.svg'
 
 
 interface StudentCursovikTableProps {
@@ -108,20 +112,20 @@ const StudentCursovikTable: React.FC<StudentCursovikTableProps> = (
                                     <td>{item.prepodFio}</td>
                                     <td>{getWorkStatus(item.level as string | undefined)}</td>
                                     <td>{item.link !== "" ?
-                                        <a href={item.link} target="_blank"><img width={50} src={file.src}
+                                        <a href={item.link} target="_blank"><Image width={50} src={file.src}
                                                                                  alt="file"/></a> : 'Отсутствует'}
                                     </td>
                                     <td className="studentC__table-button">
                                         <div className="studentC__table__tr-btn">
                                             <button className="studentC__table__tr--edit"  onClick={() => handleEditClick(item.id as string)}>
                                                 Изменить
-                                                <img src={editImg.src} alt="edit"/>
+                                                <Image src={editImg.src} alt="edit"/>
                                             </button>
                                         </div>
                                         <div className="studentC__table__tr-btn">
                                             <button className="studentC__table__tr--delete "
                                                     onClick={() => handleDelete(item.id as string | undefined)}>Удалить
-                                                <img src={deleteImg.src} alt="delete"/>
+                                                <Image src={deleteImg.src} alt="delete"/>
                                             </button>
 
                                         </div>

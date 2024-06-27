@@ -1,7 +1,7 @@
 import React, {Dispatch, useEffect, useState} from 'react';
 import Image from "next/image";
 
-import '@/widgets/workerCreate/ui/WorkerCreateModal'
+import '@/widgets/workerCreateModal/ui/WorkerCreateModal'
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
 
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
@@ -17,7 +17,7 @@ interface WorkerCreateModalProps {
     selectedItem?: any;
 }
 
-const GroupCreateModal: React.FC<WorkerCreateModalProps> =
+const GroupModalCreate: React.FC<WorkerCreateModalProps> =
     ({
          setOpen,
          selectedItem,
@@ -112,4 +112,4 @@ const GroupCreateModal: React.FC<WorkerCreateModalProps> =
         );
     };
 
-export default GroupCreateModal;
+export default GroupModalCreate;

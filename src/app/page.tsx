@@ -1,6 +1,6 @@
 'use client'
 import React from "react";
-import Map from "@/page/map";
+import {Map} from "@/page/map";
 
 export default function page() {
     return (

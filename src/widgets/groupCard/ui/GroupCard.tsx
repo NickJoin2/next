@@ -5,7 +5,7 @@ import '@/widgets/specializationCard/ui/styles.scss'
 
 import NoRecords from "@/shared/ui/NoRecords";
 import {AssentModal} from "@/widgets/assentModal";
-import {GroupCreateModal} from "@/widgets/groupModalCreate";
+import {GroupModalCreate} from "@/widgets/groupModalCreate";
 import {GroupStudentAddModal} from "@/widgets/groupStudentAddModal";
 
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
@@ -82,7 +82,7 @@ const GroupCard = () => {
                     )}
 
                     {
-                        open && <GroupCreateModal setOpen={setOpen} selectedItem={selectedItemId} />
+                        open && <GroupModalCreate setOpen={setOpen} selectedItem={selectedItemId} />
                     }
 
                     {

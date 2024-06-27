@@ -35,7 +35,7 @@ const DisciplinesModalAssign: React.FC<WorkerCreateModalProps> =
 
         useEffect(() => {
             dispatch(employeesRead())
-        }, []);
+        }, [dispatch]);
 
         useEffect(() => {
             setArray(data)

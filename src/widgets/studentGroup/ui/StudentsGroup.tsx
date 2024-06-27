@@ -5,7 +5,7 @@ import styled from "styled-components";
 import '@/widgets/tableWorker/ui/styles.scss';
 
 import NoRecords from '@/shared/ui/NoRecords';
-import {StudentCreateModal} from "@/widgets/studentCreateModal";
+import {StudentModalCreate} from "../../studentModalCreate";
 import {AssentModal} from "@/widgets/assentModal";
 
 import {StudentDTO} from "@/features/types";
@@ -140,7 +140,7 @@ const  StudentGroupTable = ({groupId}: {groupId: string}) => {
                     <NoRecords title={'Студентов нет'} />
                 )}
 
-                {open && <StudentCreateModal setOpen={setOpen} selectedItem={selectedItemId} groupId={groupId} />}
+                {open && <StudentModalCreate setOpen={setOpen} selectedItem={selectedItemId} groupId={groupId} />}
 
                 {assentModal && (
                     <AssentModal title={'Вы уверены что хотите удалить студента?'} submitGreen={submitGreen} submitRed={submitRed} />

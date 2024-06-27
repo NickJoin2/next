@@ -1,8 +1,7 @@
 import React from 'react';
 import './styles.scss'
-import '@/widgets/modal/assent/styles/styles.scss'
-import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
 
+import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
 
 const AssentModal = ({
                          title,

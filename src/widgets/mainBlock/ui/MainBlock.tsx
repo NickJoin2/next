@@ -2,7 +2,7 @@
 import React, {Dispatch} from 'react';
 import Link from "next/link";
 
-import '../styles/styles.scss'
+import './styles.scss'
 
 import styled, {css} from "styled-components";
 

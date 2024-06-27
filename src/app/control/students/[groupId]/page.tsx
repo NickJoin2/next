@@ -1,15 +1,15 @@
 'use client'
 import React, {useEffect, useState} from "react";
 
-
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
 import Title from "@/shared/ui/Title";
-import {GroupCreateModal} from "@/widgets/groupModalCreate";
+import {GroupModalCreate} from "@/widgets/groupModalCreate";
 import {StudentGroup} from "@/widgets/studentGroup";
 
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
 import {setGroup} from "@/features/group/slice/group";
 import {groupRead} from "@/features/group/action/action";
+
 
 const ControlGroupStudent = ({ params }: { params: any }) => {
     const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
@@ -23,7 +23,7 @@ const ControlGroupStudent = ({ params }: { params: any }) => {
 
     useEffect(() => {
         dispatch(groupRead())
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         const group = data.find(item => item.id === groupId);
@@ -50,7 +50,7 @@ const ControlGroupStudent = ({ params }: { params: any }) => {
                 <StudentGroup groupId={groupId}/>
 
                 {
-                    createModalOpen && <GroupCreateModal setOpen={setCreateModalOpen}/>
+                    createModalOpen && <GroupModalCreate setOpen={setCreateModalOpen}/>
                 }
             </div>
         </section>

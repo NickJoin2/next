@@ -1,2 +1,2 @@
-import GroupCreateModal from '@/widgets/groupModalCreate/ui/GroupModalCreate'
-export {GroupCreateModal}
+import GroupModalCreate from '@/widgets/groupModalCreate/ui/GroupModalCreate'
+export {GroupModalCreate}

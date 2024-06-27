@@ -1,19 +1,22 @@
 import React, {useEffect, useState} from 'react';
-import deleteImg from '@/shared/image/table-button/delete.svg'
-import editImg from '@/shared/image/table-button/edit.svg'
-import file from '@/shared/image/table-button/file.svg'
+import Image from "next/image";
+
 import '@/widgets/studentCursovikTable/ui/styles.scss'
 
 import NoRecords from "@/shared/ui/NoRecords";
-import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
+import {AssentModal} from "@/widgets/assentModal";
+import DiplomCreateModal from "@/widgets/diplomCreateModal/ui/DiplomCreateModal";
 
-import AssentModal from "@/widgets/assentModal/ui/AssentModal";
+import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
 import {setAssentModal} from "@/features/other/slice/other";
-import StudentCursovikCreateModal from "@/widgets/studentCursovikCreate/ui/StudentCursovikCreateModal";
 import {Person} from "@/features/types";
 import {studentDeleteDiplom} from "@/features/studentD/action/action";
 import {setTableDataStudentDiplom} from "@/features/studentD/slice/studentD";
-import DiplomCreateModal from "@/widgets/diplomCreateModal/ui/DiplomCreateModal";
+
+
+import deleteImg from '@/shared/image/table-button/delete.svg'
+import editImg from '@/shared/image/table-button/edit.svg'
+import file from '@/shared/image/table-button/file.svg'
 
 
 interface StudentCursovikTableProps {
@@ -31,8 +34,6 @@ const DiplomTable: React.FC<StudentCursovikTableProps> = (
 
 
     const tableData = useAppSelector((state: RootState) => state.studentDiplom.tableDataStudent)
-
-
 
 
     useEffect(() => {
@@ -110,20 +111,20 @@ const DiplomTable: React.FC<StudentCursovikTableProps> = (
                                     <td>{item.prepodFio}</td>
                                     <td>{getWorkStatus(item.level as string | undefined)}</td>
                                     <td>{item.link !== "" ?
-                                        <a href={item.link} target="_blank"><img width={50} src={file.src}
+                                        <a href={item.link} target="_blank"><Image  width={50} src={file.src}
                                                                                  alt="file"/></a> : 'Отсутствует'}
                                     </td>
                                     <td className="studentC__table-button">
                                         <div className="studentC__table__tr-btn">
                                             <button className="studentC__table__tr--edit"  onClick={() => handleEditClick(item.id as string)}>
                                                 Изменить
-                                                <img src={editImg.src} alt="edit"/>
+                                                <Image src={editImg.src} alt="edit"/>
                                             </button>
                                         </div>
                                         <div className="studentC__table__tr-btn">
                                             <button className="studentC__table__tr--delete "
                                                     onClick={() => handleDelete(item.id as string | undefined)}>Удалить
-                                                <img src={deleteImg.src} alt="delete"/>
+                                                <Image src={deleteImg.src} alt="delete"/>
                                             </button>
 
                                         </div>

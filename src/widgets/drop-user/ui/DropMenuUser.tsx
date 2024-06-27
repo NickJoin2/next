@@ -1,31 +1,29 @@
-'use client';
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Image from 'next/image'
-import userIcon from "@/shared/image/user/user-icon.svg";
-import '../styles/styles.scss'
-import {useClickOutside} from "@/app/hooks/useClickOutside";
 import Link from "next/link";
+
+import './styles.scss'
+
+import {RootState, useAppSelector} from "@/app/store/appStore";
 import {useDispatch} from "react-redux";
+import {useClickOutside} from "@/app/hooks/useClickOutside";
 import {logout} from "@/features/userAuthorization/slice/registerSlice";
 import {useRouter} from "next/navigation";
-import {RootState, useAppSelector} from "@/app/store/appStore";
+
+import userIcon from "@/shared/image/user/user-icon.svg";
 
 const DropMenuUser = () => {
-
     const [isOpen, setIsOpen] = useState(false);
     const menuRef = useRef(null);
-    useClickOutside(menuRef, () => {
-        if (isOpen) setIsOpen(false)
-    });
 
-    useEffect(() => {
-        // console.log(isOpen)
-    }, [isOpen]);
+    const redirect = useAppSelector((state:RootState) => state.register.redirect)
 
     const dispatch = useDispatch();
     const router = useRouter()
 
-    const redirect = useAppSelector((state:RootState) => state.register.redirect)
+    useClickOutside(menuRef, () => {
+        if (isOpen) setIsOpen(false)
+    });
 
     const handleLogout = async() => {
        dispatch(logout())
@@ -43,7 +41,6 @@ const DropMenuUser = () => {
             <button onClick={() => setIsOpen(!isOpen)}>
                 <p>Оксана Черниюк</p>
                 <Image className="user__image" src={userIcon} alt="user"/>
-                {/*<div className='user__online'></div>*/}
             </button>
 
 

@@ -1,2 +1,2 @@
-import DisciplinesModalCreate from '@/widgets/disciplinesCreateModal/ui/DisciplinesCreateModal'
-export {DisciplinesModalCreate}
+import DisciplinesCreateModal from '@/widgets/disciplinesCreateModal/ui/DisciplinesCreateModal'
+export {DisciplinesCreateModal}

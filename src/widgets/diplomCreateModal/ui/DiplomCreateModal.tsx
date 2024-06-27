@@ -1,17 +1,15 @@
 import React, {Dispatch, FormEvent, useState} from 'react';
 import '@/widgets/studentCursovikCreate/ui/styles.scss'
+import Image from "next/image";
 
-import close from '@/shared/image/modal/close.svg'
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
+
 import {Person} from "@/features/types";
 import {useAppDispatch} from "@/app/store/appStore";
-import {studentCursachCreate, studentReplaceCursach} from "@/features/students/action/action";
-import {setTableDataCreateStudentCursach, updateTableDataStudentCursach} from "@/features/student/slice/slice";
 import {studentCreateDiplom, studentReplaceDiplom} from "@/features/studentD/action/action";
 import {setTableDataCreateStudentDiplom, updateTableDataStudentDiplom} from "@/features/studentD/slice/studentD";
 
-
-
+import close from '@/shared/image/modal/close.svg'
 
 interface DiplomCreateModalProps {
     setOpen: Dispatch<React.SetStateAction<boolean>>;
@@ -64,7 +62,7 @@ const DiplomCreateModal: React.FC<DiplomCreateModalProps> = ({setOpen, selectedI
             <div className="student__modal__content">
                 <form className="student__modal__form" onSubmit={selectedItem ? updateSubmit : createSubmit}>
                     <button className="student__modal__close" onClick={handleClose}>
-                        <img src={close.src} alt="close"/>
+                        <Image src={close.src} alt="close"/>
                     </button>
 
                     <h2 className="student__modal__title">Создать курсовую</h2>

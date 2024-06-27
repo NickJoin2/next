@@ -165,7 +165,7 @@ export const disciplinesAssign = createAsyncThunk<string, {disciplinesId: Discip
     }
 )
 
-export const disciplinesUnassign = createAsyncThunk<string, {disciplinesId: DisciplineAssignmentDTO, employeeId: DisciplineAssignmentDTO}, { rejectValue:  any  }>(
+export const disciplinesUnassign = createAsyncThunk<string, {disciplinesId: string, employeeId: string}, { rejectValue:  any  }>(
     'disciplines/unassign',
     async ({disciplinesId, employeeId}, thunkAPI) => {
         try {

@@ -5,7 +5,7 @@ import styled from "styled-components";
 import './styles.scss'
 
 import NoRecords from "@/shared/ui/NoRecords";
-import {WorkerCreateModal} from "@/widgets/workerCreate";
+import {WorkerCreateModal} from "../../workerCreateModal";
 import {AssentModal} from "@/widgets/assentModal";
 
 import {Posts} from "@/app/types";

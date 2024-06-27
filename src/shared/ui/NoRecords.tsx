@@ -1,9 +1,7 @@
 import React from 'react';
 import styled from "styled-components";
 
-const NoRecords = ({title}:{title: string}) => {
-
-    const Empty = styled.div`
+const Empty = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
@@ -16,6 +14,7 @@ const NoRecords = ({title}:{title: string}) => {
         min-height: 50vh;
     `
 
+const NoRecords = ({title}:{title: string}) => {
     return (
         <Empty>{title}</Empty>
     );
