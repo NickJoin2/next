@@ -1,3 +1,4 @@
+'use client'
 import React, {useState} from "react";
 import styled from "styled-components";
 
@@ -7,9 +8,12 @@ import Title from "@/shared/ui/Title";
 import {MainBlock} from "@/widgets/mainBlock";
 import {ModalCursachDiplom} from "@/widgets/modalCursachDiplom";
 
+
 import img1 from '@/shared/image/map/1.jpg'
 import img2 from '@/shared/image/map/2.jpg'
 import img3 from "@/shared/image/map/3.jpg";
+import {BreadCrumbs} from "@/features/breadCrumbs";
+
 
 const  Map = () => {
     const [open, setOpen] = useState<boolean>(false);

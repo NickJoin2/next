@@ -1,3 +1,4 @@
+'use client'
 import React, {FormEvent, useEffect} from 'react';
 
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
@@ -8,9 +9,14 @@ import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
 import {setGroup} from "@/features/group/slice/group";
 import {groupRead} from "@/features/group/action/action";
 import {useRouter} from "next/navigation";
+import {BreadCrumbs} from "@/features/breadCrumbs";
 
 
-const ControlGroup = () => {
+interface GroupStudentProps {
+    breadCrumb: { [key: string]: string };
+}
+
+const ControlGroup = ({breadCrumb}:GroupStudentProps) => {
     const data = useAppSelector((state:RootState) => state.group.data)
 
     const dispatch = useAppDispatch();
@@ -34,7 +40,11 @@ const ControlGroup = () => {
             <div className="container">
 
                 <div className='record'>
-                    <Title title={'Группы - Студенты'} position={'start'}/>
+                    <div>
+                        <Title title={'Группы - Студенты'} position={'start'}/>
+                        <BreadCrumbs breadCrumb={breadCrumb}/>
+                    </div>
+
 
                     <form onSubmit={handleRedirect}>
                         <ButtonAuth title={'Управление группами'} hover={true} width={255} height={65}

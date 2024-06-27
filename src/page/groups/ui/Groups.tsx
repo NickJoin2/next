@@ -1,3 +1,4 @@
+'use client'
 import React, {useEffect, useState} from "react";
 
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
@@ -8,9 +9,13 @@ import {GroupCard} from "@/widgets/groupCard";
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
 import {setGroup} from "@/features/group/slice/group";
 import {groupRead} from "@/features/group/action/action";
+import {BreadCrumbs} from "@/features/breadCrumbs";
 
+interface GroupsProps {
+    breadCrumb: { [key: string]: string };
+}
 
-const ControlGroup = () => {
+const ControlGroup = ({breadCrumb}:GroupsProps) => {
     const [createModalOpen, setCreateModalOpen] = useState<boolean>(false);
 
     const data = useAppSelector((state: RootState) => state.group.data)
@@ -31,7 +36,11 @@ const ControlGroup = () => {
             <div className="container">
 
                 <div className="record">
-                    <Title title={'Группы'} position={'start'}/>
+                    <div>
+                        <Title title={'Группы'} position={'start'}/>
+                        <BreadCrumbs breadCrumb={breadCrumb} />
+                    </div>
+
 
                     <ButtonAuth title={'Создать группу'} anim={true} width={255} height={65}
                                 setOpen={setCreateModalOpen}

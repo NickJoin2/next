@@ -12,6 +12,7 @@ import {Person} from "@/features/types";
 import {setTableDataStudentDiplom} from "@/features/studentD/slice/studentD";
 
 import {studentReadDiplom} from "@/features/studentD/action/action";
+import {BreadCrumbs} from "@/features/breadCrumbs";
 
 
 const Diplom = () =>  {

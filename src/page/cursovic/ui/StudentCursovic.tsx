@@ -13,6 +13,7 @@ import {studentCursachRead} from "@/features/students/action/action";
 import {Person} from "@/features/types";
 import StudentCursovikCreateModal from "@/widgets/studentCursovikCreate/ui/StudentCursovikCreateModal";
 import StudentCursovikTable from "@/widgets/studentCursovikTable/ui/StudentCursovikTable";
+import {BreadCrumbs} from "@/features/breadCrumbs";
 
 
 

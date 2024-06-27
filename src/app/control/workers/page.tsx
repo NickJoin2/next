@@ -1,24 +1,23 @@
 import React from "react";
-import {Groups} from "@/page/groups";
+import {Workers} from "@/page/workers";
 
 import {Metadata} from "next";
+import breadCrumbs from "@/features/breadCrumbs/ui/BreadCrumbs";
 
 export const metadata:Metadata = {
-    title: 'Группы',
+    title: 'Сотрудники',
     description: '',
 };
-
 
 const breadCrumb = {
     '/': 'Главная',
     '/control': 'Контроль',
-    '/control/groups': 'Группы',
+    '/control/workers': 'Сотрудники',
 };
-
 
 
 export default function page() {
     return (
-        <Groups breadCrumb={breadCrumb}/>
+        <Workers breadCrumb={breadCrumb}/>
     )
 }

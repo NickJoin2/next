@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import Image from "next/image";
 
@@ -8,15 +9,22 @@ import SecondText from "@/shared/ui/SecondText";
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
 
 import img from '@/shared/image/user/user-office.svg'
+import {BreadCrumbs} from "@/features/breadCrumbs";
 
 
-const Office = () => {
+
+interface ОfficeProps {
+    breadCrumb: { [key: string]: string };
+}
+
+const Office = ({breadCrumb}:ОfficeProps) => {
     return (
         <section className="office">
             <div className="container">
 
                 <div className='office__title'>
                     <Title title="Личный кабинет"/>
+                    <BreadCrumbs breadCrumb={breadCrumb}/>
                 </div>
 
                 <div className="office__wrapper">

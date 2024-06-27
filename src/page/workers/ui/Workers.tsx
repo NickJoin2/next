@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useState } from "react";
 
 import Title from "@/shared/ui/Title";
@@ -8,8 +9,14 @@ import { TableWorker } from "@/widgets/tableWorker";
 import { RootState, useAppDispatch, useAppSelector } from "@/app/store/appStore";
 import { employeesRead } from "@/features/employees/action/action";
 import { setTableData } from "@/features/employees/slice/employees";
+import {BreadCrumbs} from "@/features/breadCrumbs";
 
-const Workers = () => {
+
+interface WorkerProps {
+    breadCrumb: { [key: string]: string };
+}
+
+const Workers = ({breadCrumb}:WorkerProps) => {
     const [openCreate, setOpenCreate] = useState(false);
     const data = useAppSelector((state: RootState) => state.employees.data);
 
@@ -27,7 +34,11 @@ const Workers = () => {
         <section>
             <div className="container">
                 <div className='record'>
-                    <Title title={'Сотрудники'} position={'start'}/>
+                    <div>
+                        <Title title={'Сотрудники'} position={'start'}/>
+                        <BreadCrumbs breadCrumb={breadCrumb}/>
+                    </div>
+
                     <ButtonAuth
                         title={'Добавить'}
                         anim={true}
