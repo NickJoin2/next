@@ -27,7 +27,7 @@ const RequireAuth: React.FC<{ rolesToCheck?: string[], children: React.ReactNode
         };
 
         checkAuth();
-    }, [token]);
+    }, [token,rolesToCheck,router]);
 
     return <>{children}</>;
 };

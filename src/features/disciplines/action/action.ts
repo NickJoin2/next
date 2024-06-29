@@ -1,10 +1,8 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import {
-    CreateDisciplineCommand,
     Error,
     DisciplineDTO,
-    UpdateDisciplineDTO,
-    Parametr, DisciplineAssignmentDTO
+    DisciplineAssignmentDTO
 } from "@/features/types";
 
 export const disciplinesCreate = createAsyncThunk<string, { name: string }, { rejectValue: any }>(
@@ -21,8 +19,8 @@ export const disciplinesCreate = createAsyncThunk<string, { name: string }, { re
                 }),
             });
 
-            if (response.status === 204) {
-                return 'Дисциплина успешно создана'
+            if (response.status === 201) {
+                return 'Дисциплина создана'
             } else if(response.status === 400) {
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Запрос не прошел валидацию');
@@ -32,7 +30,7 @@ export const disciplinesCreate = createAsyncThunk<string, { name: string }, { re
             }
             else {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error);
+                return thunkAPI.rejectWithValue(error || 'Неизвестная ошибка');
             }
 
         } catch (error) {
@@ -57,7 +55,7 @@ export const disciplinesRead = createAsyncThunk<DisciplineDTO[]>(
                 return data
             } else {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error);
+                return thunkAPI.rejectWithValue(error || 'Неизвестная ошибка');
             }
         } catch (error) {
             return thunkAPI.rejectWithValue(error);
@@ -80,7 +78,7 @@ export const disciplinesUpdate = createAsyncThunk<string, { disciplinesId: strin
             });
 
             if (response.status === 204) {
-               return 'Дисциплина успешно обновлена'
+               return 'Дисциплина обновлена'
             } else if(response.status === 400) {
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Запрос не прошел валидацию');
@@ -90,7 +88,7 @@ export const disciplinesUpdate = createAsyncThunk<string, { disciplinesId: strin
             }
             else {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error);
+                return thunkAPI.rejectWithValue(error || 'Неизвестная ошибка');
             }
 
         } catch (error) {
@@ -109,16 +107,16 @@ export const disciplinesDelete = createAsyncThunk<string, {disciplinesId: string
             });
 
             if (response.status === 204) {
-                return 'Дисциплина успешно удалена'
+                return 'Дисциплина удалена'
             } else if(response.status === 403) {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступ на удаление дисциплины');
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет прав на удаление дисциплины');
             } else if(response.status === 404) {
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Дисциплина не найдена');
             } else {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error);
+                return thunkAPI.rejectWithValue(error || 'Неизвестная ошибка');
             }
 
         } catch (error) {
@@ -144,22 +142,22 @@ export const disciplinesAssign = createAsyncThunk<string, {disciplinesId: Discip
             });
 
             if(response.status === 204) {
-                return 'Дисциплина успешно назначена'
+                return 'Дисциплина назначена'
             } else if (response.status === 400) {
                 return 'Преподаватель уже привязан к данной дисциплине'
             } else if(response.status === 403) {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступ на назначение дисциплины преподавателю');
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет прав на назначение дисциплины преподавателю');
             } else if(response.status === 404) {
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Дисциплина или преподаватель не найден');
             } else {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error);
+                return thunkAPI.rejectWithValue(error || 'Неизвестная ошибка');
             }
 
         } catch (error) {
-            return thunkAPI.rejectWithValue(error as any);
+            return thunkAPI.rejectWithValue(error);
         }
 
     }
@@ -181,26 +179,30 @@ export const disciplinesUnassign = createAsyncThunk<string, {disciplinesId: stri
             });
 
             if(response.status === 204) {
-                return 'Дисциплина успешно снята'
+                return 'Дисциплина снята'
             } else if(response.status === 400) {
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Сотрудник не привязан к данной дисциплине');
             } else if(response.status === 403) {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступ на снятие дисциплины преподавателю');
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет прав на снятие дисциплины преподавателю');
             } else if(response.status === 404) {
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Дисциплина или преподаватель не найдены');
             } else {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error);
+                return thunkAPI.rejectWithValue(error || 'Неизвестная ошибка');
             }
 
         } catch (error) {
-            return thunkAPI.rejectWithValue(error as any);
+            return thunkAPI.rejectWithValue(error);
         }
 
     }
 )
 
-export default {disciplinesCreate,disciplinesRead,disciplinesUpdate,disciplinesAssign}
+const exportDisciplines = {
+    disciplinesCreate,disciplinesRead,disciplinesUpdate,disciplinesAssign
+}
+
+export default exportDisciplines

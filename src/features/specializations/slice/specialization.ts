@@ -6,6 +6,7 @@ import {
     specializationsUpdate
 } from "@/features/specializations/action/action";
 import {SpecializationDTO} from "@/features/types";
+import action from "@/features/group/action/action";
 
 export interface State {
     status: 'init' | 'loading' | 'success' | 'error'
@@ -42,6 +43,9 @@ export const specializationsSlice = createSlice({
                 }
                 return item;
             });
+        },
+        setSpecializationMessageZero(state) {
+            state.message = ''
         }
     },
     extraReducers: (builder) => {
@@ -121,5 +125,5 @@ export const specializationsSlice = createSlice({
 });
 
 export default specializationsSlice.reducer
-export const {setCardSpecializations,updateTableDataSpecialization,setCardCreateSpecializations} = specializationsSlice.actions
+export const {setCardSpecializations,updateTableDataSpecialization,setCardCreateSpecializations,setSpecializationMessageZero} = specializationsSlice.actions
 

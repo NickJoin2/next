@@ -6,16 +6,18 @@ import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
 const AssentModal = ({
                          title,
                          submitGreen,
-                         submitRed
+                         submitRed,
+                        open
                      }: {
     title: string,
     submitGreen: (e: React.FormEvent) => void,
-    submitRed: (e: React.FormEvent) => void
+    submitRed: (e: React.FormEvent) => void,
+    open: boolean
 }) => {
 
 
     return (
-        <div className="assent__modal__overlay">
+        <div className={`assent__modal__overlay ${open ? 'show' : ''}`}>
             <div className="assent__modal__content">
                 <div className="assent__modal__form">
 

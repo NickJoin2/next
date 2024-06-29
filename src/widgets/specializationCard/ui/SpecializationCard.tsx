@@ -22,7 +22,7 @@ const SpecializationCard = () => {
     const [selectedItemId, setSelectedItemId] = useState<SpecializationDTO | null>(null);
     const [specializationId, setSpecializationId] = useState<string>('')
 
-    const dataSpecializations = useAppSelector((state:RootState) => state.specialization.tableCardSpecializations)
+    const dataSpecializations = useAppSelector((state: RootState) => state.specialization.tableCardSpecializations)
     const assentModal = useAppSelector((state: RootState) => state.other.assentModal);
 
     const dispatch = useAppDispatch();
@@ -39,7 +39,7 @@ const SpecializationCard = () => {
         setSpecializationId(id)
     };
 
-    const submitGreen = async(e: React.FormEvent) => {
+    const submitGreen = async (e: React.FormEvent) => {
         e.preventDefault();
 
         dispatch(specializationsDelete({specializationId}))
@@ -74,14 +74,10 @@ const SpecializationCard = () => {
                         <NoRecords title={'Нет специализаций'}/>
                     )}
 
-                    {
-                        open && <SpecializationsModalCreate setOpen={setOpen} selectedItem={selectedItemId} />
-                    }
+                    <SpecializationsModalCreate setOpen={setOpen} selectedItem={selectedItemId} open={open}/>
 
-                    {
-                        assentModal && <AssentModal title={'Вы уверены что хотите удалить специализацию?'}
-                                                    submitGreen={submitGreen} submitRed={submitRed}/>
-                    }
+                    <AssentModal title={'Вы уверены что хотите удалить специализацию?'} open={assentModal}
+                                 submitGreen={submitGreen} submitRed={submitRed}/>
 
                 </ul>
             </div>

@@ -96,7 +96,7 @@ const StudentTable: React.FC<TableWorker> = (
                             </tr>
                             </thead>
                             <tbody className="tableW__tbody">
-                            {tableData.map((item:StudentDTO) => (
+                            {tableData.map((item: StudentDTO) => (
                                 <tr className="tableW__tr tableW__tr-body" key={item.id}>
                                     <TD title={item.firstName}>{item.firstName}</TD>
                                     <TD title={item.lastName}>{item.lastName}</TD>
@@ -110,7 +110,7 @@ const StudentTable: React.FC<TableWorker> = (
                                             </button>
                                             <button title='Удалить'>
                                                 <Image onClick={() => handleDelete(item.id)} src={deleteImg}
-                                                           alt='delete'/>
+                                                       alt='delete'/>
                                             </button>
                                         </div>
                                     </TD>
@@ -124,14 +124,10 @@ const StudentTable: React.FC<TableWorker> = (
                 <NoRecords title={'Студентов нет'}/>
             )}
 
-            {
-                open && <StudentModalCreate setOpen={setOpen} selectedItem={selectedItemId}/>
-            }
+            <StudentModalCreate setOpen={setOpen} selectedItem={selectedItemId} open={open}/>
 
-            {
-                assentModal && <AssentModal title={'Вы уверены что хотите удалить студента?'}
-                                            submitGreen={submitGreen} submitRed={submitRed}/>
-            }
+            <AssentModal title={'Вы уверены что хотите удалить студента?'}
+                         submitGreen={submitGreen} submitRed={submitRed} open={assentModal}/>
 
         </>
     );

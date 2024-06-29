@@ -8,16 +8,12 @@ export const metadata:Metadata = {
     description: '',
 };
 
-const breadCrumb = {
-    '/': 'Главная',
-    '/control': 'Контроль',
-    '/control/students': 'Студенты - Группы',
-};
+
 
 
 
 export default function page() {
     return (
-        <GroupStudents breadCrumb={breadCrumb}/>
+        <GroupStudents/>
     )
 }

@@ -140,14 +140,12 @@ const DiplomTable: React.FC<StudentCursovikTableProps> = (
             )}
 
 
-            {
-                openCreate ? <DiplomCreateModal setOpen={setOpenCreate} selectedItem={selectedItem}/> : null
-            }
+               <DiplomCreateModal setOpen={setOpenCreate} selectedItem={selectedItem} open={openCreate}/> : null
 
-            {
-                assentModal && <AssentModal title={'Вы уверены что хотите удалить работу?'}
-                                            submitGreen={submitGreen} submitRed={submitRed}/>
-            }
+
+            <AssentModal title={'Вы уверены что хотите удалить работу?'}
+                                            submitGreen={submitGreen} submitRed={submitRed} open={assentModal}/>
+
         </>
     );
 };

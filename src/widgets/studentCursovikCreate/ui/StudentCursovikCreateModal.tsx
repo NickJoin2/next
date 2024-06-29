@@ -7,6 +7,7 @@ import {Person} from "@/features/types";
 import {useAppDispatch} from "@/app/store/appStore";
 import {studentCursachCreate, studentReplaceCursach} from "@/features/students/action/action";
 import {setTableDataCreateStudentCursach, updateTableDataStudentCursach} from "@/features/student/slice/slice";
+import Image from "next/image";
 
 
 
@@ -62,7 +63,7 @@ const StudentCursovikCreateModal: React.FC<StudentCursovikCreateModalProps> = ({
             <div className="student__modal__content">
                 <form className="student__modal__form" onSubmit={selectedItem ? updateSubmit : createSubmit}>
                     <button className="student__modal__close" onClick={handleClose}>
-                        <img src={close.src} alt="close"/>
+                        <Image src={close.src} alt="close"/>
                     </button>
 
                     <h2 className="student__modal__title">Создать курсовую</h2>

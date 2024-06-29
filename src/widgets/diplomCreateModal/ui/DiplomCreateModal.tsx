@@ -13,10 +13,11 @@ import close from '@/shared/image/modal/close.svg'
 
 interface DiplomCreateModalProps {
     setOpen: Dispatch<React.SetStateAction<boolean>>;
-    selectedItem?: Person | null
+    selectedItem?: Person | null;
+    open: boolean;
 }
 
-const DiplomCreateModal: React.FC<DiplomCreateModalProps> = ({setOpen, selectedItem}) => {
+const DiplomCreateModal: React.FC<DiplomCreateModalProps> = ({setOpen, selectedItem, open}) => {
     const id:string | undefined = selectedItem?.id
     const [title, setTitle] = useState<string>(selectedItem && selectedItem.title || '');
     const [fio, setFio] = useState<string>(selectedItem && selectedItem.fio || '')
@@ -58,7 +59,7 @@ const DiplomCreateModal: React.FC<DiplomCreateModalProps> = ({setOpen, selectedI
 
 
     return (
-        <div className="student__modal__overlay">
+        <div className={`student__modal__overlay ${open ? 'show' : ''}`}>
             <div className="student__modal__content">
                 <form className="student__modal__form" onSubmit={selectedItem ? updateSubmit : createSubmit}>
                     <button className="student__modal__close" onClick={handleClose}>

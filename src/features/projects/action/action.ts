@@ -133,5 +133,8 @@ export const projectUpdate = createAsyncThunk<string, {projectId: number, name: 
     }
 );
 
+const exportProjects = {
+    projectCreate, projectRead, projectFind, projectComplete, projectUpdate
+}
 
-export default {projectCreate, projectRead, projectFind, projectComplete, projectUpdate}
+export default exportProjects

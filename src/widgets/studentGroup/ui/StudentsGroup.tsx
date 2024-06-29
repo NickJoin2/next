@@ -2,6 +2,8 @@ import React, {useEffect, useState } from 'react';
 import Image from 'next/image';
 import styled from "styled-components";
 
+import 'react-toastify/dist/ReactToastify.css';
+
 import '@/widgets/tableWorker/ui/styles.scss';
 
 import NoRecords from '@/shared/ui/NoRecords';
@@ -12,10 +14,15 @@ import {StudentDTO} from "@/features/types";
 import {RootState, useAppDispatch, useAppSelector } from '@/app/store/appStore';
 import {setAssentModal } from '@/features/other/slice/other';
 import {groupReadStudent, studentDelete} from '@/features/student/actions/students';
-import {setTableDataGroupStudentDelete, setTableStudentDelete} from '@/features/students/slice/students';
+import {
+    setStudentMessageZero,
+    setTableDataGroupStudentDelete,
+    setTableStudentDelete
+} from '@/features/students/slice/students';
 
 import deleteImg from '@/shared/image/table-button/deleteControl.svg';
 import editImg from '@/shared/image/table-button/edit.svg';
+import {toast, ToastContainer} from "react-toastify";
 
 
 
@@ -29,6 +36,7 @@ const  StudentGroupTable = ({groupId}: {groupId: string}) => {
     const [keys, setKeys] = useState<number>();
 
     const dispatch = useAppDispatch();
+
 
     const theadObj = ['Имя','Фамилия','Отчество','Выпускник','Блокировка','Действие',]
 
@@ -101,6 +109,19 @@ const  StudentGroupTable = ({groupId}: {groupId: string}) => {
 
     return (
         <>
+            <ToastContainer
+                position="top-center"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+            />
+
                 {tableData && tableData.length !== 0 ? (
                     <div className="tableW-border">
                         <div className="tableW-container">
@@ -140,11 +161,9 @@ const  StudentGroupTable = ({groupId}: {groupId: string}) => {
                     <NoRecords title={'Студентов нет'} />
                 )}
 
-                {open && <StudentModalCreate setOpen={setOpen} selectedItem={selectedItemId} groupId={groupId} />}
+                 <StudentModalCreate setOpen={setOpen} selectedItem={selectedItemId} groupId={groupId} open={open}/>
 
-                {assentModal && (
-                    <AssentModal title={'Вы уверены что хотите удалить студента?'} submitGreen={submitGreen} submitRed={submitRed} />
-                )}
+                <AssentModal title={'Вы уверены что хотите удалить студента?'} submitGreen={submitGreen} submitRed={submitRed} open={assentModal} />
 
         </>
     );

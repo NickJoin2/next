@@ -17,16 +17,16 @@ export const groupCreate = createAsyncThunk<string, { name: string, specializati
             });
 
             if (response.status === 201) {
-                return 'Группа успешно создана'
+                return 'Группа создана'
             } else if(response.status === 400) {
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Запрос не прошел валидацию');
             } else if(response.status === 403) {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступ на добавление группы');
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет прав на добавление группы');
             } else {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступ на добавление группы');
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет прав на добавление группы');
             }
 
         } catch (error) {
@@ -72,10 +72,10 @@ export const groupDelete = createAsyncThunk<string, { groupId: string }, { rejec
             });
 
             if (response.status === 204) {
-                return 'Группа была удалена'
+                return 'Группа удалена'
             } else if(response.status === 403) {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error || 'Пользователь не имееет доступ на удаление студенческой группы');
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имееет прав на удаление студенческой группы');
             } else if(response.status === 404) {
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Группа не найдена');
@@ -108,7 +108,7 @@ export const groupUpdate = createAsyncThunk<string, { groupId: string, name: str
             });
 
             if (response.status === 204) {
-                return 'Группы успешно обновленна'
+                return 'Групппа обновленна'
             } else if(response.status === 400) {
                 const error: any = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Запрос не прошел валидацию');
@@ -183,7 +183,7 @@ export const groupCreateStudent = createAsyncThunk<string, { firstname:string; m
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступ на добавление студента');
             }  else {
-                return thunkAPI.rejectWithValue('Не известная ошибка');
+                return thunkAPI.rejectWithValue('Неизвестная ошибка');
             }
 
         } catch (error) {
@@ -193,12 +193,13 @@ export const groupCreateStudent = createAsyncThunk<string, { firstname:string; m
     }
 );
 
-
-export default {
+const exportGroup = {
     groupCreate,
     groupUpdate,
     groupCreateStudent,
     groupRead,
     groupFindRead,
     groupDelete,
-};
+}
+
+export default exportGroup

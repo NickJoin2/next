@@ -26,7 +26,7 @@ const Diplom = () =>  {
 
     useEffect(() => {
         dispatch(setTableDataStudentDiplom(data));
-    }, [data]);
+    }, [data,dispatch]);
 
     const theadObj = ['ФИО студента','Название проекта','Преподаватель','Этап работы','Ссылка на проект','Действия' ]
 
@@ -43,9 +43,9 @@ const Diplom = () =>  {
 
                 <DiplomTable theadObj={theadObj}/>
 
-                {
-                    openCreate ? <DiplomCreateModal setOpen={setOpenCreate}/> : null
-                }
+
+                     <DiplomCreateModal setOpen={setOpenCreate} open={openCreate}/>
+
 
             </div>
         </section>

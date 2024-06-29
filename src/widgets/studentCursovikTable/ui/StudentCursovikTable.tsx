@@ -145,10 +145,9 @@ const StudentCursovikTable: React.FC<StudentCursovikTableProps> = (
                 openCreate ? <StudentCursovikCreateModal setOpen={setOpenCreate} selectedItem={selectedItem}/> : null
             }
 
-            {
-                assentModal && <AssentModal title={'Вы уверены что хотите удалить работу?'}
-                                            submitGreen={submitGreen} submitRed={submitRed}/>
-            }
+             <AssentModal title={'Вы уверены что хотите удалить работу?'}
+                                            submitGreen={submitGreen} submitRed={submitRed} open={assentModal}/>
+
         </>
     );
 };

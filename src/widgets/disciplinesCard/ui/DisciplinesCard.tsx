@@ -70,7 +70,7 @@ const DisciplinesCard = () => {
             <div className="container">
                 <ul className="specializations__list">
                     {dataDisciplines && dataDisciplines.length !== 0 ? (
-                        dataDisciplines.map((item:DisciplineDTO) => (
+                        dataDisciplines.map((item: DisciplineDTO) => (
                             <li className="specializations__item" key={item.id}>
                                 <p className="specializations__title">{item.name}</p>
                                 <div className="specializations__button">
@@ -93,18 +93,17 @@ const DisciplinesCard = () => {
                         <NoRecords title={'Нет дисциплин'}/>
                     )}
 
-                    {
-                        open && <DisciplinesCreateModal setOpen={setOpen} selectedItem={selectedItemId}/>
-                    }
 
-                    {
-                        assentModal && <AssentModal title={'Вы уверены что хотите удалить дисциплину?'}
-                                                    submitGreen={submitGreen} submitRed={submitRed}/>
-                    }
+                    <DisciplinesCreateModal setOpen={setOpen} selectedItem={selectedItemId} open={open}/>
 
-                    {
-                        assignOpen && <DisciplinesModalAssign selectedItem={selectedItemId}/>
-                    }
+
+                        <AssentModal title={'Вы уверены что хотите удалить дисциплину?'}
+                                 submitGreen={submitGreen} submitRed={submitRed} open={assentModal}/>
+
+
+
+                         <DisciplinesModalAssign selectedItem={selectedItemId} open={assignOpen}/>
+
 
                 </ul>
             </div>

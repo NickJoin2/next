@@ -1,0 +1,184 @@
+.modalForm {
+
+  &__overlay {
+    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    transition: opacity 0.4s, visibility 0s linear 0.4s;
+
+
+    &.show {
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.4s, visibility 0s;
+    }
+  }
+
+  &__content {
+    position: absolute;
+    width: 90%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 586px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    padding: 0 25px;
+  }
+
+  &__form {
+    position: relative;
+    width: 100%;
+    max-width: 484px;
+    margin: 0 auto;
+    padding: 7% 0;
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: clamp(1.563rem, 0.491rem + 5.36vw, 2.5rem);
+    line-height: 150%;
+    color: #1e1e1e;
+  }
+
+  &-block {
+    position: relative;
+    display: grid;
+    gap: 8px;
+    text-align: left;
+    height: 48px;
+  }
+
+  &__close {
+    display: flex;
+    justify-content: end;
+    margin-right: -15px;
+    margin-top: -20px;
+  }
+
+  &__label {
+    position: absolute;
+    z-index: -1;
+    color: grey;
+    margin: 0 0 0 12px;
+    background-color: #fff;
+    padding: 3px 7px 0 3px;
+    transition: 0.1s ease;
+    pointer-events: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    max-width: 485px;
+
+    @media screen and (max-width: 450px) {
+      & {
+        margin-left: 5px;
+      }
+    }
+  }
+
+
+
+  &__input {
+    position: absolute;
+    outline: none;
+    background-color: transparent;
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 8px;
+    border: 2px solid #456B92;
+
+
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: .1s ease-in;
+  }
+
+  &__input:focus,
+  &__input:valid {
+    border: 3px solid #456B92;
+    transition: .1s ease-in;
+  }
+
+  &__input:focus ~ &__label,
+  &__input:valid ~ &__label {
+    color: #808080;
+    height: 30px;
+    line-height: 30px;
+    transform: translate(-13px, -16px) scale(0.88);
+    z-index: 1000;
+    transition: .1s ease;
+    width: auto;
+  }
+
+  &__input::placeholder {
+    font-size: 16px;
+    line-height: 150%;
+    color: #c3c3c3;
+  }
+
+  &-block-button {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__form__content {
+    position: relative;
+    line-height: 45px;
+    padding-top: 4%;
+    display: grid;
+    gap:20px;
+  }
+
+  &__form-button {
+    width: 122px;
+    padding: 12px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 16px;
+    color: #fdfdfd;
+    background: linear-gradient(180deg, #3daa33 0%, #01996d 100%);
+    border: none;
+    cursor: pointer;
+  }
+
+  @media screen and (max-width: 600px) {
+    &__input {
+      width: 100%;
+      padding: 12px 10px;
+    }
+  }
+
+  &__select {
+    max-width: 484px;
+    width: 100%;
+    padding: 14px 22px 14px 14px;
+    border-radius: 8px;
+    border: 2px solid #456B92;
+    outline: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+}
+
+
+
+
+
+
+option {
+  max-width: 484px;
+  width: 100%;
+}

@@ -14,13 +14,13 @@ export const studentFind = createAsyncThunk<EmployeeDTO, { studentId: string }, 
                 return data
             } else if (response.status === 403) {
                 const validError: Error = await response.json();
-                return thunkAPI.rejectWithValue(validError || 'Пользователь не имеет доступ на получение студента')
+                return thunkAPI.rejectWithValue(validError || 'Пользователь не имеет прав на получение студента')
             } else if (response.status === 404) {
                 const validError: Error = await response.json();
                 return thunkAPI.rejectWithValue(validError || 'Студент не найден')
             } else {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error);
+                return thunkAPI.rejectWithValue(error || 'Неизвестная ошибка');
             }
 
         } catch (error) {
@@ -30,7 +30,7 @@ export const studentFind = createAsyncThunk<EmployeeDTO, { studentId: string }, 
 );
 
 
-export const studentReplace = createAsyncThunk<EmployeeDTO, {
+export const studentReplace = createAsyncThunk<string, {
     studentId: string,
     firstname: string,
     middlename: string,
@@ -55,12 +55,13 @@ export const studentReplace = createAsyncThunk<EmployeeDTO, {
                 })
             });
 
-            if (response.status === 200) {
-                const data: EmployeeDTO = await response.json();
-                return data
+            if (response.status === 204) {
+                // const data: EmployeeDTO = await response.json();
+                // return data
+                return 'Студент обновлен'
             } else if (response.status === 403) {
                 const validError: Error = await response.json();
-                return thunkAPI.rejectWithValue(validError || 'Пользователь не имеет доступ на получение студента')
+                return thunkAPI.rejectWithValue(validError || 'Пользователь не имеет прав на получение студента')
             } else if (response.status === 404) {
                 const validError: Error = await response.json();
                 return thunkAPI.rejectWithValue(validError || 'Студент не найден')
@@ -88,7 +89,7 @@ export const studentDelete = createAsyncThunk<string, { id: string }, { rejectVa
                 return 'Студент удален'
             } else if (response.status === 403) {
                 const errorValid = await response.json()
-                return thunkAPI.rejectWithValue(errorValid || 'Пользователь не имеет доступ на удаление студента')
+                return thunkAPI.rejectWithValue(errorValid || 'Пользователь не имеет прав на удаление студента')
             } else if (response.status === 404) {
                 const errorValid = await response.json()
                 return thunkAPI.rejectWithValue(errorValid || 'Студент не найден')
@@ -119,7 +120,7 @@ export const groupReadStudent = createAsyncThunk<StudentDTO[], { groupId: string
                 return data;
             } else if (response.status === 403) {
                 const error: any = await response.json();
-                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступа на получения студентов группы');
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет прав на получения студентов группы');
             } else {
                 return thunkAPI.rejectWithValue('Неизвестная ошибка');
             }
@@ -148,7 +149,7 @@ export const studentGraduate = createAsyncThunk<string, { studentId: string }>(
                 return 'Статус студента обновлен'
             } else if (response.status === 403) {
                 const validError = response.json()
-                return thunkAPI.rejectWithValue(validError || "Пользователь не имеет доступ на перевод в выпускники");
+                return thunkAPI.rejectWithValue(validError || "Пользователь не имеет прав на перевод в выпускники");
             } else if (response.status === 404) {
                 const validError = response.json()
                 return thunkAPI.rejectWithValue(validError || "Cтудент не найден");
@@ -157,10 +158,13 @@ export const studentGraduate = createAsyncThunk<string, { studentId: string }>(
                 return thunkAPI.rejectWithValue(error);
             }
         } catch (error) {
-            return thunkAPI.rejectWithValue(error || "Что то пошло не так");
+            return thunkAPI.rejectWithValue(error);
         }
     }
 );
 
+const exportStudent = {
+    studentFind, studentReplace, studentGraduate, studentDelete
+}
 
-export default {studentFind}
+export default exportStudent

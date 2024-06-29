@@ -9,15 +9,8 @@ export const metadata:Metadata = {
 };
 
 
-const breadCrumb = {
-    '/': 'Главная',
-    '/control': 'Контроль',
-    '/control/disciplines': 'Дисциплины',
-};
-
-
 export default function page() {
     return (
-        <Disciplines breadCrumb={breadCrumb}/>
+        <Disciplines/>
     )
 }

@@ -58,6 +58,9 @@ export const disciplinesSlice = createSlice({
         },
         disciplinesModalAssign:(state, action:PayloadAction<boolean>) => {
             state.disciplinesModalAssign = action.payload;
+        },
+        setMessageZero:(state) => {
+            state.message = ''
         }
     },
     extraReducers: (builder) => {
@@ -65,7 +68,6 @@ export const disciplinesSlice = createSlice({
         builder.addCase(disciplinesCreate.fulfilled, (state, action) => {
             state.status = 'success';
             state.error = null;
-            // state.data = action.payload
             state.message = action.payload
         });
 
@@ -178,5 +180,5 @@ export const disciplinesSlice = createSlice({
 });
 
 export default disciplinesSlice.reducer
-export const {setCardDisciplines,setCreateCardDisciplines,disciplinesModalAssign,tableDisciplinesDataEmployees,updateTableDataDisciplines} =  disciplinesSlice.actions
+export const {setCardDisciplines,setCreateCardDisciplines,disciplinesModalAssign,tableDisciplinesDataEmployees,updateTableDataDisciplines,setMessageZero} =  disciplinesSlice.actions
 

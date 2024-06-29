@@ -30,7 +30,7 @@ const StudentCursovik = () =>  {
 
     useEffect(() => {
         dispatch(studentCursachRead())
-    }, []);
+    }, [dispatch]);
 
 
     useEffect(() => {

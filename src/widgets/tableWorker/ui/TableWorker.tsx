@@ -31,7 +31,7 @@ const TableWorker = () => {
 
     const dispatch = useAppDispatch();
 
-    const theadObj = ['Имя','Фамилия','Отчество','Должность','Блокировка','Действие']
+    const theadObj = ['Имя', 'Фамилия', 'Отчество', 'Должность', 'Блокировка', 'Действие']
 
     useEffect(() => {
         if (tableData && tableData.length > 0) {
@@ -55,7 +55,7 @@ const TableWorker = () => {
         setId(id)
     };
 
-    const submitGreen = async(e: React.FormEvent) => {
+    const submitGreen = async (e: React.FormEvent) => {
         e.preventDefault();
 
         dispatch(employeesDelete({id}))
@@ -80,8 +80,8 @@ const TableWorker = () => {
         return result
     }
 
-    const blockedConfirm = (blocked:boolean):string => {
-        switch(blocked) {
+    const blockedConfirm = (blocked: boolean): string => {
+        switch (blocked) {
             case true:
                 return 'Заблокирован';
             case false:
@@ -130,14 +130,11 @@ const TableWorker = () => {
                 <NoRecords title={'Сотрудников нет'}/>
             )}
 
-            {
-                open && <WorkerCreateModal setOpen={setOpen} selectedItem={selectedItemId}/>
-            }
+            <WorkerCreateModal setOpen={setOpen} selectedItem={selectedItemId} open={open}/>
 
-            {
-                assentModal && <AssentModal title={'Вы уверены что хотите удалить работу?'}
-                                            submitGreen={submitGreen} submitRed={submitRed}/>
-            }
+            <AssentModal title={'Вы уверены что хотите удалить работу?'}
+                         submitGreen={submitGreen} submitRed={submitRed} open={assentModal}/>
+
         </>
     );
 };

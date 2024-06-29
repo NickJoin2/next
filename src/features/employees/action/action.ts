@@ -11,7 +11,7 @@ export const employeesCreate = createAsyncThunk<
         lastName: string;
         roles: number[];
     },
-    { rejectValue: string } // Ошибка - строка
+    { rejectValue: any } // Ошибка - строка
 >(
     'employees/create',
     async ({ firstName, middleName, lastName, roles }, thunkAPI) => {
@@ -35,14 +35,14 @@ export const employeesCreate = createAsyncThunk<
                 const validError = await response.json();
                 return thunkAPI.rejectWithValue(validError || 'Запрос не прошел валидацию');
             } else if (response.status === 403) {
-                return thunkAPI.rejectWithValue('Пользователь не имеет доступа на добавление сотрудников');
+                return thunkAPI.rejectWithValue('Пользователь не имеет прав на добавление сотрудников');
             }else {
                 const error = await response.json();
                 return thunkAPI.rejectWithValue(error.message || 'Неизвестная ошибка');
             }
 
         } catch (error) {
-            return thunkAPI.rejectWithValue((error as Error).message || 'Что-то пошло не так');
+            return thunkAPI.rejectWithValue(error);
         }
     }
 );
@@ -53,7 +53,6 @@ export const employeesRead = createAsyncThunk<EmployeeDTO>(
     async (_, thunkAPI) => {
         try {
             const response = await fetch(`http://cms.uaviak.ru/api/Employees`, {
-            // const response = await fetch(`http://localhost:3000/employees/`, {
                 method: 'GET',
             });
 
@@ -61,10 +60,10 @@ export const employeesRead = createAsyncThunk<EmployeeDTO>(
                 const data =  await response.json()
                 return data
             } else if (response.status === 403) {
-                return thunkAPI.rejectWithValue("Пользователь не имеет доступ на получение списка сотрудников");
+                return thunkAPI.rejectWithValue("Пользователь не имеет прав на получение списка сотрудников");
             }
         } catch (error) {
-            return thunkAPI.rejectWithValue(error || "Что то пошло не так");
+            return thunkAPI.rejectWithValue(error);
         }
     }
 );
@@ -91,13 +90,13 @@ export const employeesReplace = createAsyncThunk<string, {
             });
 
             if (response.status === 204) {
-                return "Пользователь успешно обновлен"
+                return "Пользователь обновлен"
             } else if (response.status === 400) {
                 const errorValid = response.json()
                 return thunkAPI.rejectWithValue(errorValid || 'Запрос не прошел валидацию')
             } else if (response.status === 403) {
                 const errorValid = response.json()
-                return thunkAPI.rejectWithValue(errorValid || 'Пользователь не имеет доступ на изменение сотрудника')
+                return thunkAPI.rejectWithValue(errorValid || 'Пользователь не имеет прав на изменение сотрудника')
             }  else if (response.status === 404) {
                 const errorValid = response.json()
                 return thunkAPI.rejectWithValue(errorValid || 'Пользователь не найден')
@@ -157,7 +156,7 @@ export const employeesDelete = createAsyncThunk<string, { id: string }, { reject
                 return 'Сотрудник удален'
             } else if (response.status === 403) {
                 const errorValid = response.json()
-                return thunkAPI.rejectWithValue(errorValid || 'Пользователь не имеет на уделение сотрудника')
+                return thunkAPI.rejectWithValue(errorValid || 'Пользователь не имеет прав на уделение сотрудника')
             }  else if (response.status === 404) {
                 const errorValid = response.json()
                 return thunkAPI.rejectWithValue(errorValid || 'Сотрудник не найден')
@@ -173,6 +172,8 @@ export const employeesDelete = createAsyncThunk<string, { id: string }, { reject
     }
 );
 
+const exportEmployees = {
+    employeesCreate, employeesRead, employeesReplace, employeesDelete
+}
 
-
-export default {employeesCreate, employeesRead, employeesReplace, employeesDelete}
+export default exportEmployees

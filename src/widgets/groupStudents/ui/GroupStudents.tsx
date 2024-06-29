@@ -20,7 +20,6 @@ import {setGroup} from "@/features/group/slice/group";
 import GroupStudentAddModal from "@/widgets/groupStudentAddModal/ui/GroupStudentAddModal";
 
 
-
 const GroupStudent = () => {
     const [open, setOpen] = useState<boolean>(false);
     const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
@@ -36,8 +35,6 @@ const GroupStudent = () => {
     useEffect(() => {
 
     }, []);
-
-
 
 
     return (
@@ -60,13 +57,10 @@ const GroupStudent = () => {
                         <NoRecords title={'Нет групп'}/>
                     )}
 
-                    {
-                        open && <GroupModalCreate setOpen={setOpen} selectedItem={selectedItemId} />
-                    }
+                    <GroupModalCreate setOpen={setOpen} selectedItem={selectedItemId} open={open}/>
 
-                    {
-                        studentModalAdd && <GroupStudentAddModal setOpen={setStudentModalAdd} selectedItem={selectedItemId}/>
-                    }
+                    studentModalAdd && <GroupStudentAddModal setOpen={setStudentModalAdd} selectedItem={selectedItemId}
+                                                             open={studentModalAdd}/>
 
                 </ul>
             </div>

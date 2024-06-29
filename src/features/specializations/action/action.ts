@@ -43,7 +43,7 @@ export const specializationsCreate = createAsyncThunk<string, {name: string }, {
             });
 
             if(response.status === 201) {
-                return "Специализация успешно создана"
+                return "Специализация создана"
             } else if(response.status === 400) {
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Запрос не прошел валидацию');
@@ -51,7 +51,7 @@ export const specializationsCreate = createAsyncThunk<string, {name: string }, {
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Пользователь не имеет прав на добавление специализации');
             } else {
-                return thunkAPI.rejectWithValue('Не известный статус ошибки');
+                return thunkAPI.rejectWithValue('Неизвестная ошибка');
             }
 
         } catch (error) {
@@ -77,13 +77,13 @@ export const specializationsUpdate = createAsyncThunk<string, { specializationId
             });
 
             if(response.status === 204) {
-                return "Специализация успешно обновленна"
+                return "Специализация обновленна"
             } else if(response.status === 400) {
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Запрос не прошел валидацию');
             } else if(response.status === 403) {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступа на изменение специализации');
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет прав на изменение специализации');
             } else {
                 return thunkAPI.rejectWithValue('Неизвестная ошибка');
             }
@@ -111,7 +111,7 @@ export const specializationsDelete = createAsyncThunk<string, {specializationId:
                 return 'Специализация удалена'
             } else if(response.status === 403) {
                 const error: Error = await response.json();
-                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет доступа на удаление специализации');
+                return thunkAPI.rejectWithValue(error || 'Пользователь не имеет прав на удаление специализации');
             } else if(response.status === 404) {
                 const error: Error = await response.json();
                 return thunkAPI.rejectWithValue(error || 'Специализация не найдена');
@@ -126,4 +126,8 @@ export const specializationsDelete = createAsyncThunk<string, {specializationId:
     }
 );
 
-export default {specializationsRead, specializationsCreate, specializationsUpdate, specializationsDelete}
+const defaultExport = {
+    specializationsRead, specializationsCreate, specializationsUpdate, specializationsDelete
+}
+
+export default defaultExport

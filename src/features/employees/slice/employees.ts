@@ -17,6 +17,7 @@ export const employees = createSlice({
         data: null,
         worker: null,
         tableData: [],
+        message: ''
     } as State,
     reducers: {
         setTableData(state, action) {
@@ -46,6 +47,7 @@ export const employees = createSlice({
              builder.addCase(employeesCreate.fulfilled, (state, action) => {
                  state.status = 'success';
                  state.error = null;
+                 state.message = action.payload
              });
 
              builder.addCase(employeesCreate.pending, (state) => {
@@ -99,6 +101,7 @@ export const employees = createSlice({
              builder.addCase(employeesReplace.fulfilled, (state, action) => {
                  state.status = 'success';
                  state.error = null;
+                 state.message = action.payload
              });
 
              builder.addCase(employeesReplace.pending, (state) => {
@@ -117,6 +120,7 @@ export const employees = createSlice({
              builder.addCase(employeesDelete.fulfilled, (state, action) => {
                  state.status = 'success';
                  state.error = null;
+                 state.message = action.payload
              });
 
              builder.addCase(employeesDelete.pending, (state) => {
@@ -139,5 +143,6 @@ export interface State {
     status: "init" | "loading" | "error" | "success"
     error: any;
     data: any;
-    tableData: EmployeeDTO[]
+    tableData: EmployeeDTO[],
+    message: string,
 }

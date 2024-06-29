@@ -1,7 +1,7 @@
 import React, {Dispatch, useEffect, useState} from 'react';
 import Image from "next/image";
 
-import '@/widgets/workerCreateModal/ui/WorkerCreateModal'
+import '@/widgets/styles/modal.scss'
 import ButtonAuth from "@/features/buttonAuth/ui/ButtonAuth";
 
 import {RootState, useAppDispatch, useAppSelector} from "@/app/store/appStore";
@@ -15,12 +15,14 @@ import close from "@/shared/image/modal/close.svg";
 interface WorkerCreateModalProps {
     setOpen: Dispatch<React.SetStateAction<boolean>>;
     selectedItem?: any;
+    open: boolean;
 }
 
 const GroupModalCreate: React.FC<WorkerCreateModalProps> =
     ({
          setOpen,
          selectedItem,
+        open,
      }) => {
         const [nameGroup, setNameGroup] = useState<string>(selectedItem && selectedItem.name || '');
         const [specializationId, setSpecializationId] = useState<string>(selectedItem && selectedItem.specializationId || '');
@@ -29,6 +31,17 @@ const GroupModalCreate: React.FC<WorkerCreateModalProps> =
         const group = useAppSelector((state: RootState) => state.group.groupCard)
 
         const dispatch = useAppDispatch();
+
+
+        useEffect(() => {
+            if (selectedItem) {
+                setNameGroup(selectedItem.name)
+                setSpecializationId(selectedItem.specializationId)
+            } else {
+                setNameGroup('');
+                setSpecializationId('');
+            }
+        }, [selectedItem]);
 
         useEffect(() => {
             dispatch(specializationsRead())
@@ -65,31 +78,31 @@ const GroupModalCreate: React.FC<WorkerCreateModalProps> =
 
         return (
             <>
-                <div className="modal__overlay">
-                    <div className="modal__content">
-                        <form className="modal__form" onSubmit={selectedItem ? submitEdit : submitCreate}>
-                            <div className="modal__close">
+                <div className={`modalForm__overlay ${open ? 'show' : ''} `}>
+                    <div className="modalForm__content">
+                        <form className="modalForm__form" onSubmit={selectedItem ? submitEdit : submitCreate}>
+                            <div className="modalForm__close">
                                 <button type="button" onClick={handleClose}>
                                     <Image src={close} alt="close"/>
                                 </button>
                             </div>
 
-                            <h2 className="modal__title">{selectedItem ? 'Редактировать группу' : 'Создать группу'}</h2>
+                            <h2 className="modalForm__title">{selectedItem ? 'Редактировать группу' : 'Создать группу'}</h2>
 
-                            <div className="modal__form__content">
-                                <div className="modal-block">
+                            <div className="modalForm__form__content">
+                                <div className="modalForm-block">
                                     <input
                                         required
                                         value={nameGroup}
                                         onChange={e => setNameGroup(e.target.value)}
-                                        className="modal__input"
+                                        className="modalForm__input"
                                         type="text"
-                                        placeholder="Введите имя группы"
                                     />
+                                    <label className='modalForm__label'>Введите имя группы</label>
                                 </div>
 
-                                <div className="modal-block">
-                                    <select className='modal__select'
+                                <div className="modalForm-block">
+                                    <select className='modalForm__select'
                                             onChange={e => setSpecializationId(e.target.value)}
                                             value={specializationId}
                                             required={true}>

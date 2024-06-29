@@ -42,7 +42,7 @@ export const studentSlice = createSlice({
         setTableStudentDelete(state, action: PayloadAction<StudentDTO[]>) {
             state.tableDataStudent = action.payload;
         },
-        setTableDataGroupStudentDelete(state, action:PayloadAction<StudentDTO[]>) {
+        setTableDataGroupStudentDelete(state, action: PayloadAction<StudentDTO[]>) {
             state.findData = action.payload;
         },
         updateTableStudentGroup: (state, action) => {
@@ -73,6 +73,9 @@ export const studentSlice = createSlice({
                 return item;
             });
         },
+        setStudentMessageZero: (state) => {
+            state.message = ''
+        }
     },
     extraReducers: builder => {
         // studentFind --------------------------------------------------------------------------------------------------
@@ -95,9 +98,10 @@ export const studentSlice = createSlice({
         // studentFind --------------------------------------------------------------------------------------------------
 
         // studentReplace --------------------------------------------------------------------------------------------------
-        builder.addCase(studentReplace.fulfilled, (state, action: PayloadAction<EmployeeDTO>) => {
+        builder.addCase(studentReplace.fulfilled, (state, action: PayloadAction<string>) => {
             state.status = 'success';
             state.error = null;
+            state.message = action.payload
         });
 
         builder.addCase(studentReplace.pending, (state) => {
@@ -153,5 +157,11 @@ export const studentSlice = createSlice({
 
 
 export default studentSlice.reducer
-export const {updateTableStudent,setTableStudentDelete,setTableDataGroupStudentDelete,updateTableStudentGroup} = studentSlice.actions
+export const {
+    updateTableStudent,
+    setTableStudentDelete,
+    setTableDataGroupStudentDelete,
+    updateTableStudentGroup,
+    setStudentMessageZero
+} = studentSlice.actions
 

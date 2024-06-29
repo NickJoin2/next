@@ -12,15 +12,17 @@ import {useRouter} from "next/navigation";
 import {BreadCrumbs} from "@/features/breadCrumbs";
 
 
-interface GroupStudentProps {
-    breadCrumb: { [key: string]: string };
-}
-
-const ControlGroup = ({breadCrumb}:GroupStudentProps) => {
+const ControlGroup = () => {
     const data = useAppSelector((state:RootState) => state.group.data)
 
     const dispatch = useAppDispatch();
     const router = useRouter();
+
+    const breadCrumb = {
+        '/': 'Главная',
+        '/control': 'Контроль',
+        '/control/students': 'Студенты - Группы',
+    };
 
     useEffect(() => {
         dispatch(groupRead())

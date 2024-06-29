@@ -81,18 +81,12 @@ const GroupCard = () => {
                         <NoRecords title={'Нет групп'}/>
                     )}
 
-                    {
-                        open && <GroupModalCreate setOpen={setOpen} selectedItem={selectedItemId} />
-                    }
+                    <GroupModalCreate setOpen={setOpen} selectedItem={selectedItemId} open={open} />
 
-                    {
-                        assentModal && <AssentModal title={'Вы уверены что хотите удалить группу?'}
-                                                    submitGreen={submitGreen} submitRed={submitRed}/>
-                    }
+                    <AssentModal title={'Вы уверены что хотите удалить группу?'}
+                                                    submitGreen={submitGreen} submitRed={submitRed} open={assentModal}/>
 
-                    {
-                        studentModalAdd && <GroupStudentAddModal setOpen={setStudentModalAdd} selectedItem={selectedItemId}/>
-                    }
+                    <GroupStudentAddModal setOpen={setStudentModalAdd} selectedItem={selectedItemId} open={studentModalAdd}/>
 
                 </ul>
             </div>

@@ -51,6 +51,9 @@ export const groupSlice = createSlice({
                 return item;
             });
         },
+        setGroupMessageZero(state) {
+            state.message = ''
+        }
     },
     extraReducers: (builder) => {
 
@@ -173,4 +176,4 @@ export const groupSlice = createSlice({
 });
 
 export default groupSlice.reducer
-export const {setGroup,setGroupCreate,setGroupUpdate} = groupSlice.actions
+export const {setGroup,setGroupCreate,setGroupUpdate, setGroupMessageZero} = groupSlice.actions
